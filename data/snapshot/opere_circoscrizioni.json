@@ -1,0 +1,485 @@
+{
+  "fonte": {
+    "nome": "Comune di Palermo, Programma triennale dei lavori pubblici 2026-2028 (DCC 553/2026), elaborato da OpenDataSicilia",
+    "ente": "Comune di Palermo; elaborazione OpenDataSicilia con Claude AI",
+    "link": "https://github.com/opendatasicilia",
+    "licenza": "non dichiarata nel repository di OpenDataSicilia (piano_triennale_26_28): da confermare con l'autore. L'atto di origine è una deliberazione pubblica del Comune."
+  },
+  "periodo": "Triennio 2026-2028",
+  "verificato": "2026-11-16",
+  "misura": "Interventi e importi programmati nel Programma triennale per circoscrizione dove cade l'intervento.",
+  "non_misura": [
+    "Spesa effettiva o pagamenti: sono importi programmati, non speso.",
+    "Spesa della circoscrizione: gli interventi li gestisce il Comune e la circoscrizione indica solo dove cadono.",
+    "Circa il 47% dell'importo del triennio riguarda interventi senza localizzazione (reti e linee che attraversano il territorio, come la metropolitana leggera da 1.250 milioni): confrontare gli importi per circoscrizione, o per residente, senza questa quota dà un quadro parziale.",
+    "Gli interventi senza geometria o con più circoscrizioni non sono divisi: sono in gruppi separati.",
+    "Il dato è ricavato dai PDF del Comune (elaborazione OpenDataSicilia con Claude AI), a carattere informativo: per i valori ufficiali valgono gli atti.",
+    "Importi del triennio e importo complessivo (con annualità successive) misurano cose diverse e non si sommano.",
+    "Un valore insolito è un segnale da approfondire, non la prova di uno spreco o di un illecito."
+  ],
+  "valori": {
+    "1": {
+      "interventi": 55,
+      "importo_triennio_eur": 229101291.11,
+      "importo_2026_eur": 15281054.0,
+      "importo_2027_eur": 94605245.17,
+      "importo_2028_eur": 119214991.94,
+      "importo_complessivo_eur": 244289513.22,
+      "con_cup": 20,
+      "con_geometria_sul_territorio": 55,
+      "principali_settori": [
+        {
+          "settore": "05.11 - Beni culturali",
+          "interventi": 23,
+          "importo_eur": 125717576.11
+        },
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 10,
+          "importo_eur": 50501820.17
+        },
+        {
+          "settore": "04.39 - Infrastrutture per l'attrezzatura di aree produttive",
+          "interventi": 2,
+          "importo_eur": 10801256.0
+        },
+        {
+          "settore": "10.99 - Altri servizi per la collettivita'",
+          "interventi": 2,
+          "importo_eur": 9300000.0
+        },
+        {
+          "settore": "05.33 - Direzionali e amministrative",
+          "interventi": 3,
+          "importo_eur": 9143051.36
+        }
+      ],
+      "circoscrizione": "I",
+      "residenti_censimento_2021": 26810,
+      "importo_triennio_per_residente_eur": 8545.0
+    },
+    "2": {
+      "interventi": 58,
+      "importo_triennio_eur": 239966077.72,
+      "importo_2026_eur": 15119633.49,
+      "importo_2027_eur": 116112075.23,
+      "importo_2028_eur": 108734369.0,
+      "importo_complessivo_eur": 309340816.41,
+      "con_cup": 12,
+      "con_geometria_sul_territorio": 58,
+      "principali_settori": [
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 26,
+          "importo_eur": 94379102.59
+        },
+        {
+          "settore": "02.05 - Difesa del suolo",
+          "interventi": 3,
+          "importo_eur": 48375605.41
+        },
+        {
+          "settore": "02.11 - Protezione, valorizzazione e fruizione dell'ambiente",
+          "interventi": 12,
+          "importo_eur": 43669923.47
+        },
+        {
+          "settore": "05.08 - Sociali e scolastiche",
+          "interventi": 5,
+          "importo_eur": 33173134.26
+        },
+        {
+          "settore": "05.11 - Beni culturali",
+          "interventi": 3,
+          "importo_eur": 5204427.0
+        }
+      ],
+      "circoscrizione": "II",
+      "residenti_censimento_2021": 69331,
+      "importo_triennio_per_residente_eur": 3461.0
+    },
+    "3": {
+      "interventi": 37,
+      "importo_triennio_eur": 292699970.49,
+      "importo_2026_eur": 10347349.07,
+      "importo_2027_eur": 153038216.42,
+      "importo_2028_eur": 129314405.0,
+      "importo_complessivo_eur": 346375972.41,
+      "con_cup": 6,
+      "con_geometria_sul_territorio": 37,
+      "principali_settori": [
+        {
+          "settore": "04.39 - Infrastrutture per l'attrezzatura di aree produttive",
+          "interventi": 1,
+          "importo_eur": 96925240.0
+        },
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 9,
+          "importo_eur": 49321226.42
+        },
+        {
+          "settore": "02.11 - Protezione, valorizzazione e fruizione dell'ambiente",
+          "interventi": 4,
+          "importo_eur": 42308836.0
+        },
+        {
+          "settore": "02.10 - Smaltimento rifiuti",
+          "interventi": 4,
+          "importo_eur": 27445000.0
+        },
+        {
+          "settore": "05.12 - Sport, spettacolo e tempo libero",
+          "interventi": 4,
+          "importo_eur": 24777238.0
+        }
+      ],
+      "circoscrizione": "III",
+      "residenti_censimento_2021": 71728,
+      "importo_triennio_per_residente_eur": 4081.0
+    },
+    "4": {
+      "interventi": 39,
+      "importo_triennio_eur": 178459760.44,
+      "importo_2026_eur": 2107705.5,
+      "importo_2027_eur": 87586529.94,
+      "importo_2028_eur": 88765525.0,
+      "importo_complessivo_eur": 183534760.44,
+      "con_cup": 6,
+      "con_geometria_sul_territorio": 39,
+      "principali_settori": [
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 16,
+          "importo_eur": 75556269.0
+        },
+        {
+          "settore": "02.15 - Risorse idriche e acque reflue",
+          "interventi": 3,
+          "importo_eur": 44555000.0
+        },
+        {
+          "settore": "02.11 - Protezione, valorizzazione e fruizione dell'ambiente",
+          "interventi": 4,
+          "importo_eur": 23220554.47
+        },
+        {
+          "settore": "02.10 - Smaltimento rifiuti",
+          "interventi": 5,
+          "importo_eur": 17214187.8
+        },
+        {
+          "settore": "02.05 - Difesa del suolo",
+          "interventi": 2,
+          "importo_eur": 4050000.0
+        }
+      ],
+      "circoscrizione": "IV",
+      "residenti_censimento_2021": 98688,
+      "importo_triennio_per_residente_eur": 1808.0
+    },
+    "5": {
+      "interventi": 54,
+      "importo_triennio_eur": 126912031.47,
+      "importo_2026_eur": 5733497.49,
+      "importo_2027_eur": 82885807.98,
+      "importo_2028_eur": 38292726.0,
+      "importo_complessivo_eur": 126912031.47,
+      "con_cup": 13,
+      "con_geometria_sul_territorio": 54,
+      "principali_settori": [
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 19,
+          "importo_eur": 35974259.8
+        },
+        {
+          "settore": "02.10 - Smaltimento rifiuti",
+          "interventi": 3,
+          "importo_eur": 18216500.0
+        },
+        {
+          "settore": "05.08 - Sociali e scolastiche",
+          "interventi": 9,
+          "importo_eur": 17424512.67
+        },
+        {
+          "settore": "05.10 - Abitative",
+          "interventi": 2,
+          "importo_eur": 15623756.0
+        },
+        {
+          "settore": "10.99 - Altri servizi per la collettivita'",
+          "interventi": 3,
+          "importo_eur": 9400000.0
+        }
+      ],
+      "circoscrizione": "V",
+      "residenti_censimento_2021": 107993,
+      "importo_triennio_per_residente_eur": 1175.0
+    },
+    "6": {
+      "interventi": 45,
+      "importo_triennio_eur": 441960659.66,
+      "importo_2026_eur": 13611964.74,
+      "importo_2027_eur": 209066000.17,
+      "importo_2028_eur": 219282694.75,
+      "importo_complessivo_eur": 583855175.06,
+      "con_cup": 10,
+      "con_geometria_sul_territorio": 45,
+      "principali_settori": [
+        {
+          "settore": "05.12 - Sport, spettacolo e tempo libero",
+          "interventi": 3,
+          "importo_eur": 209500000.0
+        },
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 17,
+          "importo_eur": 92352141.83
+        },
+        {
+          "settore": "02.10 - Smaltimento rifiuti",
+          "interventi": 3,
+          "importo_eur": 44500000.0
+        },
+        {
+          "settore": "01.05 - Trasporto urbano",
+          "interventi": 3,
+          "importo_eur": 33722484.6
+        },
+        {
+          "settore": "05.11 - Beni culturali",
+          "interventi": 4,
+          "importo_eur": 18817120.0
+        }
+      ],
+      "circoscrizione": "VI",
+      "residenti_censimento_2021": 70110,
+      "importo_triennio_per_residente_eur": 6304.0
+    },
+    "7": {
+      "interventi": 95,
+      "importo_triennio_eur": 536538431.85,
+      "importo_2026_eur": 89927975.97,
+      "importo_2027_eur": 295304882.88,
+      "importo_2028_eur": 151305573.0,
+      "importo_complessivo_eur": 552844234.37,
+      "con_cup": 23,
+      "con_geometria_sul_territorio": 95,
+      "principali_settori": [
+        {
+          "settore": "01.05 - Trasporto urbano",
+          "interventi": 2,
+          "importo_eur": 265359963.0
+        },
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 36,
+          "importo_eur": 95450567.43
+        },
+        {
+          "settore": "02.05 - Difesa del suolo",
+          "interventi": 10,
+          "importo_eur": 42303936.75
+        },
+        {
+          "settore": "05.08 - Sociali e scolastiche",
+          "interventi": 13,
+          "importo_eur": 35866674.17
+        },
+        {
+          "settore": "02.11 - Protezione, valorizzazione e fruizione dell'ambiente",
+          "interventi": 11,
+          "importo_eur": 32661960.46
+        }
+      ],
+      "circoscrizione": "VII",
+      "residenti_censimento_2021": 74066,
+      "importo_triennio_per_residente_eur": 7244.0
+    },
+    "8": {
+      "interventi": 57,
+      "importo_triennio_eur": 242788190.43,
+      "importo_2026_eur": 9653411.43,
+      "importo_2027_eur": 122228185.6,
+      "importo_2028_eur": 110906593.4,
+      "importo_complessivo_eur": 299989671.93,
+      "con_cup": 15,
+      "con_geometria_sul_territorio": 57,
+      "principali_settori": [
+        {
+          "settore": "01.01 - Stradali",
+          "interventi": 24,
+          "importo_eur": 128853281.75
+        },
+        {
+          "settore": "02.05 - Difesa del suolo",
+          "interventi": 3,
+          "importo_eur": 33756247.0
+        },
+        {
+          "settore": "01.05 - Trasporto urbano",
+          "interventi": 7,
+          "importo_eur": 22499693.42
+        },
+        {
+          "settore": "02.11 - Protezione, valorizzazione e fruizione dell'ambiente",
+          "interventi": 6,
+          "importo_eur": 17472881.96
+        },
+        {
+          "settore": "06.40 - Opere e infrastrutture per la ricerca",
+          "interventi": 1,
+          "importo_eur": 12000000.0
+        }
+      ],
+      "circoscrizione": "VIII",
+      "residenti_censimento_2021": 116713,
+      "importo_triennio_per_residente_eur": 2080.0
+    }
+  },
+  "piu_circoscrizioni": {
+    "interventi": 14,
+    "importo_triennio_eur": 48427336.81,
+    "importo_2026_eur": 0.0,
+    "importo_2027_eur": 17006431.81,
+    "importo_2028_eur": 31420905.0,
+    "importo_complessivo_eur": 48427336.81,
+    "con_cup": 1,
+    "con_geometria_sul_territorio": 14,
+    "principali_settori": [
+      {
+        "settore": "01.01 - Stradali",
+        "interventi": 8,
+        "importo_eur": 40039325.0
+      },
+      {
+        "settore": "05.11 - Beni culturali",
+        "interventi": 2,
+        "importo_eur": 5873511.81
+      },
+      {
+        "settore": "02.15 - Risorse idriche e acque reflue",
+        "interventi": 1,
+        "importo_eur": 1800000.0
+      },
+      {
+        "settore": "02.11 - Protezione, valorizzazione e fruizione dell'ambiente",
+        "interventi": 2,
+        "importo_eur": 530000.0
+      },
+      {
+        "settore": "05.99 - Altre infrastrutture sociali",
+        "interventi": 1,
+        "importo_eur": 184500.0
+      }
+    ]
+  },
+  "non_localizzato": {
+    "interventi": 94,
+    "importo_triennio_eur": 2036557168.55,
+    "importo_2026_eur": 201827402.2,
+    "importo_2027_eur": 171102679.35,
+    "importo_2028_eur": 1663627087.0,
+    "importo_complessivo_eur": 2477703977.18,
+    "con_cup": 24,
+    "con_geometria_sul_territorio": 0,
+    "principali_settori": [
+      {
+        "settore": "01.05 - Trasporto urbano",
+        "interventi": 3,
+        "importo_eur": 1399466884.5
+      },
+      {
+        "settore": "10.99 - Altri servizi per la collettivita'",
+        "interventi": 14,
+        "importo_eur": 206912709.0
+      },
+      {
+        "settore": "01.01 - Stradali",
+        "interventi": 22,
+        "importo_eur": 108067391.52
+      },
+      {
+        "settore": "02.15 - Risorse idriche e acque reflue",
+        "interventi": 4,
+        "importo_eur": 73050000.0
+      },
+      {
+        "settore": "02.10 - Smaltimento rifiuti",
+        "interventi": 4,
+        "importo_eur": 62303000.0
+      }
+    ],
+    "principali_interventi": [
+      {
+        "descrizione": "Linea Metropolitana Leggera Automatica 'Svincolo Oreto - Partanna' - Prima Linea (Oreto Notarbartolo)",
+        "settore": "01.05 - Trasporto urbano",
+        "importo_triennio_eur": 1250000000.0
+      },
+      {
+        "descrizione": "Efficientamento degli impianti di illuminazione pubblica, semaforici e tecnologici a servizio degli edifici del Comune di Palermo",
+        "settore": "10.99 - Altri servizi per la collettivita'",
+        "importo_triennio_eur": 180000000.0
+      },
+      {
+        "descrizione": "Nuove linee tramviarie della città di Palermo - Tratte D, E2, F, G e Parcheggi di interscambio Stralcio I.2",
+        "settore": "01.05 - Trasporto urbano",
+        "importo_triennio_eur": 119466884.5
+      },
+      {
+        "descrizione": "COMPLETAMENTO DEL SISTEMA NORD OCCIDENTALE PER LO SMALTIMENTO DELLE ACQUE METEORICHE-OPERE DI URBANIZZAZIONE ZEN 2 GRUPPO PA1 LOTTO B2 (EX A",
+        "settore": "02.10 - Smaltimento rifiuti",
+        "importo_triennio_eur": 43853000.0
+      },
+      {
+        "descrizione": "RISTRUTTURAZIONE DEL CANALE DI SCILLATO",
+        "settore": "02.15 - Risorse idriche e acque reflue",
+        "importo_triennio_eur": 43500000.0
+      },
+      {
+        "descrizione": "SOTTORETE 1 - BRANCACCIO - ROMAGNOLO",
+        "settore": "01.05 - Trasporto urbano",
+        "importo_triennio_eur": 30000000.0
+      }
+    ]
+  },
+  "totale_palermo": {
+    "interventi": 548,
+    "importo_triennio_eur": 4373410918.53,
+    "importo_2026_eur": 363609993.89,
+    "importo_2027_eur": 1348936054.55,
+    "importo_2028_eur": 2660864870.09,
+    "importo_complessivo_eur": 5173273489.3,
+    "con_cup": 130,
+    "con_geometria_sul_territorio": 454,
+    "principali_settori": [
+      {
+        "settore": "01.05 - Trasporto urbano",
+        "interventi": 18,
+        "importo_eur": 1725235983.61
+      },
+      {
+        "settore": "01.01 - Stradali",
+        "interventi": 187,
+        "importo_eur": 770495385.51
+      },
+      {
+        "settore": "10.99 - Altri servizi per la collettivita'",
+        "interventi": 34,
+        "importo_eur": 277817516.99
+      },
+      {
+        "settore": "05.12 - Sport, spettacolo e tempo libero",
+        "interventi": 16,
+        "importo_eur": 254999687.4
+      },
+      {
+        "settore": "05.11 - Beni culturali",
+        "interventi": 49,
+        "importo_eur": 218751759.92
+      }
+    ]
+  }
+}

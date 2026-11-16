@@ -1,0 +1,135 @@
+{
+  "fonte": {
+    "nome": "OpenCoesione, progetti con beneficiario Comune di Palermo (file Sicilia, aggiornato al 31/08/2026)",
+    "ente": "Dipartimento per le politiche di coesione",
+    "link": "https://opencoesione.gov.it/it/opendata/",
+    "licenza": "CC BY 4.0 (dichiarata da OpenCoesione su /it/opendata/, verificata il 16/11/2026)"
+  },
+  "periodo": "Cicli 2000-2006, 2007-2013, 2014-2020, 2021-2027; dati al 31/08/2026",
+  "verificato": "2026-11-16",
+  "misura": "Progetti di coesione (PON Metro, PSC, POC, FSC e altri) con beneficiario il Comune di Palermo: finanziamento pubblico netto e pagamenti, per Comune.",
+  "non_misura": [
+    "La circoscrizione: il file ha solo il codice del comune.",
+    "Il Piano triennale e il PNRR: gli stessi progetti possono comparire anche lì (solo pochi CUP coincidono) e le somme tra fonti non vanno sommate.",
+    "Un progetto può avere più beneficiari: sono qui tutti quelli in cui il Comune è tra i beneficiari indicati. Lo stesso CUP può comparire in più progetti (una riga per linea di finanziamento): i progetti sono contati per codice locale, non per CUP."
+  ],
+  "totale": {
+    "progetti": 319,
+    "cup_distinti": 308,
+    "finanziamento_pubblico_netto_eur": 1229775508.75
+  },
+  "per_programma": [
+    {
+      "voce": "PSC CITTÀ METROPOLITANA DI PALERMO",
+      "progetti": 71,
+      "finanziamento_pubblico_netto_eur": 428042213.13,
+      "pagamenti_eur": 68451263.33
+    },
+    {
+      "voce": "POR FESR SICILIA:::PSC REGIONE SICILIANA",
+      "progetti": 1,
+      "finanziamento_pubblico_netto_eur": 152095271.02,
+      "pagamenti_eur": 0.0
+    },
+    {
+      "voce": "PON FESR FSE CITTA' METROPOLITANE",
+      "progetti": 68,
+      "finanziamento_pubblico_netto_eur": 144627605.04,
+      "pagamenti_eur": 144016486.38
+    },
+    {
+      "voce": "ACCORDO COESIONE SICILIA - FSC ORDINARIO",
+      "progetti": 7,
+      "finanziamento_pubblico_netto_eur": 94876036.79,
+      "pagamenti_eur": 987915.78
+    },
+    {
+      "voce": "PROGRAMMA ATTUATIVO SPECIALE FSC COMUNE DI PALERMO",
+      "progetti": 21,
+      "finanziamento_pubblico_netto_eur": 78698411.79,
+      "pagamenti_eur": 29760593.36
+    },
+    {
+      "voce": "PSC MINISTERO DEI BENI E ATTIVITÀ CULTURALI E TURISMO",
+      "progetti": 12,
+      "finanziamento_pubblico_netto_eur": 74960000.0,
+      "pagamenti_eur": 1961158.05
+    },
+    {
+      "voce": "POR FESR SICILIA",
+      "progetti": 17,
+      "finanziamento_pubblico_netto_eur": 70091352.99,
+      "pagamenti_eur": 33970525.11
+    },
+    {
+      "voce": "PSC REGIONE SICILIANA",
+      "progetti": 22,
+      "finanziamento_pubblico_netto_eur": 46633339.98,
+      "pagamenti_eur": 8147499.23
+    },
+    {
+      "voce": "POC METRO",
+      "progetti": 12,
+      "finanziamento_pubblico_netto_eur": 33465024.67,
+      "pagamenti_eur": 2482601.73
+    },
+    {
+      "voce": "POR FSE SICILIA",
+      "progetti": 11,
+      "finanziamento_pubblico_netto_eur": 20209166.21,
+      "pagamenti_eur": 5978964.57
+    }
+  ],
+  "per_ciclo": [
+    {
+      "voce": "Ciclo di programmazione 2014-2020",
+      "progetti": 265,
+      "finanziamento_pubblico_netto_eur": 999143234.31,
+      "pagamenti_eur": 276346637.22
+    },
+    {
+      "voce": "Ciclo di programmazione 2021-2027",
+      "progetti": 11,
+      "finanziamento_pubblico_netto_eur": 113020268.15,
+      "pagamenti_eur": 5693238.02
+    },
+    {
+      "voce": "Ciclo di programmazione 2007-2013",
+      "progetti": 24,
+      "finanziamento_pubblico_netto_eur": 82749329.87,
+      "pagamenti_eur": 33811511.44
+    },
+    {
+      "voce": "Ciclo di programmazione 2000-2006",
+      "progetti": 19,
+      "finanziamento_pubblico_netto_eur": 34862676.42,
+      "pagamenti_eur": 7413248.37
+    }
+  ],
+  "per_stato": [
+    {
+      "voce": "In corso",
+      "progetti": 131,
+      "finanziamento_pubblico_netto_eur": 961511102.5,
+      "pagamenti_eur": 132773018.77
+    },
+    {
+      "voce": "Concluso",
+      "progetti": 177,
+      "finanziamento_pubblico_netto_eur": 155657300.42,
+      "pagamenti_eur": 155550824.81
+    },
+    {
+      "voce": "Non avviato",
+      "progetti": 9,
+      "finanziamento_pubblico_netto_eur": 77055683.96,
+      "pagamenti_eur": 0.0
+    },
+    {
+      "voce": "Liquidato",
+      "progetti": 2,
+      "finanziamento_pubblico_netto_eur": 35551421.87,
+      "pagamenti_eur": 34940791.47
+    }
+  ]
+}

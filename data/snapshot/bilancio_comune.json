@@ -1,0 +1,698 @@
+{
+  "fonte": {
+    "nome": "Comune di Palermo, Bilancio di previsione 2026/2028, Allegato A (delibera CC n. 176 del 26/05/2026)",
+    "ente": "Comune di Palermo, Ragioneria Generale",
+    "link": "https://repository.comune.palermo.it/bilancio-rendiconti.php?id=1&per=2026%2F2028",
+    "licenza": "non dichiarata nella pagina dei bilanci del Comune: atto pubblico, si cita la fonte"
+  },
+  "periodo": "Competenza 2026, 2027 e 2028; cassa 2026",
+  "verificato": "2026-11-16",
+  "misura": "Stanziamenti di spesa del Comune di Palermo per missione e programma. Sono previsioni, non spesa effettiva.",
+  "non_misura": [
+    "La circoscrizione: il bilancio non ha capitoli per circoscrizione. Il testo di bilancio e dei suoi allegati non cita le circoscrizioni; il DUP le descrive solo come territorio.",
+    "I pagamenti: SIOPE tratta il Comune come un solo ente e questo bilancio è di previsione.",
+    "Le spese delle società partecipate e della Regione in città.",
+    "Le previsioni di competenza comprendono il fondo pluriennale vincolato e possono cambiare con le variazioni di bilancio (la più recente trovata è di luglio 2026)."
+  ],
+  "disavanzo_di_amministrazione": {
+    "2026": 600000.0,
+    "2027": 26165626.6,
+    "2028": 34727602.09
+  },
+  "totale_spese_competenza": {
+    "2026": 2223340489.24,
+    "2027": 1913467471.18,
+    "2028": 1776848411.87
+  },
+  "missioni": {
+    "01": {
+      "nome": "SERVIZI ISTITUZIONALI, GENERALI E DI GESTIONE",
+      "competenza_2026": 222705056.53,
+      "competenza_2027": 189364375.72,
+      "competenza_2028": 172047956.14,
+      "cassa_2026": 245492557.26,
+      "programmi": {
+        "01": {
+          "missione": "01",
+          "nome": "ORGANI ISTITUZIONALI",
+          "competenza_2026": 59267156.22,
+          "competenza_2027": 57930057.66,
+          "competenza_2028": 57946072.13,
+          "cassa_2026": 55833436.01
+        },
+        "02": {
+          "missione": "01",
+          "nome": "SEGRETERIA GENERALE",
+          "competenza_2026": 13297917.31,
+          "competenza_2027": 13212649.42,
+          "competenza_2028": 12015866.49,
+          "cassa_2026": 13307726.69
+        },
+        "03": {
+          "missione": "01",
+          "nome": "GESTIONE ECONOMICA, FINANZIARIA,",
+          "competenza_2026": 17743616.5,
+          "competenza_2027": 16687604.8,
+          "competenza_2028": 16687604.8,
+          "cassa_2026": 19556906.62
+        },
+        "04": {
+          "missione": "01",
+          "nome": "GESTIONE DELLE ENTRATE TRIBUTARIE E",
+          "competenza_2026": 6115530.86,
+          "competenza_2027": 6109226.56,
+          "competenza_2028": 6109226.56,
+          "cassa_2026": 5526700.79
+        },
+        "05": {
+          "missione": "01",
+          "nome": "GESTIONE DEI BENI DEMANIALI E PATRIMONIALI",
+          "competenza_2026": 31940445.9,
+          "competenza_2027": 14944012.21,
+          "competenza_2028": 13152228.19,
+          "cassa_2026": 40712969.89
+        },
+        "06": {
+          "missione": "01",
+          "nome": "UFFICIO TECNICO",
+          "competenza_2026": 22967534.95,
+          "competenza_2027": 8369896.39,
+          "competenza_2028": 6804896.39,
+          "cassa_2026": 29312819.35
+        },
+        "07": {
+          "missione": "01",
+          "nome": "ELEZIONI E CONSULTAZIONI POPOLARI -",
+          "competenza_2026": 6936888.46,
+          "competenza_2027": 12514612.38,
+          "competenza_2028": 4744212.38,
+          "cassa_2026": 6988575.54
+        },
+        "08": {
+          "missione": "01",
+          "nome": "STATISTICA E SISTEMI INFORMATIVI",
+          "competenza_2026": 20216474.84,
+          "competenza_2027": 15602339.7,
+          "competenza_2028": 10593872.6,
+          "cassa_2026": 29829806.29
+        },
+        "10": {
+          "missione": "01",
+          "nome": "RISORSE UMANE",
+          "competenza_2026": 8074507.81,
+          "competenza_2027": 7888405.78,
+          "competenza_2028": 7888405.78,
+          "cassa_2026": 6745906.26
+        },
+        "11": {
+          "missione": "01",
+          "nome": "ALTRI SERVIZI GENERALI",
+          "competenza_2026": 36144983.68,
+          "competenza_2027": 36105570.82,
+          "competenza_2028": 36105570.82,
+          "cassa_2026": 37677709.82
+        }
+      }
+    },
+    "02": {
+      "nome": "GIUSTIZIA",
+      "competenza_2026": 109425.78,
+      "competenza_2027": 109425.78,
+      "competenza_2028": 109425.78,
+      "cassa_2026": 109425.78,
+      "programmi": {
+        "01": {
+          "missione": "02",
+          "nome": "UFFICI GIUDIZIARI",
+          "competenza_2026": 24909.67,
+          "competenza_2027": 24909.67,
+          "competenza_2028": 24909.67,
+          "cassa_2026": 24909.67
+        },
+        "02": {
+          "missione": "02",
+          "nome": "CASA CIRCONDARIALE E ALTRI SERVIZI",
+          "competenza_2026": 84516.11,
+          "competenza_2027": 84516.11,
+          "competenza_2028": 84516.11,
+          "cassa_2026": 84516.11
+        }
+      }
+    },
+    "03": {
+      "nome": "ORDINE PUBBLICO E SICUREZZA",
+      "competenza_2026": 51440818.77,
+      "competenza_2027": 46052713.05,
+      "competenza_2028": 45795505.93,
+      "cassa_2026": 58715561.41,
+      "programmi": {
+        "01": {
+          "missione": "03",
+          "nome": "POLIZIA LOCALE E AMMINISTRATIVA",
+          "competenza_2026": 51285934.57,
+          "competenza_2027": 46052713.05,
+          "competenza_2028": 45795505.93,
+          "cassa_2026": 58560677.21
+        },
+        "02": {
+          "missione": "03",
+          "nome": "SISTEMA INTEGRATO DI SICUREZZA URBANA",
+          "competenza_2026": 154884.2,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 154884.2
+        }
+      }
+    },
+    "04": {
+      "nome": "ISTRUZIONE E DIRITTO ALLO STUDIO",
+      "competenza_2026": 58830264.17,
+      "competenza_2027": 49178965.32,
+      "competenza_2028": 48755669.41,
+      "cassa_2026": 75304506.56,
+      "programmi": {
+        "01": {
+          "missione": "04",
+          "nome": "ISTRUZIONE PRESCOLASTICA",
+          "competenza_2026": 14380441.49,
+          "competenza_2027": 11442109.88,
+          "competenza_2028": 11337119.69,
+          "cassa_2026": 18651076.05
+        },
+        "02": {
+          "missione": "04",
+          "nome": "ALTRI ORDINI DI ISTRUZIONE NON",
+          "competenza_2026": 23334981.35,
+          "competenza_2027": 18808148.18,
+          "competenza_2028": 18850542.46,
+          "cassa_2026": 26813092.79
+        },
+        "06": {
+          "missione": "04",
+          "nome": "SERVIZI AUSILIARI ALL'ISTRUZIONE",
+          "competenza_2026": 9186074.74,
+          "competenza_2027": 9058306.81,
+          "competenza_2028": 9058306.81,
+          "cassa_2026": 9214499.25
+        },
+        "07": {
+          "missione": "04",
+          "nome": "DIRITTO ALLO STUDIO",
+          "competenza_2026": 11928766.59,
+          "competenza_2027": 9870400.45,
+          "competenza_2028": 9509700.45,
+          "cassa_2026": 20625838.47
+        }
+      }
+    },
+    "05": {
+      "nome": "TUTELA E VALORIZZAZIONE DEI BENI E DELLE ATTIVITA' CULTURALI",
+      "competenza_2026": 46626933.91,
+      "competenza_2027": 22840631.35,
+      "competenza_2028": 20520877.47,
+      "cassa_2026": 65559462.4,
+      "programmi": {
+        "01": {
+          "missione": "05",
+          "nome": "VALORIZZAZIONE DEI BENI DI INTERESSE",
+          "competenza_2026": 33854550.02,
+          "competenza_2027": 11046346.37,
+          "competenza_2028": 8726592.49,
+          "cassa_2026": 48230135.61
+        },
+        "02": {
+          "missione": "05",
+          "nome": "ATTIVITÀ CULTURALI E INTERVENTI DIVERSI NEL",
+          "competenza_2026": 12772383.89,
+          "competenza_2027": 11794284.98,
+          "competenza_2028": 11794284.98,
+          "cassa_2026": 17329326.79
+        }
+      }
+    },
+    "06": {
+      "nome": "POLITICHE GIOVANILI, SPORT E TEMPO LIBERO",
+      "competenza_2026": 22898515.9,
+      "competenza_2027": 7231263.27,
+      "competenza_2028": 3842153.27,
+      "cassa_2026": 25571095.2,
+      "programmi": {
+        "01": {
+          "missione": "06",
+          "nome": "SPORT E TEMPO LIBERO",
+          "competenza_2026": 22895015.9,
+          "competenza_2027": 7231263.27,
+          "competenza_2028": 3842153.27,
+          "cassa_2026": 25436595.2
+        },
+        "02": {
+          "missione": "06",
+          "nome": "GIOVANI",
+          "competenza_2026": 3500.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 134500.0
+        }
+      }
+    },
+    "07": {
+      "nome": "TURISMO",
+      "competenza_2026": 4477735.28,
+      "competenza_2027": 3977384.72,
+      "competenza_2028": 3977384.72,
+      "cassa_2026": 6207766.15,
+      "programmi": {
+        "01": {
+          "missione": "07",
+          "nome": "SVILUPPO E VALORIZZAZIONE DEL TURISMO",
+          "competenza_2026": 4477735.28,
+          "competenza_2027": 3977384.72,
+          "competenza_2028": 3977384.72,
+          "cassa_2026": 6207766.15
+        }
+      }
+    },
+    "08": {
+      "nome": "ASSETTO DEL TERRITORIO ED EDILIZIA ABITATIVA",
+      "competenza_2026": 54189477.43,
+      "competenza_2027": 28910635.64,
+      "competenza_2028": 27653644.85,
+      "cassa_2026": 95593178.15,
+      "programmi": {
+        "01": {
+          "missione": "08",
+          "nome": "URBANISTICA E ASSETTO DEL TERRITORIO",
+          "competenza_2026": 53533482.51,
+          "competenza_2027": 28254640.72,
+          "competenza_2028": 26997649.93,
+          "cassa_2026": 94887835.12
+        },
+        "02": {
+          "missione": "08",
+          "nome": "EDILIZIA RESIDENZIALE PUBBLICA E LOCALE E",
+          "competenza_2026": 655994.92,
+          "competenza_2027": 655994.92,
+          "competenza_2028": 655994.92,
+          "cassa_2026": 705343.03
+        }
+      }
+    },
+    "09": {
+      "nome": "SVILUPPO SOSTENIBILE E TUTELA DEL TERRITORIO E DELL'AMBIENTE",
+      "competenza_2026": 238284469.43,
+      "competenza_2027": 171166128.78,
+      "competenza_2028": 152958562.96,
+      "cassa_2026": 303896816.26,
+      "programmi": {
+        "01": {
+          "missione": "09",
+          "nome": "DIFESA DEL SUOLO",
+          "competenza_2026": 7054613.17,
+          "competenza_2027": 3117995.35,
+          "competenza_2028": 3117995.35,
+          "cassa_2026": 12813614.62
+        },
+        "02": {
+          "missione": "09",
+          "nome": "TUTELA, VALORIZZAZIONE E RECUPERO",
+          "competenza_2026": 23646283.14,
+          "competenza_2027": 9994753.81,
+          "competenza_2028": 8436805.03,
+          "cassa_2026": 72932615.74
+        },
+        "03": {
+          "missione": "09",
+          "nome": "RIFIUTI",
+          "competenza_2026": 161330607.65,
+          "competenza_2027": 136843350.36,
+          "competenza_2028": 136154050.96,
+          "cassa_2026": 162831753.85
+        },
+        "04": {
+          "missione": "09",
+          "nome": "SERVIZIO IDRICO INTEGRATO",
+          "competenza_2026": 26193365.47,
+          "competenza_2027": 6350997.67,
+          "competenza_2028": 5237711.62,
+          "cassa_2026": 26433596.25
+        },
+        "05": {
+          "missione": "09",
+          "nome": "AREE PROTETTE, PARCHI NATURALI,",
+          "competenza_2026": 8662000.0,
+          "competenza_2027": 12000.0,
+          "competenza_2028": 12000.0,
+          "cassa_2026": 17027443.82
+        },
+        "08": {
+          "missione": "09",
+          "nome": "QUALITÀ DELL'ARIA E RIDUZIONE",
+          "competenza_2026": 11397600.0,
+          "competenza_2027": 14847031.59,
+          "competenza_2028": 0.0,
+          "cassa_2026": 11857791.98
+        }
+      }
+    },
+    "10": {
+      "nome": "TRASPORTI E DIRITTO ALLA MOBILITÀ",
+      "competenza_2026": 303004756.61,
+      "competenza_2027": 207624621.27,
+      "competenza_2028": 133831084.14,
+      "cassa_2026": 1204904481.78,
+      "programmi": {
+        "01": {
+          "missione": "10",
+          "nome": "TRASPORTO FERROVIARIO",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 58872130.57
+        },
+        "02": {
+          "missione": "10",
+          "nome": "TRASPORTO PUBBLICO LOCALE",
+          "competenza_2026": 208595087.13,
+          "competenza_2027": 152654830.02,
+          "competenza_2028": 78817709.63,
+          "cassa_2026": 756497024.57
+        },
+        "04": {
+          "missione": "10",
+          "nome": "ALTRE MODALITA' DI TRASPORTO",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 0.0
+        },
+        "05": {
+          "missione": "10",
+          "nome": "VIABILITA' E INFRASTRUTTURE STRADALI",
+          "competenza_2026": 94409669.48,
+          "competenza_2027": 54969791.25,
+          "competenza_2028": 55013374.51,
+          "cassa_2026": 389535326.64
+        }
+      }
+    },
+    "11": {
+      "nome": "SOCCORSO CIVILE",
+      "competenza_2026": 6857399.19,
+      "competenza_2027": 6868065.3,
+      "competenza_2028": 2815152.32,
+      "cassa_2026": 8244234.92,
+      "programmi": {
+        "01": {
+          "missione": "11",
+          "nome": "SISTEMA DI PROTEZIONE CIVILE",
+          "competenza_2026": 6857399.19,
+          "competenza_2027": 6868065.3,
+          "competenza_2028": 2815152.32,
+          "cassa_2026": 8244234.92
+        }
+      }
+    },
+    "12": {
+      "nome": "DIRITTI SOCIALI, POLITICHE SOCIALI E FAMIGLIA",
+      "competenza_2026": 172601324.33,
+      "competenza_2027": 112974773.01,
+      "competenza_2028": 93280272.19,
+      "cassa_2026": 246705535.96,
+      "programmi": {
+        "01": {
+          "missione": "12",
+          "nome": "INTERVENTI PER L'INFANZIA E I MINORI",
+          "competenza_2026": 28167885.17,
+          "competenza_2027": 27381393.14,
+          "competenza_2028": 22936243.64,
+          "cassa_2026": 31604088.33
+        },
+        "02": {
+          "missione": "12",
+          "nome": "INTERVENTI PER LA DISABILITA'",
+          "competenza_2026": 22650996.35,
+          "competenza_2027": 13110516.93,
+          "competenza_2028": 9584723.15,
+          "cassa_2026": 42108606.32
+        },
+        "03": {
+          "missione": "12",
+          "nome": "INTERVENTI PER GLI ANZIANI",
+          "competenza_2026": 4165814.0,
+          "competenza_2027": 2168586.01,
+          "competenza_2028": 646513.99,
+          "cassa_2026": 4627519.44
+        },
+        "04": {
+          "missione": "12",
+          "nome": "INTERVENTI PER I SOGGETTI A RISCHIO DI",
+          "competenza_2026": 77693108.51,
+          "competenza_2027": 51881985.17,
+          "competenza_2028": 41784303.3,
+          "cassa_2026": 119193555.38
+        },
+        "05": {
+          "missione": "12",
+          "nome": "INTERVENTI PER LE FAMIGLIE",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 53000.0
+        },
+        "06": {
+          "missione": "12",
+          "nome": "INTERVENTI PER IL DIRITTO ALLA CASA",
+          "competenza_2026": 3415053.73,
+          "competenza_2027": 6579.42,
+          "competenza_2028": 6579.42,
+          "cassa_2026": 7637146.91
+        },
+        "07": {
+          "missione": "12",
+          "nome": "PROGRAMMAZIONE E GOVERNO DELLA RETE DEI",
+          "competenza_2026": 306995.83,
+          "competenza_2027": 306995.83,
+          "competenza_2028": 306995.83,
+          "cassa_2026": 306995.83
+        },
+        "08": {
+          "missione": "12",
+          "nome": "COOPERAZIONE E ASSOCIAZIONISMO",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 0.0
+        },
+        "09": {
+          "missione": "12",
+          "nome": "SERVIZIO NECROSCOPICO E CIMITERIALE",
+          "competenza_2026": 13202062.41,
+          "competenza_2027": 2888686.66,
+          "competenza_2028": 2888686.66,
+          "cassa_2026": 14496303.71
+        },
+        "11": {
+          "missione": "12",
+          "nome": "INTERVENTI PER ASILI NIDO",
+          "competenza_2026": 22999408.33,
+          "competenza_2027": 15230029.85,
+          "competenza_2028": 15126226.2,
+          "cassa_2026": 26678320.04
+        }
+      }
+    },
+    "13": {
+      "nome": "TUTELA DELLA SALUTE",
+      "competenza_2026": 3717372.55,
+      "competenza_2027": 2917132.89,
+      "competenza_2028": 2917132.89,
+      "cassa_2026": 3797277.84,
+      "programmi": {
+        "07": {
+          "missione": "13",
+          "nome": "ULTERIORI SPESE IN MATERIA SANITARIA",
+          "competenza_2026": 3717372.55,
+          "competenza_2027": 2917132.89,
+          "competenza_2028": 2917132.89,
+          "cassa_2026": 3797277.84
+        }
+      }
+    },
+    "14": {
+      "nome": "SVILUPPO ECONOMICO E COMPETITIVITÀ",
+      "competenza_2026": 22272033.74,
+      "competenza_2027": 28829942.78,
+      "competenza_2028": 27497044.99,
+      "cassa_2026": 25452732.86,
+      "programmi": {
+        "01": {
+          "missione": "14",
+          "nome": "INDUSTRIA, E PMI E ARTIGIANATO",
+          "competenza_2026": 255495.91,
+          "competenza_2027": 2558307.28,
+          "competenza_2028": 1225409.49,
+          "cassa_2026": 455560.23
+        },
+        "02": {
+          "missione": "14",
+          "nome": "COMMERCIO - RETI DISTRIBUTIVE - TUTELA DEI",
+          "competenza_2026": 9796010.12,
+          "competenza_2027": 14348010.12,
+          "competenza_2028": 14348010.12,
+          "cassa_2026": 12562206.79
+        },
+        "03": {
+          "missione": "14",
+          "nome": "RICERCA E INNOVAZIONE",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 0.0
+        },
+        "04": {
+          "missione": "14",
+          "nome": "RETI E ALTRI SERVIZI DI PUBBLICA UTILITA'",
+          "competenza_2026": 12220527.71,
+          "competenza_2027": 11923625.38,
+          "competenza_2028": 11923625.38,
+          "cassa_2026": 12434965.84
+        }
+      }
+    },
+    "15": {
+      "nome": "POLITICHE PER IL LAVORO E LA FORMAZIONE PROFESSIONALE",
+      "competenza_2026": 0.0,
+      "competenza_2027": 0.0,
+      "competenza_2028": 0.0,
+      "cassa_2026": 0.0,
+      "programmi": {
+        "01": {
+          "missione": "15",
+          "nome": "SERVIZI PER LO SVILUPPO DEL MERCATO DEL",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 0.0
+        },
+        "03": {
+          "missione": "15",
+          "nome": "SOSTEGNO ALL'OCCUPAZIONE",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 0.0
+        }
+      }
+    },
+    "17": {
+      "nome": "ENERGIA E DIVERSIFICAZIONE DELLE FONTI ENERGETICHE",
+      "competenza_2026": 0.0,
+      "competenza_2027": 0.0,
+      "competenza_2028": 0.0,
+      "cassa_2026": 1102951.19,
+      "programmi": {
+        "01": {
+          "missione": "17",
+          "nome": "FONTI ENERGETICHE",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 1102951.19
+        }
+      }
+    },
+    "20": {
+      "nome": "FONDI E ACCANTONAMENTI",
+      "competenza_2026": 236170046.29,
+      "competenza_2027": 219925838.58,
+      "competenza_2028": 227515730.75,
+      "cassa_2026": 10000000.0,
+      "programmi": {
+        "01": {
+          "missione": "20",
+          "nome": "FONDO DI RISERVA",
+          "competenza_2026": 4774823.21,
+          "competenza_2027": 2900000.0,
+          "competenza_2028": 7065849.46,
+          "cassa_2026": 10000000.0
+        },
+        "02": {
+          "missione": "20",
+          "nome": "FONDO CREDITI DI DUBBIA ESIGIBILITA'",
+          "competenza_2026": 223744876.68,
+          "competenza_2027": 204519107.82,
+          "competenza_2028": 204476903.41,
+          "cassa_2026": 0.0
+        },
+        "03": {
+          "missione": "20",
+          "nome": "ALTRI FONDI",
+          "competenza_2026": 7650346.4,
+          "competenza_2027": 12506730.76,
+          "competenza_2028": 15972977.88,
+          "cassa_2026": 0.0
+        }
+      }
+    },
+    "50": {
+      "nome": "DEBITO PUBBLICO",
+      "competenza_2026": 24537123.89,
+      "competenza_2027": 12102501.58,
+      "competenza_2028": 10698166.43,
+      "cassa_2026": 24537123.89,
+      "programmi": {
+        "01": {
+          "missione": "50",
+          "nome": "QUOTA INTERESSI AMMORTAMENTO MUTUI E",
+          "competenza_2026": 4597976.5,
+          "competenza_2027": 4002539.92,
+          "competenza_2028": 3794717.92,
+          "cassa_2026": 4597976.5
+        },
+        "02": {
+          "missione": "50",
+          "nome": "QUOTA CAPITALE AMMORTAMENTO MUTUI E",
+          "competenza_2026": 19939147.39,
+          "competenza_2027": 8099961.66,
+          "competenza_2028": 6903448.51,
+          "cassa_2026": 19939147.39
+        }
+      }
+    },
+    "60": {
+      "nome": "ANTICIPAZIONI FINANZIARIE",
+      "competenza_2026": 0.0,
+      "competenza_2027": 0.0,
+      "competenza_2028": 0.0,
+      "cassa_2026": 0.0,
+      "programmi": {
+        "01": {
+          "missione": "60",
+          "nome": "RESTITUZIONE ANTICIPAZIONI DI TESORERIA",
+          "competenza_2026": 0.0,
+          "competenza_2027": 0.0,
+          "competenza_2028": 0.0,
+          "cassa_2026": 0.0
+        }
+      }
+    },
+    "99": {
+      "nome": "SERVIZI PER CONTO TERZI",
+      "competenza_2026": 754017735.44,
+      "competenza_2027": 777227445.54,
+      "competenza_2028": 767905045.54,
+      "cassa_2026": 754018189.09,
+      "programmi": {
+        "01": {
+          "missione": "99",
+          "nome": "SERVIZI PER CONTO TERZI - PARTITE DI GIRO",
+          "competenza_2026": 754017735.44,
+          "competenza_2027": 777227445.54,
+          "competenza_2028": 767905045.54,
+          "cassa_2026": 754018189.09
+        }
+      }
+    }
+  },
+  "senza_cassa_nel_testo_estratto": []
+}

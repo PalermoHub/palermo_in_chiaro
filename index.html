@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Palermo in chiaro</title>
+<meta name="description" content="Opere, bilancio, appalti e fondi del Comune di Palermo, con il dato per le 8 circoscrizioni dove esiste. Ogni numero porta fonte, periodo e cosa non misura.">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#contenuto">Vai al contenuto</a>
+
+<header class="testata">
+  <div class="testata-in">
+    <a class="marchio" href="./" aria-label="Palermo in chiaro, inizio pagina">Palermo in chiaro</a>
+    <span class="beta" title="I dati sono in revisione: prima di citare un numero controlla la fonte">Versione beta</span>
+    <nav aria-label="Sezioni">
+      <a href="#mappa">Circoscrizioni</a>
+      <a href="#opere">Opere</a>
+      <a href="#bilancio">Bilancio</a>
+      <a href="#appalti">Appalti</a>
+      <a href="#progetti">PNRR e coesione</a>
+      <a href="#metodo">Fonti</a>
+      <a href="metodo.html">Metodo e licenze</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenuto">
+
+<section class="apertura" id="mappa" aria-labelledby="t-mappa">
+  <div class="apertura-testo">
+    <h1 id="t-mappa">Dove cadono i soldi pubblici nelle 8 circoscrizioni di Palermo</h1>
+    <p class="sottotitolo">Residenti, opere programmate, bilancio, appalti e fondi del Comune. Ogni numero ha la sua fonte, il periodo e quello che non misura.</p>
+    <p class="avviso" id="avviso-locali" hidden></p>
+  </div>
+
+  <div class="mappa-blocco">
+    <div class="selettore" role="radiogroup" aria-label="Cosa mostrare sulla mappa" id="selettore"></div>
+    <figure class="mappa-fig">
+      <svg id="mappa-svg" role="group" aria-label="Mappa delle 8 circoscrizioni di Palermo" focusable="false"></svg>
+      <figcaption id="mappa-nota"></figcaption>
+    </figure>
+    <div class="legenda" id="legenda" aria-hidden="true"></div>
+  </div>
+
+  <aside class="scheda" id="scheda" aria-live="polite" aria-label="Scheda della circoscrizione selezionata"></aside>
+</section>
+
+<section class="sezione" id="opere" aria-labelledby="t-opere">
+  <div class="sezione-testa">
+    <h2 id="t-opere">Opere pubbliche programmate 2026-2028</h2>
+    <p class="lede" id="opere-lede"></p>
+  </div>
+  <div class="barre" id="opere-barre" role="list" aria-label="Importo programmato per circoscrizione"></div>
+  <div class="limiti" id="opere-limiti"></div>
+</section>
+
+<section class="sezione" id="bilancio" aria-labelledby="t-bilancio">
+  <div class="sezione-testa">
+    <h2 id="t-bilancio">Bilancio del Comune</h2>
+    <p class="lede" id="bilancio-lede"></p>
+    <div class="anni" role="radiogroup" aria-label="Anno del bilancio" id="bilancio-anni"></div>
+  </div>
+  <div class="barre" id="bilancio-barre" role="list" aria-label="Spesa per missione"></div>
+  <div class="limiti" id="bilancio-limiti"></div>
+</section>
+
+<section class="sezione" id="appalti" aria-labelledby="t-appalti">
+  <div class="sezione-testa">
+    <h2 id="t-appalti">Appalti avviati</h2>
+    <p class="lede" id="appalti-lede"></p>
+  </div>
+  <div class="coppie" id="appalti-dati"></div>
+  <div class="limiti" id="appalti-limiti"></div>
+</section>
+
+<section class="sezione" id="progetti" aria-labelledby="t-progetti">
+  <div class="sezione-testa">
+    <h2 id="t-progetti">PNRR e fondi di coesione</h2>
+    <p class="lede" id="progetti-lede"></p>
+  </div>
+  <div class="due-colonne">
+    <div id="pnrr-blocco"></div>
+    <div id="coesione-blocco"></div>
+  </div>
+</section>
+
+<section class="sezione sezione-metodo" id="metodo" aria-labelledby="t-metodo">
+  <div class="sezione-testa">
+    <h2 id="t-metodo">Fonti e metodo</h2>
+    <p class="lede">Numeri e fonti sono quelli degli snapshot nella cartella <code>data/snapshot</code>. Un dato mancante resta «non disponibile»: non diventa zero e non viene stimato. Come nascono i numeri, cosa non misurano e le licenze: <a href="metodo.html">metodo e licenze</a>.</p>
+  </div>
+  <ul class="fonti" id="fonti"></ul>
+  <p class="piede">Sito indipendente: non è un sito del Comune di Palermo. Un valore insolito è un segnale da approfondire, non la prova di uno spreco o di un illecito. Codice e licenze dei dati: da definire prima della pubblicazione.</p>
+</section>
+
+</main>
+<button type="button" class="su" id="su" hidden><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" focusable="false"><path d="M8 13V3M3.5 7.5 8 3l4.5 4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Torna in cima</button>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+{
+  "fonte": {
+    "nome": "Comune di Palermo, sito PNRR (schede dei progetti)",
+    "ente": "Comune di Palermo",
+    "link": "https://pnrr.comune.palermo.it/",
+    "licenza": "non dichiarata nelle pagine lette: si cita la fonte"
+  },
+  "periodo": "Schede lette il 16/11/2026",
+  "verificato": "2026-11-16",
+  "misura": "Progetti PNRR elencati sul sito del Comune: importo finanziato, spesa rendicontata e stato dichiarato, per Comune.",
+  "non_misura": [
+    "La circoscrizione: le schede non la indicano.",
+    "Il numero di progetti non coincide con altre fonti: 61 voci sul sito, 52 su OpenPNRR, 48 nel report del Comune. Non è stato spiegato e non va confrontato.",
+    "L'importo finanziato non è speso: la spesa rendicontata è la somma dichiarata dal Comune.",
+    "4 schede non riportano lo stato: il campo è lasciato vuoto."
+  ],
+  "totale": {
+    "progetti": 61,
+    "importo_finanziato_eur": 301685399.2,
+    "spesa_rendicontata_eur": 145469602.47
+  },
+  "per_stato": [
+    {
+      "voce": "concluso",
+      "progetti": 37,
+      "importo_finanziato_eur": 182857625.21,
+      "spesa_rendicontata_eur": 133608231.88
+    },
+    {
+      "voce": "in progettazione o gara",
+      "progetti": 12,
+      "importo_finanziato_eur": 83750336.05,
+      "spesa_rendicontata_eur": 1888813.83
+    },
+    {
+      "voce": "in esecuzione o affidato",
+      "progetti": 8,
+      "importo_finanziato_eur": 26455457.08,
+      "spesa_rendicontata_eur": 7491695.58
+    },
+    {
+      "voce": "stato non indicato nella scheda",
+      "progetti": 4,
+      "importo_finanziato_eur": 8621980.86,
+      "spesa_rendicontata_eur": 2480861.18
+    }
+  ],
+  "per_tipologia": [
+    {
+      "voce": "Lavori",
+      "progetti": 38,
+      "importo_finanziato_eur": 150964588.82,
+      "spesa_rendicontata_eur": 31201503.07
+    },
+    {
+      "voce": "Lavori/Forniture",
+      "progetti": 2,
+      "importo_finanziato_eur": 89693855.35,
+      "spesa_rendicontata_eur": 76778627.25
+    },
+    {
+      "voce": "Forniture",
+      "progetti": 2,
+      "importo_finanziato_eur": 48997800.0,
+      "spesa_rendicontata_eur": 29677311.35
+    },
+    {
+      "voce": "Servizi",
+      "progetti": 14,
+      "importo_finanziato_eur": 6344155.03,
+      "spesa_rendicontata_eur": 5209782.89
+    },
+    {
+      "voce": "Lavori/Servizi",
+      "progetti": 5,
+      "importo_finanziato_eur": 5685000.0,
+      "spesa_rendicontata_eur": 2602377.91
+    }
+  ]
+}

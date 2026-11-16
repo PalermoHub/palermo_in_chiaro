@@ -1,0 +1,239 @@
+{
+  "fonte": {
+    "nome": "ANAC, open data CIG (anno 2025 e aggiornamenti mensili 2026), stazione appaltante Comune di Palermo (CF 80016350821)",
+    "ente": "ANAC",
+    "link": "https://dati.anticorruzione.it/opendata/dataset/cig",
+    "licenza": "CC BY-SA 4.0 (metadato dei dataset ANAC, verificato il 16/11/2026): anche questo snapshot e gli estratti in dati/ vanno rilasciati con CC BY-SA 4.0"
+  },
+  "periodo": {
+    "2025": "CIG pubblicati nel 2025",
+    "2026": "CIG pubblicati nel 2026, file fino al 01/11/2026"
+  },
+  "verificato": "2026-11-16",
+  "misura": "Appalti avviati dal Comune di Palermo: numero di CIG e importo a base di gara, per anno di pubblicazione, a livello comunale.",
+  "non_misura": [
+    "L'importo aggiudicato o pagato: l'importo ANAC è a base di gara.",
+    "Le imprese aggiudicatarie: il dataset dei CIG non le contiene.",
+    "La circoscrizione: il luogo è solo il comune (codice ISTAT 082053).",
+    "Il 2026 può essere incompleto: i file mensili sono aggiornamenti e non è disponibile il periodo gennaio-marzo come file a sé; i CIG di quel periodo compaiono solo se aggiornati dopo.",
+    "Due CIG hanno importi di circa 2.684 milioni nella fonte (evidente errore di inserimento): sono riportati e non corretti, e i totali sono dati anche senza di essi.",
+    "Una riga per CIG: se un CIG ha più codici CPV si tiene la riga prevalente; se compare in più file si tiene il file più recente."
+  ],
+  "anni": {
+    "2025": {
+      "cig": 684,
+      "importo_base_gara_eur_come_in_fonte": 5999240242.7,
+      "cig_con_importo_anomalo_non_corretti": [
+        "B7129C8050",
+        "B71B482B61"
+      ],
+      "importo_base_gara_eur_senza_anomali": 630399744.7,
+      "cig_senza_anomali": 682,
+      "cig_flag_pnrr_pnc": 19,
+      "cig_con_cui_programma": 49,
+      "per_procedura": [
+        {
+          "voce": "PROCEDURA APERTA",
+          "cig": 54,
+          "importo_eur": 517555189.64
+        },
+        {
+          "voce": "AFFIDAMENTO DIRETTO",
+          "cig": 542,
+          "importo_eur": 80017609.33
+        },
+        {
+          "voce": "PROCEDURA NEGOZIATA SENZA PREVIA PUBBLICAZIONE",
+          "cig": 34,
+          "importo_eur": 22214093.62
+        },
+        {
+          "voce": "AFFIDAMENTO DIRETTO A SOCIETA' IN HOUSE",
+          "cig": 38,
+          "importo_eur": 5565669.8
+        },
+        {
+          "voce": "PROCEDURA RISTRETTA",
+          "cig": 10,
+          "importo_eur": 4609272.11
+        },
+        {
+          "voce": "ALTRA PROCEDURA A FASE UNICA",
+          "cig": 2,
+          "importo_eur": 246005.5
+        },
+        {
+          "voce": "CONFRONTO COMPETITIVO IN ADESIONE AD ACCORDO QUADRO/CONVENZIONE",
+          "cig": 1,
+          "importo_eur": 152821.7
+        },
+        {
+          "voce": "AFFIDAMENTO DIRETTO IN ADESIONE AD ACCORDO QUADRO/CONVENZIONE",
+          "cig": 1,
+          "importo_eur": 39083.0
+        }
+      ],
+      "per_tipo_contratto": [
+        {
+          "voce": "LAVORI",
+          "cig": 71,
+          "importo_eur": 429709273.5
+        },
+        {
+          "voce": "SERVIZI",
+          "cig": 463,
+          "importo_eur": 143656469.91
+        },
+        {
+          "voce": "FORNITURE",
+          "cig": 148,
+          "importo_eur": 57034001.29
+        }
+      ],
+      "per_cpv_prime_due_cifre": [
+        {
+          "voce": "45 COSTRUZIONE DI UNA LINEA TRANVIARIA",
+          "cig": 1,
+          "importo_eur": 376592017.67
+        },
+        {
+          "voce": "85 SERVIZI DI ASSISTENZA SOCIALE SENZA ALLOGGIO",
+          "cig": 2,
+          "importo_eur": 32160904.98
+        },
+        {
+          "voce": "09 ELETTRICITÀ",
+          "cig": 28,
+          "importo_eur": 31045254.0
+        },
+        {
+          "voce": "85 SERVIZI SOCIALI AMMINISTRATIVI",
+          "cig": 1,
+          "importo_eur": 20384122.44
+        },
+        {
+          "voce": "34 AUTOBUS ELETTRICI",
+          "cig": 1,
+          "importo_eur": 15969790.24
+        },
+        {
+          "voce": "45 LAVORI DI COSTRUZIONE",
+          "cig": 2,
+          "importo_eur": 10142724.87
+        },
+        {
+          "voce": "50 MESSA IN OPERA DI IMPIANTI DI ILLUMINAZIONE PUBBLICA",
+          "cig": 2,
+          "importo_eur": 9459517.56
+        },
+        {
+          "voce": "45 LAVORI DI MANUTENZIONE STRADALE",
+          "cig": 16,
+          "importo_eur": 8834304.62
+        }
+      ],
+      "data_ultima_pubblicazione": "2025-12-31"
+    },
+    "2026": {
+      "cig": 447,
+      "importo_base_gara_eur_come_in_fonte": 139847493.01,
+      "cig_con_importo_anomalo_non_corretti": [],
+      "importo_base_gara_eur_senza_anomali": 139847493.01,
+      "cig_senza_anomali": 447,
+      "cig_flag_pnrr_pnc": 31,
+      "cig_con_cui_programma": 36,
+      "per_procedura": [
+        {
+          "voce": "PROCEDURA APERTA",
+          "cig": 38,
+          "importo_eur": 73756772.1
+        },
+        {
+          "voce": "AFFIDAMENTO DIRETTO",
+          "cig": 334,
+          "importo_eur": 25424147.43
+        },
+        {
+          "voce": "AFFIDAMENTO DIRETTO A SOCIETA' IN HOUSE",
+          "cig": 23,
+          "importo_eur": 20109819.77
+        },
+        {
+          "voce": "PROCEDURA NEGOZIATA SENZA PREVIA PUBBLICAZIONE",
+          "cig": 46,
+          "importo_eur": 17564172.47
+        },
+        {
+          "voce": "ND",
+          "cig": 1,
+          "importo_eur": 2888196.0
+        },
+        {
+          "voce": "ALTRA PROCEDURA A FASE UNICA",
+          "cig": 5,
+          "importo_eur": 104385.24
+        }
+      ],
+      "per_tipo_contratto": [
+        {
+          "voce": "SERVIZI",
+          "cig": 253,
+          "importo_eur": 67042399.7
+        },
+        {
+          "voce": "LAVORI",
+          "cig": 85,
+          "importo_eur": 63770983.02
+        },
+        {
+          "voce": "FORNITURE",
+          "cig": 109,
+          "importo_eur": 9034110.29
+        }
+      ],
+      "per_cpv_prime_due_cifre": [
+        {
+          "voce": "45 LAVORI EDILI",
+          "cig": 4,
+          "importo_eur": 17189755.95
+        },
+        {
+          "voce": "90 SERVIZI DI RACCOLTA DI RIFIUTI SOLIDI URBANI",
+          "cig": 1,
+          "importo_eur": 16426667.2
+        },
+        {
+          "voce": "55 SERVIZI DI RISTORAZIONE SCOLASTICA",
+          "cig": 1,
+          "importo_eur": 13495680.0
+        },
+        {
+          "voce": "45 LAVORI DI MANUTENZIONE STRADALE",
+          "cig": 22,
+          "importo_eur": 11890026.79
+        },
+        {
+          "voce": "45 EDIFICI DI PARTICOLARE INTERESSE STORICO O ARCHITETTONICO",
+          "cig": 1,
+          "importo_eur": 9000000.0
+        },
+        {
+          "voce": "85 SERVIZI DI ASSISTENZA SOCIALE PER BAMBINI E GIOVANI",
+          "cig": 1,
+          "importo_eur": 5402818.3
+        },
+        {
+          "voce": "09 ELETTRICITÀ",
+          "cig": 24,
+          "importo_eur": 4997488.0
+        },
+        {
+          "voce": "45 LAVORI DI COSTRUZIONE DI SVILUPPO URBANO",
+          "cig": 2,
+          "importo_eur": 4428088.59
+        }
+      ],
+      "data_ultima_pubblicazione": "2026-10-30"
+    }
+  }
+}
