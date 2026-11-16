@@ -1,6 +1,6 @@
 # Palermo in chiaro
 
-Prototipo di un sito su dove cadono i soldi pubblici nelle 8 circoscrizioni di Palermo: residenti, opere programmate, bilancio, appalti, PNRR e fondi di coesione. Ogni numero ha fonte, periodo e quello che non misura. Impostazione ispirata a [Roma in chiaro](https://github.com/urbe-hub/roma-in-chiaro).
+Prototipo di un sito su come vengono distribuiti i soldi pubblici nelle 8 circoscrizioni di Palermo: residenti, opere programmate, bilancio, appalti, PNRR e fondi di coesione. Ogni numero ha fonte, periodo e quello che non misura. Impostazione ispirata a [Roma in chiaro](https://github.com/urbe-hub/roma-in-chiaro).
 
 **Stato: prototipo.** I dati sono in revisione e le licenze non sono definitive: vedi `LICENZE.md` e `PIANO.md`.
 

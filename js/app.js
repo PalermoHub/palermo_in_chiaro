@@ -135,7 +135,7 @@
         dl,
         el('h3', { text: 'Opere programmate 2026-2028' }), dlo, sett,
         el('p', { class: 'nota' }, [el('a', { href: elenco({ fonte: 'opere', circ: sel }), text: `Vedi i ${o.interventi} interventi in elenco` }), ' con la scheda di ciascuno.']),
-        el('p', { class: 'nota', text: 'Residenti e profilo: censimento ISTAT 2021. Opere: dove cadono, non spesa della circoscrizione né denaro già speso.' }),
+        el('p', { class: 'nota', text: 'Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso.' }),
         ...elencoProgetti()
       );
     }
