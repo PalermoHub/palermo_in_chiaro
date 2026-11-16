@@ -1,0 +1,13 @@
+# Fonti scaricate (~1 GB), appunti e file di servizio: restano fuori dal repository
+# pubblicato. Le regole stanno anche nel README, sezione «Pubblicare».
+dati/
+docs/
+.remember/
+.impeccable/
+.playwright-mcp/
+*Zone.Identifier
+__pycache__/
+
+# Appunti di lavoro, non documentazione del sito
+PIANO.md
+PROSSIMI_PASSI_SERVIZI.md

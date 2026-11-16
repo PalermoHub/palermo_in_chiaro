@@ -24,6 +24,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
+<script src="js/tema.js?v=20261116g"></script>
+
 </head>
 <body>
 <a class="skip" href="#contenuto">Vai al contenuto</a>
@@ -48,6 +50,7 @@
   <div class="pagina-testa">
     <p class="briciole"><a href="./">Palermo in chiaro</a> · Elenco progetti</p>
     <h1>Progetti e finanziamenti</h1>
+    <div class="ambito" id="ambito" hidden></div>
     <p class="lede" id="lede">Una voce per progetto: le opere del Programma triennale, le schede PNRR del Comune, i fondi di coesione e gli appalti. Il collegamento tra fonti avviene solo per CUP o CUI identico. Per la coesione una voce può raccogliere più linee di finanziamento sullo stesso CUP: le voci possono essere meno dei progetti.</p>
     <div class="limiti" id="regole">
       <h3>Cosa non fa questo elenco</h3>
@@ -126,6 +129,14 @@
   <p class="piede">Elenco generato da <code>scripts/build_indice_progetti.py</code>: una voce per progetto e per CIG. Le fonti sono quelle del sito: Programma triennale 2026-2028, schede PNRR del Comune, OpenCoesione e ANAC. Regole complete in <a href="metodo.html">metodo e licenze</a>.</p>
 </main>
 
-<script src="js/progetti.js?v=20261116f"></script>
+<footer class="credito">
+  <div class="credito-in">
+    <a class="credito-logo" href="https://opendatasicilia.it/" target="_blank" rel="noopener"><img src="img/opendatasicilia.png" alt="OpenDataSicilia" width="46" height="53"></a>
+    <p><b>Palermo in chiaro</b> è un progetto di <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a>. Le posizioni dei progetti sulla mappa le ha elaborate OpenDataSicilia dalle tavole del Programma triennale: non sono coordinate ufficiali del Comune.</p>
+  </div>
+</footer>
+
+
+<script src="js/progetti.js?v=20261116g"></script>
 </body>
 </html>

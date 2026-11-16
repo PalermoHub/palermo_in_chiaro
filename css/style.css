@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   --carta: #edf1f0;
   --carta-2: #e2e9e8;
   --inchiostro: #0f2233;
@@ -15,8 +16,11 @@
   --font-testo: "Public Sans", "Segoe UI", system-ui, sans-serif;
   --gutter: clamp(16px, 4vw, 48px);
 }
+/* Tema scuro: dalla preferenza di sistema (senza JavaScript) oppure dal pulsante in
+   testata, che scrive data-theme sull'elemento radice. I due blocchi vanno tenuti uguali. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
     --carta: #0e1b27;
     --carta-2: #15283a;
     --inchiostro: #e6eeee;
@@ -30,6 +34,21 @@
     --ocra-chiara: #4a3d1a;
     --sfondo-scheda: #12222f;
   }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --carta: #0e1b27;
+  --carta-2: #15283a;
+  --inchiostro: #e6eeee;
+  --muto: #9db0bb;
+  --linea: #2a3f50;
+  --maiolica: #3fb6bf;
+  --maiolica-scura: #7ed2d8;
+  --maiolica-chiara: #163f48;
+  --cupola: #ee7766;
+  --ocra: #e5b657;
+  --ocra-chiara: #4a3d1a;
+  --sfondo-scheda: #12222f;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -54,6 +73,20 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .testata nav { margin-left: auto; display: flex; flex-wrap: wrap; gap: 4px 18px; font-size: 0.92rem; }
 .testata nav a { color: var(--muto); text-decoration: none; padding: 4px 0; }
 .testata nav a:hover { color: var(--inchiostro); text-decoration: underline; }
+
+/* pulsante del tema chiaro/scuro (lo inserisce js/tema.js dopo il menu) */
+.tema {
+  display: inline-flex; align-items: center; gap: 7px; flex: none; margin-left: auto;
+  font: inherit; font-size: 0.84rem; line-height: 1; color: var(--muto);
+  background: none; border: 1px solid var(--linea); border-radius: 99px;
+  padding: 7px; cursor: pointer;
+}
+.tema:hover { color: var(--inchiostro); border-color: var(--inchiostro); }
+.tema svg { width: 15px; height: 15px; flex: none; }
+.tema[data-tema="scuro"] .tema-sole, .tema[data-tema="chiaro"] .tema-luna { display: none; }
+/* la parola compare solo se la testata ha spazio: sotto resta la sola icona */
+.tema-parola { display: none; }
+@media (min-width: 1401px) { .tema { padding: 6px 12px 6px 10px; } .tema-parola { display: inline; } }
 
 /* apertura: la mappa sta sempre tutta nello schermo, a qualsiasi risoluzione */
 :root { --testata: 56px; }
@@ -95,7 +128,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .legenda { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 0.84rem; color: var(--muto); margin-top: 6px; flex: none; }
 .legenda .scala { flex: 0 0 160px; height: 10px; border-radius: 2px; background: linear-gradient(90deg, var(--s0), var(--s4)); }
 :root { --s0: #d9ebea; --s4: #0a4f56; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --s0: #163f48; --s4: #7ed2d8; } }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) { --s0: #163f48; --s4: #7ed2d8; } }
+:root[data-theme="dark"] { --s0: #163f48; --s4: #7ed2d8; }
 
 /* singoli progetti */
 #mappa-svg.con-progetti .circ { fill-opacity: 0.3; }
@@ -197,6 +231,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
   .anni { grid-column: 1; }
   .barra { grid-template-columns: 7.4rem 1fr auto; gap: 8px; }
   .testata nav { margin-left: 0; width: 100%; }
+  .testata .tema { order: 1; margin-left: auto; }
+  .testata nav { order: 2; }
 }
 
 /* ---- pagine di elenco e scheda progetto ---- */
@@ -240,6 +276,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .badge.pnrr { border-color: var(--cupola); color: var(--cupola); }
 .badge.coesione { border-color: var(--ocra); color: var(--muto); }
 .badge.appalti { border-color: var(--inchiostro); color: var(--inchiostro); }
+.badge.ufficiale { border-color: var(--maiolica); color: var(--maiolica-scura); background: var(--maiolica-chiara); }
+.badge.verifica { border-color: var(--cupola); color: var(--cupola); }
 .altro { margin-top: 16px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--carta); background: var(--inchiostro); border: 0; border-radius: 99px; padding: 9px 20px; cursor: pointer; }
 .altro:hover { background: var(--maiolica-scura); }
 .altro[hidden] { display: none; }
@@ -254,6 +292,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .dettaglio .grande { font-family: var(--font-titoli); font-size: 1.9rem; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; }
 .dettaglio ul.link { list-style: none; padding: 0; margin: 0; }
 .dettaglio ul.link li { padding: 6px 0; border-bottom: 1px solid var(--linea); font-size: 0.94rem; }
+.dettaglio ul.link li.ufficiale { padding: 9px 0; }
+.dettaglio ul.link li.ufficiale .badge { margin-right: 6px; vertical-align: 1px; }
 .dettaglio ul.link li:last-child { border-bottom: 0; }
 .dettaglio .est { font-size: 0.8rem; color: var(--muto); display: block; }
 .dettaglio .titolo-prog { font-size: clamp(1.2rem, 2vw, 1.5rem); margin: 6px 0 10px; }
@@ -285,3 +325,23 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
 .chip button { font: inherit; line-height: 1; background: none; border: 0; color: inherit; cursor: pointer; padding: 2px 6px; border-radius: 99px; }
 .chip button:hover { background: var(--maiolica); color: var(--carta); }
 .barra .freccia { color: var(--maiolica-scura); font-weight: 600; }
+
+/* che cosa sto guardando: contesto della selezione arrivata da una riga */
+.ambito {
+  border-left: 4px solid var(--maiolica); background: var(--sfondo-scheda);
+  padding: 12px 16px 14px; margin: 14px 0 4px;
+}
+.ambito[hidden] { display: none; }
+.ambito-occhiello { font-size: 0.76rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muto); margin: 0 0 3px; }
+.ambito-titolo { font-size: clamp(1.15rem, 1.9vw, 1.5rem); }
+.ambito-nota { font-size: 0.88rem; color: var(--muto); margin: 7px 0 0; font-variant-numeric: tabular-nums; }
+.ambito-nota a { white-space: nowrap; }
+
+/* credito in fondo alla pagina: il logo di OpenDataSicilia */
+.credito { border-top: 1px solid var(--linea); }
+.credito-in { display: flex; align-items: center; gap: 16px; max-width: 1560px; margin: 0 auto; padding: 18px var(--gutter) 26px; }
+.credito-logo { flex: none; display: block; line-height: 0; }
+.credito-logo img { display: block; width: 46px; height: auto; }
+.credito p { margin: 0; font-size: 0.86rem; color: var(--muto); max-width: 48rem; }
+.credito b { font-weight: 600; color: var(--inchiostro); }
+@media (max-width: 600px) { .credito-in { align-items: flex-start; gap: 12px; } .credito-logo img { width: 38px; } }

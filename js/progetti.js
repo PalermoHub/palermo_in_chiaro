@@ -17,6 +17,16 @@
     return e;
   };
   const ETICHETTE = { opere: 'Opere', pnrr: 'PNRR', coesione: 'Coesione', appalti: 'Appalti' };
+  /* Nomi delle voci filtrate: serve a dire subito che cosa si sta guardando. */
+  const NOMI_FONTE = {
+    opere: ['intervento di opere pubbliche 2026-2028', 'interventi di opere pubbliche 2026-2028'],
+    pnrr: ['scheda PNRR', 'schede PNRR'],
+    coesione: ['voce dei fondi di coesione', 'voci dei fondi di coesione'],
+    appalti: ['appalto collegato', 'appalti collegati'],
+  };
+  const NOMI_ORDINE = { opere: 'importo delle opere 2026-2028', pnrr: 'importo PNRR finanziato', coesione: 'finanziamento di coesione', titolo: 'titolo' };
+  const ORDINE_PER_FONTE = { opere: 'opere', pnrr: 'pnrr', coesione: 'coesione' };
+  const doveCirc = (c) => c === '__nessuna' ? 'senza circoscrizione indicata' : c === '__multi' ? 'che interessano più circoscrizioni' : 'in Circoscrizione ' + c;
 
   const stato = { q: '', fonte: '', circ: '', stato: '', programma: '', ordine: 'opere', incroci: false, limite: 30 };
   let D = null, CIG = null;
@@ -93,6 +103,7 @@
 
   function disegna() {
     const r = filtra(), mostra = r.slice(0, stato.limite);
+    ambito(r);
     $('elenco').replaceChildren(...mostra.map(voce));
     const n = r.length;
     $('conteggio').textContent = n === 0
@@ -100,6 +111,38 @@
       : `${it(Math.min(stato.limite, n))} di ${it(n)} voci${n !== D.progetti.length ? ` (su ${it(D.progetti.length)} totali)` : ''}. Un progetto può comparire in più fonti: gli importi restano separati e non si sommano.`;
     $('altri').hidden = n <= stato.limite;
     $('altri').textContent = `Mostra altri ${it(Math.min(30, n - stato.limite))}`;
+  }
+
+  /* Che cosa sto guardando: titolo, conteggio, importo e filtri attivi */
+  function ambito(r) {
+    const n = r.length;
+    const attivo = !!(stato.fonte || stato.circ || stato.stato || stato.programma || stato.q || stato.incroci);
+    const blocco = $('ambito');
+    blocco.hidden = !attivo;
+    const base = stato.fonte ? NOMI_FONTE[stato.fonte][n === 1 ? 0 : 1] : (n === 1 ? 'voce' : 'voci');
+    const parti = [`${it(n)} ${base}`];
+    if (stato.circ) parti.push(doveCirc(stato.circ));
+    if (stato.q) parti.push(`che contengono «${stato.q}»`);
+    const titolo = parti.join(' ');
+    document.title = (attivo ? titolo + ' · ' : '') + 'Elenco progetti · Palermo in chiaro';
+    if (!attivo) { blocco.replaceChildren(); return; }
+    const nota = [];
+    if (stato.stato) nota.push('Stato: ' + stato.stato);
+    if (stato.programma) nota.push('Programma: ' + stato.programma);
+    if (stato.incroci) nota.push('Solo voci presenti in più fonti');
+    if (stato.fonte === 'opere') {
+      const tot = r.reduce((s, p) => s + (p.opere ? p.opere.importo_triennio_eur : 0), 0);
+      nota.push(`importo programmato nel triennio ${mln(tot, 0)}`);
+    }
+    nota.push('ordinati per ' + NOMI_ORDINE[stato.ordine]);
+    blocco.replaceChildren(
+      el('p', { class: 'ambito-occhiello', text: 'Stai guardando' }),
+      el('h2', { class: 'ambito-titolo', text: titolo }),
+      el('p', { class: 'ambito-nota' }, [
+        nota.join(' · ') + '. ',
+        el('a', { href: 'progetti.html', text: `Togli i filtri e vedi tutte le ${it(D.progetti.length)} voci` }), '.',
+      ]),
+    );
   }
 
   function avvia() {
@@ -117,6 +160,10 @@
     const aggiorna = () => { stato.limite = 30; disegna(); chips(); sincronizzaUrl(); };
     const chips = () => {
       const voci = [];
+      if (stato.fonte) voci.push(['Fonte: ' + (ETICHETTE[stato.fonte] || stato.fonte), () => { stato.fonte = ''; $('fonte').value = ''; }]);
+      if (stato.circ) voci.push([stato.circ === '__nessuna' ? 'Senza circoscrizione' : stato.circ === '__multi' ? 'Più circoscrizioni' : 'Circoscrizione ' + stato.circ, () => { stato.circ = ''; $('circ').value = ''; }]);
+      if (stato.q) voci.push(['Cerca: «' + stato.q + '»', () => { stato.q = ''; $('q').value = ''; }]);
+      if (stato.incroci) voci.push(['Solo in più fonti', () => { stato.incroci = false; $('incroci').checked = false; }]);
       if (stato.stato) voci.push(['Stato: ' + stato.stato, () => { stato.stato = ''; }]);
       if (stato.programma) voci.push(['Programma: ' + stato.programma, () => { stato.programma = ''; }]);
       $('filtri-attivi').replaceChildren(...voci.map(([testo, togli]) => el('span', { class: 'chip' }, [testo,
@@ -130,6 +177,8 @@
       if (stato.circ) p.set('circ', stato.circ);
       if (stato.stato) p.set('stato', stato.stato);
       if (stato.programma) p.set('programma', stato.programma);
+      if (stato.ordine !== 'opere') p.set('ordine', stato.ordine);
+      if (stato.incroci) p.set('incroci', '1');
       const qs = p.toString();
       try { history.replaceState(null, '', (qs ? '?' + qs : location.pathname) + location.hash); } catch (e) { /* file:// */ }
     };
@@ -139,7 +188,6 @@
     $('ordine').addEventListener('change', e => { stato.ordine = e.target.value; aggiorna(); });
     $('incroci').addEventListener('change', e => { stato.incroci = e.target.checked; aggiorna(); });
     $('altri').addEventListener('click', () => { stato.limite += 30; disegna(); });
-    disegna();
 
     const params = new URLSearchParams(location.search);
     if (params.get('fonte')) { $('fonte').value = params.get('fonte'); stato.fonte = params.get('fonte'); }
@@ -147,8 +195,10 @@
     if (params.get('q')) { $('q').value = params.get('q'); stato.q = params.get('q'); }
     if (params.get('stato')) stato.stato = params.get('stato');
     if (params.get('programma')) stato.programma = params.get('programma');
-    if (stato.fonte || stato.circ || stato.q || stato.stato || stato.programma) aggiorna();
-    chips();
+    if (params.get('ordine') && NOMI_ORDINE[params.get('ordine')]) { stato.ordine = params.get('ordine'); $('ordine').value = stato.ordine; }
+    else if (stato.fonte && ORDINE_PER_FONTE[stato.fonte]) { stato.ordine = ORDINE_PER_FONTE[stato.fonte]; $('ordine').value = stato.ordine; }
+    if (params.get('incroci') === '1') { stato.incroci = true; $('incroci').checked = true; }
+    aggiorna();
 
     $('carica-cig').addEventListener('click', () => {
       $('carica-cig').hidden = true;

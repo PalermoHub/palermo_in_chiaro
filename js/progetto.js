@@ -21,6 +21,11 @@
   const riga = (dt, dd) => el('div', { class: 'riga' }, [el('dt', { text: dt }), el('dd', {}, [dd])]);
   const link = (href, testo, extra = {}) => el('a', Object.assign({ href, text: testo }, ESTERNO, extra));
   const riquadro = (titolo, nodi) => el('section', { class: 'riquadro' }, [el('h2', { text: titolo }), ...[].concat(nodi).flat(Infinity).filter(Boolean)]);
+  /* Collegamento alla fonte ufficiale: badge in evidenza, poi il link e il dominio. */
+  const voceUfficiale = (href, testo, dominio, badge = 'Fonte ufficiale') => el('li', { class: 'ufficiale' }, [
+    el('span', { class: 'badge ufficiale', text: badge }), link(href, testo), el('span', { class: 'est', text: dominio })]);
+  const voceVerifica = (href, testo, nota) => el('li', { class: 'ufficiale' }, [
+    el('span', { class: 'badge verifica', text: 'Da verificare' }), link(href, testo), el('span', { class: 'est', text: nota })]);
 
   const id = new URLSearchParams(location.search).get('id');
 
@@ -146,12 +151,12 @@
     ]);
 
     const collegamenti = [];
-    if (p.link.opencup) collegamenti.push(el('li', {}, [link(p.link.opencup, 'Scheda OpenCUP del CUP'), el('span', { class: 'est', text: 'opencup.gov.it' })]));
-    if (p.link.opencup_candidato) collegamenti.push(el('li', {}, [link(p.link.opencup_candidato, 'OpenCUP, CUP candidato'), el('span', { class: 'est', text: p.link.nota_opencup_candidato || 'collegamento da verificare' })]));
-    if (p.pnrr && p.pnrr.url) collegamenti.push(el('li', {}, [link(p.pnrr.url, 'Scheda PNRR del Comune'), el('span', { class: 'est', text: 'pnrr.comune.palermo.it' })]));
-    if (p.link.opencoesione) collegamenti.push(el('li', {}, [link(p.link.opencoesione, 'Scheda OpenCoesione'), el('span', { class: 'est', text: 'opencoesione.gov.it' })]));
+    if (p.link.opencup) collegamenti.push(voceUfficiale(p.link.opencup, 'Scheda OpenCUP del CUP', 'opencup.gov.it'));
+    if (p.pnrr && p.pnrr.url) collegamenti.push(voceUfficiale(p.pnrr.url, 'Scheda PNRR del Comune', 'pnrr.comune.palermo.it'));
+    if (p.link.opencoesione) collegamenti.push(voceUfficiale(p.link.opencoesione, 'Scheda OpenCoesione', 'opencoesione.gov.it'));
+    if (p.link.opencup_candidato) collegamenti.push(voceVerifica(p.link.opencup_candidato, 'OpenCUP, CUP candidato', p.link.nota_opencup_candidato || 'collegamento da verificare'));
     if (p.cup && !p.link.opencup) collegamenti.push(el('li', {}, [link('https://www.opencup.gov.it/portale/web/opencup/ricerca?cup=' + encodeURIComponent(p.cup), 'Cerca il CUP su OpenCUP'), el('span', { class: 'est', text: 'ricerca sul portale OpenCUP: nessuna scheda diretta nel Programma' })]));
-    if (p.appalti && p.appalti.length) collegamenti.push(el('li', {}, [link('https://dati.anticorruzione.it/opendata/dataset/cig', 'Open data CIG (ANAC)'), el('span', { class: 'est', text: 'dati.anticorruzione.it' })]));
+    if (p.appalti && p.appalti.length) collegamenti.push(voceUfficiale('https://dati.anticorruzione.it/opendata/dataset/cig', 'Open data CIG (ANAC)', 'dati.anticorruzione.it', 'Dati ufficiali'));
     if (p.localizzato) collegamenti.push(el('li', {}, [el('a', { href: './#mappa', text: 'Vedi la posizione sulla mappa' }), el('span', { class: 'est', text: 'attiva «Mostra i singoli progetti»' })]));
 
     const docs = (p.pnrr && p.pnrr.documenti || []).map(d => el('li', {}, [link(d.url, d.titolo.slice(0, 90) + (d.titolo.length > 90 ? '…' : '')), el('span', { class: 'est', text: 'documento sul sito del Comune' })]));

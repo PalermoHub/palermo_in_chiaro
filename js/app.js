@@ -314,6 +314,6 @@
     }
 
     colora(); scheda();
-    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', colora);
+    document.addEventListener('tema-cambia', colora);
   }
 })();
