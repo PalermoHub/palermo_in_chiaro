@@ -253,6 +253,28 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
   .testata nav { order: 2; }
 }
 
+/* intestazione dell'elenco: con una circoscrizione scelta si apre una colonna a destra per la mappa */
+.pagina-testa.con-mappa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 380px); column-gap: clamp(20px, 3vw, 48px); align-items: start; }
+.pagina-testa.con-mappa > *:not(.mini-mappa) { grid-column: 1; }
+.pagina-testa.con-mappa .mini-mappa { grid-column: 2; grid-row: 1 / span 99; position: sticky; top: calc(var(--testata) + 16px); margin: 24px 0 0; }
+.mini-mappa[hidden] { display: none; }
+.mini-mappa { background: var(--sfondo-scheda); padding: 12px 12px 8px; }
+.mini-mappa a { display: block; }
+.mini-mappa svg { display: block; width: 100%; height: auto; max-height: 46vh; }
+.mini-mappa figcaption { font-size: 0.82rem; color: var(--muto); margin-top: 6px; }
+.mini-mappa figcaption a { color: var(--maiolica-scura); }
+.mini-mappa .circ { fill: var(--s0); fill-opacity: 0.9; stroke: var(--cupola); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.mini-mappa .pol { fill: var(--ocra); fill-opacity: 0.55; stroke: var(--ocra); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.mini-mappa .lin { fill: none; stroke: var(--inchiostro); stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.mini-mappa .pt { fill: var(--maiolica-scura); stroke: var(--carta); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.mini-mappa .pt.approx { fill: none; stroke: var(--maiolica-scura); stroke-width: 1.3; stroke-dasharray: 2 2; }
+.mini-mappa a:hover .circ, .mini-mappa a:focus-visible .circ { stroke: var(--inchiostro); }
+.mini-mappa a:focus-visible { outline: 2px solid var(--cupola); outline-offset: 2px; }
+@media (max-width: 900px) {
+  .pagina-testa.con-mappa { grid-template-columns: 1fr; }
+  .pagina-testa.con-mappa .mini-mappa { grid-column: 1; grid-row: auto; position: static; margin: 18px 0 0; }
+}
+
 /* ---- pagine di elenco e scheda progetto ---- */
 .page { max-width: 1560px; margin: 0 auto; padding: clamp(24px, 4vw, 48px) var(--gutter) clamp(48px, 6vw, 96px); }
 .page header.pagina-testa { max-width: 54rem; margin-bottom: 22px; }

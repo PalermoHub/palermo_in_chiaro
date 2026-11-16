@@ -104,6 +104,7 @@
   function disegna() {
     const r = filtra(), mostra = r.slice(0, stato.limite);
     ambito(r);
+    disegnaMini();
     $('elenco').replaceChildren(...mostra.map(voce));
     const n = r.length;
     $('conteggio').textContent = n === 0
@@ -143,6 +144,55 @@
         el('a', { href: 'progetti.html', text: `Togli i filtri e vedi tutte le ${it(D.progetti.length)} voci` }), '.',
       ]),
     );
+  }
+
+  /* ---- mini mappa della circoscrizione filtrata: poligono e progetti con posizione ---- */
+  const NS = 'http://www.w3.org/2000/svg';
+  let GEO = null, PRJ = null, geoStato = 'idle', miniCirc = null;
+  function caricaGeo() {
+    if (geoStato !== 'idle') return;
+    geoStato = 'carica';
+    Promise.all([
+      fetch('data/geo/circoscrizioni.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('circoscrizioni'); return r.json(); }),
+      fetch('data/geo/progetti.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('progetti'); return r.json(); }),
+    ]).then(([g, p]) => { GEO = g; PRJ = p; geoStato = 'pronto'; disegnaMini(true); })
+      .catch(() => { geoStato = 'errore'; disegnaMini(true); });
+  }
+  function disegnaMini(forza) {
+    const c = stato.circ, box = $('mini-mappa'), testa = $('testa');
+    if (!ROM.includes(c) || geoStato === 'errore') {
+      box.hidden = true; testa.classList.remove('con-mappa'); miniCirc = null; return;
+    }
+    if (geoStato !== 'pronto') { caricaGeo(); return; }
+    if (!forza && miniCirc === c) return;
+    miniCirc = c;
+    box.hidden = false; testa.classList.add('con-mappa');
+    const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
+    /* il titolo compare al passaggio del mouse, come sulla mappa della home */
+    const conTitolo = (e, testo) => { e.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: testo })); return e; };
+    const pol = mk('path', { d: GEO.circoscrizioni[c].d, class: 'circ' });
+    const gPol = mk('g'), gLin = mk('g'), gPt = mk('g');
+    const prj = PRJ.progetti.filter(p => p.circoscrizioni.includes(c));
+    prj.forEach(p => {
+      p.poligoni.forEach(x => gPol.append(conTitolo(mk('path', { d: x.d, class: 'pol' }), p.descrizione)));
+      p.linee.forEach(x => gLin.append(conTitolo(mk('path', { d: x.d, class: 'lin' }), p.descrizione)));
+      p.punti.forEach(q => {
+        const approx = q[2] === 'toponimo' || q[2] === 'da_poligono';
+        gPt.append(conTitolo(mk('circle', { cx: q[0], cy: q[1], class: 'pt' + (approx ? ' approx' : ''), 'data-r': approx ? 1.7 : 1 }), p.descrizione));
+      });
+    });
+    const svg = $('mini-svg');
+    svg.replaceChildren(pol, gPol, gLin, gPt);
+    const b = pol.getBBox(), m = 12;
+    const vb = [b.x - m, b.y - m, b.width + 2 * m, b.height + 2 * m];
+    svg.setAttribute('viewBox', vb.join(' '));
+    svg.setAttribute('aria-label', `Mappa della Circoscrizione ${c}: il poligono e ${it(prj.length)} progetti con una posizione`);
+    const k = vb[2] / 110;
+    gPt.querySelectorAll('.pt').forEach(e => e.setAttribute('r', (+e.dataset.r * k).toFixed(2)));
+    const url = './?circ=' + encodeURIComponent(c) + '#mappa';
+    $('mini-link').setAttribute('href', url);
+    $('mini-cap').replaceChildren(`Circoscrizione ${c}: ${it(prj.length)} progetti con una posizione. `,
+      el('a', { href: url, text: 'Aprila sulla mappa' }), ' per vederli uno per uno.');
   }
 
   function avvia() {

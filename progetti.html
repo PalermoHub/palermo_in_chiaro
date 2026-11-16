@@ -23,8 +23,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261116p">
-<script src="js/tema.js?v=20261116p"></script>
+<link rel="stylesheet" href="css/style.css?v=20261116r">
+<script src="js/tema.js?v=20261116r"></script>
 
 </head>
 <body>
@@ -47,10 +47,16 @@
 </header>
 
 <main id="contenuto" class="page">
-  <div class="pagina-testa">
+  <div class="pagina-testa" id="testa">
     <p class="briciole"><a href="./">Palermo in chiaro</a> · Elenco progetti</p>
     <h1>Progetti e finanziamenti</h1>
     <div class="ambito" id="ambito" hidden></div>
+    <figure class="mini-mappa" id="mini-mappa" hidden>
+      <a id="mini-link" href="./#mappa" tabindex="-1" aria-hidden="true">
+        <svg id="mini-svg" role="img" aria-label="Mappa della circoscrizione"></svg>
+      </a>
+      <figcaption id="mini-cap"></figcaption>
+    </figure>
     <p class="lede" id="lede">Una voce per progetto: le opere del Programma triennale, le schede PNRR del Comune, i fondi di coesione e gli appalti. Il collegamento tra fonti avviene solo per CUP o CUI identico. Per la coesione una voce può raccogliere più linee di finanziamento sullo stesso CUP: le voci possono essere meno dei progetti.</p>
     <div class="limiti" id="regole">
       <h3>Cosa non fa questo elenco</h3>
@@ -137,7 +143,7 @@
 </footer>
 
 
-<script src="js/su.js?v=20261116p"></script>
-<script src="js/progetti.js?v=20261116p"></script>
+<script src="js/su.js?v=20261116r"></script>
+<script src="js/progetti.js?v=20261116r"></script>
 </body>
 </html>

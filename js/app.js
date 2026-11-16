@@ -464,9 +464,14 @@
         const n = nodi[pr.id] = { pol: [], lin: [], pt: [], hit: [] };
         const apri = () => apriProgetto(pr.id);
         const bersaglio = (e) => { e.addEventListener('click', apri); gHit.append(e); n.hit.push(e); return e; };
-        pr.poligoni.forEach(g => { const e = mk('path', { d: g.d, class: 'g-pol' + (g.assegnazione === 'per_vicinanza' ? ' vicinanza' : '') }); e.addEventListener('click', apri); gPol.append(e); n.pol.push(e); });
+        pr.poligoni.forEach(g => {
+          const e = mk('path', { d: g.d, class: 'g-pol' + (g.assegnazione === 'per_vicinanza' ? ' vicinanza' : '') }); e.addEventListener('click', apri);
+          e.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: pr.descrizione }));
+          gPol.append(e); n.pol.push(e);
+        });
         pr.linee.forEach(g => {
           const e = mk('path', { d: g.d, class: 'g-lin' }); e.addEventListener('click', apri); gLin.append(e); n.lin.push(e);
+          e.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: pr.descrizione }));
           /* una linea spessa 1,5 px sullo schermo non si riesce a centrare: sotto ci va un bersaglio trasparente */
           bersaglio(mk('path', { d: g.d, class: 'g-lin-hit' }));
         });
@@ -561,5 +566,11 @@
 
     colora(); scheda();
     document.addEventListener('tema-cambia', colora);
+    /* arrivo da «Aprila sulla mappa» dell'elenco: circoscrizione già scelta */
+    const circDaUrl = new URLSearchParams(location.search).get('circ');
+    if (ROM.includes(circDaUrl)) {
+      scegli(circDaUrl, false);
+      if (location.hash) document.querySelector('.mappa-blocco').scrollIntoView({ block: 'start' });
+    }
   }
 })();
