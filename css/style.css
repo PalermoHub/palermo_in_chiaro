@@ -258,10 +258,10 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .pagina-testa.con-mappa > *:not(.mini-mappa) { grid-column: 1; }
 .pagina-testa.con-mappa .mini-mappa { grid-column: 2; grid-row: 1 / span 99; position: sticky; top: calc(var(--testata) + 16px); margin: 24px 0 0; }
 .mini-mappa[hidden] { display: none; }
-.mini-mappa { background: var(--sfondo-scheda); padding: 12px 12px 8px; }
+.mini-mappa { padding: 0; }
 .mini-mappa a { display: block; }
 .mini-mappa svg { display: block; width: 100%; height: auto; max-height: 46vh; }
-.mini-mappa figcaption { font-size: 0.82rem; color: var(--muto); margin-top: 6px; }
+.mini-mappa figcaption { font-size: 0.82rem; color: var(--muto); margin-top: 6px; text-align: right; }
 .mini-mappa figcaption a { color: var(--maiolica-scura); }
 .mini-mappa .circ { fill: var(--s0); fill-opacity: 0.9; stroke: var(--cupola); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
 .mini-mappa .pol { fill: var(--ocra); fill-opacity: 0.55; stroke: var(--ocra); stroke-width: 1; vector-effect: non-scaling-stroke; }
