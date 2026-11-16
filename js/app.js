@@ -65,7 +65,7 @@
       const p = document.createElementNS(NS, 'path');
       p.setAttribute('d', g.d); p.setAttribute('class', 'circ'); p.setAttribute('tabindex', '0'); p.setAttribute('role', 'button');
       p.setAttribute('aria-pressed', 'false'); p.setAttribute('aria-label', `Circoscrizione ${c}`);
-      p.addEventListener('click', () => scegli(c, true));
+      p.addEventListener('click', (ev) => { const id = progettoSotto(ev); if (id) apriProgetto(id); else scegli(c, true); });
       p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegli(c, true); } });
       svg.append(p);
       gruppi[c] = { p };
@@ -438,7 +438,7 @@
       PR.progetti.forEach(pr => {
         const n = nodi[pr.id]; if (!n) return;
         const mostra = !sel || pr.circoscrizioni.includes(sel);
-        [...n.pol, ...n.lin, ...n.pt].forEach(e => { e.style.display = mostra ? '' : 'none'; });
+        [...n.pol, ...n.lin, ...n.pt, ...n.hit].forEach(e => { e.style.display = mostra ? '' : 'none'; });
       });
     }
     /* accende il livello dei progetti: le posizioni si scaricano la prima volta che servono */
@@ -459,22 +459,50 @@
     });
     function disegnaProgetti() {
       const mk = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); return e; };
-      const gPol = mk('g', { class: 'pol' }), gLin = mk('g', { class: 'lin' }), gPt = mk('g', { class: 'pt' });
+      const gPol = mk('g', { class: 'pol' }), gLin = mk('g', { class: 'lin' }), gPt = mk('g', { class: 'pt' }), gHit = mk('g', { class: 'hit' });
       PR.progetti.forEach(pr => {
-        const n = nodi[pr.id] = { pol: [], lin: [], pt: [] };
+        const n = nodi[pr.id] = { pol: [], lin: [], pt: [], hit: [] };
         const apri = () => apriProgetto(pr.id);
+        const bersaglio = (e) => { e.addEventListener('click', apri); gHit.append(e); n.hit.push(e); return e; };
         pr.poligoni.forEach(g => { const e = mk('path', { d: g.d, class: 'g-pol' + (g.assegnazione === 'per_vicinanza' ? ' vicinanza' : '') }); e.addEventListener('click', apri); gPol.append(e); n.pol.push(e); });
-        pr.linee.forEach(g => { const e = mk('path', { d: g.d, class: 'g-lin' }); e.addEventListener('click', apri); gLin.append(e); n.lin.push(e); });
+        pr.linee.forEach(g => {
+          const e = mk('path', { d: g.d, class: 'g-lin' }); e.addEventListener('click', apri); gLin.append(e); n.lin.push(e);
+          /* una linea spessa 1,5 px sullo schermo non si riesce a centrare: sotto ci va un bersaglio trasparente */
+          bersaglio(mk('path', { d: g.d, class: 'g-lin-hit' }));
+        });
         pr.punti.forEach(q => {
           const approx = q[2] === 'toponimo' || q[2] === 'da_poligono';
-          const e = mk('circle', { cx: q[0], cy: q[1], class: 'g-pt' + (approx ? ' approx' : ''), 'data-r': approx ? 6 : 3.6 });
+          const e = mk('circle', { cx: q[0], cy: q[1], class: 'g-pt' + (approx ? ' approx' : ''), 'data-r': approx ? 7.4 : 4.6 });
           e.addEventListener('click', apri); e.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: pr.descrizione }));
           gPt.append(e); n.pt.push(e);
         });
       });
-      gP.append(gPol, gLin, gPt); ridimensiona();
+      gP.append(gPol, gLin, gPt, gHit); ridimensiona();
       aggiornaVisibilitaProgetti();
     }
+    /* un pallino di 5 px non si centra: i clic sulla mappa entro 14 px da un punto aprono quel progetto */
+    function progettoSotto(ev) {
+      if (!layerOn || !PR) return null;
+      const m = svg.getScreenCTM(); if (!m) return null;
+      const p = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse());
+      const limite = 14 / Math.hypot(m.a, m.b);
+      let best = null, bestD = Infinity;
+      PR.progetti.forEach(pr => {
+        const n = nodi[pr.id]; if (!n) return;
+        pr.punti.forEach((q, i) => {
+          const e = n.pt[i]; if (!e || e.style.display === 'none') return;
+          const d = Math.hypot(q[0] - p.x, q[1] - p.y);
+          if (d < bestD) { bestD = d; best = pr.id; }
+        });
+      });
+      return bestD <= limite ? best : null;
+    }
+    /* i pallini cadono anche fuori dal poligono (posizioni approssimate): il clic sul vuoto vicino li apre lo stesso */
+    svg.addEventListener('click', (ev) => {
+      if (ev.target !== svg) return;
+      const id = progettoSotto(ev);
+      if (id) apriProgetto(id);
+    });
     let vb = [0, 0, W, H];
     function ridimensiona() { const k = vb[2] / 1000; gP.querySelectorAll('.g-pt').forEach(e => e.setAttribute('r', (+e.dataset.r * k).toFixed(2))); svg.style.setProperty('--k', k); }
     function zoomA(c, tutta) {
@@ -519,11 +547,15 @@
         riga('Circoscrizione', p.circoscrizioni.length ? p.circoscrizioni.join(', ') : 'non indicata'),
         riga('CUP', p.cup || 'non ancora richiesto'), riga('Sulla mappa come', tipo)]);
       const extra = [];
-      if (p.pnrr) extra.push(el('p', { class: 'nota' }, ['Compare anche nel PNRR del Comune' + (p.pnrr.stato ? ` (${p.pnrr.stato.toLowerCase()})` : '') + ': ', el('a', { href: p.pnrr.url, text: 'scheda sul sito del Comune', target: '_blank', rel: 'noopener' }), `, ${mln(p.pnrr.importo_finanziato_eur, 2)} finanziati. Gli importi di fonti diverse non si sommano.`]));
+      /* le fonti della voce, come nell'elenco e nella scheda completa */
+      const fonti = ['opere', p.pnrr && 'pnrr', p.coesione && 'coesione', p.cig && 'appalti'].filter(Boolean);
+      if (p.pnrr) extra.push(el('p', { class: 'nota' }, ['Compare anche nel PNRR del Comune' + (p.pnrr.stato ? ` (${p.pnrr.stato.toLowerCase()})` : '') + ': ', el('span', { class: 'badge ufficiale', text: 'Fonte ufficiale' }), ' ', el('a', { href: p.pnrr.url, text: 'scheda sul sito del Comune', target: '_blank', rel: 'noopener' }), `, ${mln(p.pnrr.importo_finanziato_eur, 2)} finanziati. Gli importi di fonti diverse non si sommano.`]));
       if (p.coesione) extra.push(el('p', { class: 'nota', text: 'Compare anche tra i progetti di coesione: ' + p.coesione.join('; ') + '.' }));
       if (p.cig) extra.push(el('p', { class: 'nota', text: `Appalti ANAC collegati tramite il codice dell'intervento: ${p.cig.length} CIG (${p.cig.slice(0, 3).join(', ')}${p.cig.length > 3 ? '…' : ''}).` }));
       extra.push(el('p', { class: 'nota' }, [el('a', { href: 'progetto.html?id=' + encodeURIComponent('op-' + p.id), text: 'Scheda completa del progetto' }), ' con importi per fonte, finanziamenti e collegamenti.']));
-      return [indietro, el('h2', { class: 'titolo-prog', text: p.descrizione.length > 140 ? p.descrizione.slice(0, 138) + '…' : p.descrizione }), dl, ...extra,
+      return [indietro, el('h2', { class: 'titolo-prog', text: p.descrizione.length > 140 ? p.descrizione.slice(0, 138) + '…' : p.descrizione }),
+        el('div', { class: 'fonti-riga', style: 'margin: 4px 0 12px' }, fonti.map(f => el('span', { class: 'badge ' + f, text: ETICH[f] || f }))),
+        dl, ...extra,
         el('p', { class: 'nota', text: 'Posizione ' + (precs.length ? precs.join('; ') : 'dalla geometria') + '. È una posizione elaborata da OpenDataSicilia dalle tavole PDF del Programma, non una coordinata ufficiale del Comune. Importo programmato, non speso.' })];
     }
 

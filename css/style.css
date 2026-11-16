@@ -127,6 +127,9 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 #mappa-svg { flex: 1 1 0; min-height: 0; width: 100%; height: 100%; display: block; }
 #mappa-svg .circ { stroke: var(--carta); stroke-width: calc(3px * var(--k, 1)); cursor: pointer; transition: fill 0.25s, fill-opacity 0.25s, stroke 0.15s; fill-rule: evenodd; }
 #mappa-svg .circ:hover { stroke: var(--inchiostro); }
+/* il clic col mouse dà il fuoco al poligono: il contorno predefinito è un rettangolo nero sul bbox */
+#mappa-svg .circ:focus { outline: none; }
+#mappa-svg .circ:focus-visible { outline: 3px solid var(--cupola); outline-offset: -3px; }
 #mappa-svg .circ[aria-pressed="true"] { stroke: var(--cupola); stroke-width: calc(5px * var(--k, 1)); }
 #mappa-svg .etichetta { font-family: var(--font-titoli); font-weight: 700; font-size: calc(34px * var(--k, 1) * var(--lab, 1)); pointer-events: none; text-anchor: middle; paint-order: stroke; }
 #mappa-svg .valore { font-family: var(--font-testo); font-size: calc(24px * var(--k, 1) * var(--lab, 1)); pointer-events: none; text-anchor: middle; }
@@ -149,6 +152,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 #progetti-g .sel { stroke: var(--cupola); fill-opacity: 0.9; }
 #progetti-g .g-pt.sel { fill: var(--cupola); stroke: var(--carta); stroke-dasharray: none; }
 #progetti-g .g-pt:hover, #progetti-g .g-lin:hover, #progetti-g .g-pol:hover { stroke: var(--inchiostro); }
+/* bersagli trasparenti: una linea di 1,5 px sullo schermo non si centra */
+#progetti-g .g-lin-hit { fill: none; stroke: transparent; stroke-width: 18px; vector-effect: non-scaling-stroke; pointer-events: stroke; cursor: pointer; }
 .leg-prog { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
 .leg-prog .k { display: inline-block; width: 11px; height: 11px; border-radius: 50%; vertical-align: -1px; }
 .leg-prog .pieno { background: var(--maiolica-scura); }
