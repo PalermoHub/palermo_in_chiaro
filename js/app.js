@@ -425,7 +425,15 @@
       legendaProgetti();
     }
     function aggiornaVisibilitaProgetti() {
-      svg.classList.toggle('filtro-circ', layerOn && !!sel);
+      const solo = layerOn && !!sel;
+      svg.classList.toggle('filtro-circ', solo);
+      /* con una circoscrizione scelta resta solo il suo poligono */
+      ROM.forEach(x => {
+        const vis = !solo || x === sel;
+        gruppi[x].p.style.display = vis ? '' : 'none';
+        gruppi[x].t1.style.display = vis ? '' : 'none';
+        gruppi[x].t2.style.display = vis ? '' : 'none';
+      });
       if (!PR) return;
       PR.progetti.forEach(pr => {
         const n = nodi[pr.id]; if (!n) return;
@@ -479,7 +487,19 @@
       gP.querySelectorAll('.sel').forEach(e => e.classList.remove('sel'));
       if (selProj && nodi[selProj]) { const n = nodi[selProj]; [...n.pol, ...n.lin, ...n.pt].forEach(e => { e.classList.add('sel'); e.parentNode.append(e); }); }
     }
-    function apriProgetto(id) { selProj = id; evidenziaProgetto(); const pr = PR.progetti.find(x => x.id === id); if (pr && pr.circoscrizioni.length === 1 && sel !== pr.circoscrizioni[0]) { sel = pr.circoscrizioni[0]; ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === sel))); zoomA(sel); } tutta.hidden = !sel; aggiornaVisibilitaProgetti(); scheda(); if (matchMedia('(max-width: 900px)').matches) $('scheda').scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+    function apriProgetto(id) {
+      selProj = id; evidenziaProgetto();
+      const pr = PR.progetti.find(x => x.id === id);
+      if (pr && pr.circoscrizioni.length === 1 && sel !== pr.circoscrizioni[0]) {
+        sel = pr.circoscrizioni[0];
+        ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === sel)));
+      }
+      tutta.hidden = !sel;
+      aggiornaVisibilitaProgetti();
+      zoomA(sel);
+      scheda();
+      if (matchMedia('(max-width: 900px)').matches) $('scheda').scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
     function legendaProgetti() {
       const l = $('legenda'); l.querySelector('.leg-prog')?.remove();
       if (!layerOn) { l.querySelector('.leg-circ')?.remove(); return; }
