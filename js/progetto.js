@@ -144,7 +144,7 @@
     const ident = el('dl', {}, [
       riga('Identificativo', p.id),
       riga('CUP', p.cup || 'non presente'),
-      riga('CUI', p.cui || 'non presente'),
+      riga('CUI', p.cui ? el('span', {}, [p.cui, ' ', el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cui), class: 'cerca-cod', text: 'cerca' })]) : 'non presente'),
       riga('Circoscrizioni', p.circoscrizioni.length ? p.circoscrizioni.join(', ') : 'non indicata'),
       riga('Posizione', p.localizzato ? 'sulla mappa' : 'non geolocalizzato'),
       riga('Fonti', p.fonti.map(f => ETICHETTE[f] || f).join(', ')),
@@ -166,6 +166,9 @@
 
     const docs = (p.pnrr && p.pnrr.documenti || []).map(d => el('li', {}, [link(d.url, d.titolo.slice(0, 90) + (d.titolo.length > 90 ? '…' : '')), el('span', { class: 'est', text: 'documento sul sito del Comune' })]));
 
+    /* il CUI non ha una scheda pubblica: il riscontro sono i CIG di ANAC */
+    const notaCui = p.cui ? el('p', { class: 'nota', text: 'Il CUI (Codice Unico dell\'Intervento) non ha una scheda pubblica con un indirizzo proprio: il riscontro sono gli appalti ANAC collegati, quando ci sono. Il CUP invece porta alla scheda OpenCUP.' }) : null;
+
     $('scheda-progetto').replaceChildren(
       testa,
       el('div', { class: 'dettaglio' }, [
@@ -175,7 +178,7 @@
           limiti,
         ]),
         el('div', { class: 'colonna' }, [
-          riquadro('Identificativi e territorio', [ident, el('p', { class: 'nota' }, [el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cup || p.id), text: 'Cerca le voci collegate' })])]),
+          riquadro('Identificativi e territorio', [ident, notaCui, el('p', { class: 'nota' }, [el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cup || p.cui || p.id), text: 'Cerca le voci collegate' })])]),
           riquadro('Collegamenti', [notaCollegamenti, (collegamenti.length || interni.length) ? el('ul', { class: 'link' }, [...collegamenti, ...interni]) : null]),
           docs.length ? riquadro('Documenti PNRR', el('ul', { class: 'link' }, docs)) : null,
         ]),

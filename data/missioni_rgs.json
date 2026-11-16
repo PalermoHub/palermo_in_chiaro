@@ -1,0 +1,108 @@
+{
+ "fonte": "Glossario delle missioni e dei programmi, edizione dal 2025 (RGS - Arconet)",
+ "url": "https://www.rgs.mef.gov.it/_Documenti/VERSIONE-I/e-GOVERNME1/ARCONET/Glossari/Glossario-delle-missioni-e-dei-programmi-dal-2025.pdf",
+ "consultato": "2026-11-16",
+ "nota": "Estratto dal PDF ufficiale: per ogni missione il numero di pagina, il nome e le prime frasi della descrizione. Le pagine servono per aprire il PDF al punto giusto.",
+ "missioni": {
+  "01": {
+   "nome": "SERVIZI ISTITUZIONALI, GENERALI E DI GESTIONE",
+   "pagina": 1,
+   "descrizione": "Amministrazione e funzionamento dei servizi generali, dei servizi statistici e informativi, delle attività per lo sviluppo dell'ente in una ottica di governance e partenariato e per la comunicazione istituzionale. Amministrazione, funzionamento e supporto agli organi esecutivi e legislativi."
+  },
+  "02": {
+   "nome": "GIUSTIZIA",
+   "pagina": 9,
+   "descrizione": "Amministrazione, funzionamento per il supporto tecnico, amministrativo e gestionale per gli acquisti, i servizi e le manutenzioni di competenza locale necessari al funzionamento e mantenimento degli Uffici giudiziari cittadini e delle case circondariali."
+  },
+  "03": {
+   "nome": "ORDINE PUBBLICO E SICUREZZA",
+   "pagina": 10,
+   "descrizione": "Amministrazione e funzionamento delle attività collegate all’ordine pubblico e alla sicurezza a livello locale, alla polizia locale, commerciale e amministrativa. Sono incluse le attività di supporto alla programmazione, al coordinamento e al monitoraggio delle relative politiche."
+  },
+  "04": {
+   "nome": "ISTRUZIONE E DIRITTO ALLO STUDIO",
+   "pagina": 13,
+   "descrizione": "Amministrazione, funzionamento ed erogazione di istruzione di qualunque ordine e grado per l'obbligo formativo e dei servizi connessi (quali assistenza scolastica, trasporto e refezione), ivi inclusi gli interventi per l'edilizia scolastica e l'edilizia residenziale per il diritto allo studio."
+  },
+  "05": {
+   "nome": "TUTELA E VALORIZZAZIONE DEI BENI E DELLE ATTIVITÀ CULTURALI",
+   "pagina": 19,
+   "descrizione": "Amministrazione e funzionamento delle attività di tutela e sostegno, di ristrutturazione e manutenzione dei beni di interesse storico, artistico e culturale e del patrimonio archeologico e architettonico Amministrazione, funzionamento ed erogazione di servizi culturali e di sostegno alle strutture e alle attività cultu…"
+  },
+  "06": {
+   "nome": "POLITICHE GIOVANILI, SPORT E TEMPO LIBERO",
+   "pagina": 22,
+   "descrizione": "Amministrazione e funzionamento di attività sportive, ricreative e per i giovani, incluse la fornitura di servizi sportivi e ricreativi, le misure di sostegno alle strutture per la pratica dello sport o per eventi sportivi e ricreativi e le misure di supporto alla programmazione, al coordinamento e al monitoraggio delle relative…"
+  },
+  "07": {
+   "nome": "TURISMO",
+   "pagina": 24,
+   "descrizione": "Amministrazione e funzionamento delle attività e dei servizi relativi al turismo e per la promozione e lo sviluppo del turismo sul territorio, ivi incluse le attività di supporto alla programmazione, al coordinamento e al monitoraggio delle relative politiche."
+  },
+  "08": {
+   "nome": "ASSETTO DEL TERRITORIO ED EDILIZIA ABITATIVA",
+   "pagina": 26,
+   "descrizione": "Amministrazione, funzionamento e fornitura dei servizi e delle attività relativi alla pianificazione e alla gestione del territorio e per la casa, ivi incluse le attività di supporto alla programmazione, al coordinamento e al monitoraggio delle relative politiche."
+  },
+  "09": {
+   "nome": "SVILUPPO SOSTENIBILE E TUTELA DEL TERRITORIO E DELL'AMBIENTE",
+   "pagina": 29,
+   "descrizione": "Amministrazione e funzionamento delle attività e dei servizi connessi alla tutela dell'ambiente, del territorio, delle risorse naturali e delle biodiversità, di difesa del suolo e dall'inquinamento del suolo, dell'acqua e dell'aria Amministrazione, funzionamento e fornitura dei servizi inerenti l'igiene ambientale, lo…"
+  },
+  "10": {
+   "nome": "TRASPORTI E DIRITTO ALLA MOBILITÀ",
+   "pagina": 37,
+   "descrizione": "Amministrazione, funzionamento e regolamentazione delle attività inerenti la pianificazione, la gestione e l'erogazione di servizi relativi alla mobilità sul territorio. Sono incluse le attività di supporto alla programmazione, al coordinamento e al monitoraggio delle relative politiche."
+  },
+  "11": {
+   "nome": "SOCCORSO CIVILE",
+   "pagina": 43,
+   "descrizione": "Amministrazione e funzionamento delle attività relative agli interventi di protezione civile sul territorio, per la previsione, la prevenzione, il soccorso e il superamento delle emergenze e per fronteggiare le calamità naturali."
+  },
+  "12": {
+   "nome": "DIRITTI SOCIALI, POLITICHE SOCIALI E FAMIGLIA",
+   "pagina": 45,
+   "descrizione": "Amministrazione, funzionamento e fornitura dei servizi e delle attività in materia di protezione sociale a favore e a tutela dei diritti della famiglia, dei minori, degli anziani, dei disabili, dei soggetti a rischio di esclusione sociale, ivi incluse le misure di sostegno e sviluppo alla cooperazione e al terzo settor…"
+  },
+  "13": {
+   "nome": "TUTELA DELLA SALUTE",
+   "pagina": 53,
+   "descrizione": "Amministrazione, funzionamento e fornitura dei servizi e delle attività per la prevenzione, la tutela e la cura della salute. Comprende l'edilizia sanitaria. Programmazione, coordinamento e monitoraggio delle politiche a tutela della salute sul territorio."
+  },
+  "14": {
+   "nome": "SVILUPPO ECONOMICO E COMPETITIVITÀ",
+   "pagina": 57,
+   "descrizione": "Amministrazione e funzionamento delle attività per la promozione dello sviluppo e della competitività del sistema economico locale, ivi inclusi i servizi e gli interventi per lo sviluppo sul territorio delle attività produttive, del commercio, dell'artigianato, dell'industria e dei servizi di pubblica utilità."
+  },
+  "15": {
+   "nome": "POLITICHE PER IL LAVORO E LA FORMAZIONE PROFESSIONALE",
+   "pagina": 62,
+   "descrizione": "Amministrazione e funzionamento delle attività di supporto: alle politiche attive di sostegno e promozione dell'occupazione e dell'inserimento nel mercato del lavoro; alle politiche passive del lavoro a tutela dal rischio di disoccupazione;"
+  },
+  "17": {
+   "nome": "ENERGIA E DIVERSIFICAZIONE DELLE FONTI ENERGETICHE",
+   "pagina": 69,
+   "descrizione": "Programmazione del sistema energetico e razionalizzazione delle reti energetiche nel territorio, nell’ambito del quadro normativo e istituzionale comunitario e statale. Attività per incentivare l’uso razionale dell’energia e l’utilizzo delle fonti rinnovabili."
+  },
+  "20": {
+   "nome": "FONDI E ACCANTONAMENTI",
+   "pagina": 75,
+   "descrizione": "Accantonamenti a fondi di riserva per le spese obbligatorie e per le spese impreviste, a fondi speciali per leggi che si perfezionano successivamente all'approvazione del bilancio, al fondo crediti di dubbia esigibilità. Non comprende il fondo pluriennale vincolato."
+  },
+  "50": {
+   "nome": "DEBITO PUBBLICO",
+   "pagina": 76,
+   "descrizione": "Pagamento delle quote interessi e delle quote capitale sui mutui e sui prestiti assunti dall'ente e relative spese accessorie. Comprende le anticipazioni straordinarie."
+  },
+  "60": {
+   "nome": "ANTICIPAZIONI FINANZIARIE",
+   "pagina": 78,
+   "descrizione": "Spese sostenute per la restituzione delle risorse finanziarie anticipate dall'Istituto di credito che svolge il servizio di tesoreria, per fare fronte a momentanee esigenze di liquidità."
+  },
+  "99": {
+   "nome": "SERVIZI PER CONTO TERZI",
+   "pagina": 79,
+   "descrizione": "Spese effettuate per conto terzi. Partite di giro. Anticipazioni per il finanziamento del sistema sanitario nazionale."
+  }
+ }
+}

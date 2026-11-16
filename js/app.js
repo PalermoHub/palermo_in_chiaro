@@ -15,18 +15,13 @@
   };
 
   const FILES = { geo: 'data/geo/circoscrizioni.json', prof: 'data/snapshot/profilo_circoscrizioni.json', opere: 'data/snapshot/opere_circoscrizioni.json',
-    bil: 'data/snapshot/bilancio_comune.json', app: 'data/snapshot/appalti_comune.json', pnrr: 'data/snapshot/pnrr_comune.json', coe: 'data/snapshot/coesione_comune.json' };
+    bil: 'data/snapshot/bilancio_comune.json', app: 'data/snapshot/appalti_comune.json', pnrr: 'data/snapshot/pnrr_comune.json', coe: 'data/snapshot/coesione_comune.json',
+    rgs: 'data/missioni_rgs.json' };
 
   // altezza reale della testata (va a capo su schermi stretti): serve per far stare la mappa nello schermo
   const testata = document.querySelector('.testata');
   const misura = () => document.documentElement.style.setProperty('--testata', testata.offsetHeight + 'px');
   misura(); new ResizeObserver(misura).observe(testata);
-
-  // torna in cima: compare dopo aver scorso oltre una schermata
-  const su = $('su'), ridotto = matchMedia('(prefers-reduced-motion: reduce)');
-  const mostraSu = () => { su.hidden = window.scrollY < window.innerHeight * 0.8; };
-  addEventListener('scroll', mostraSu, { passive: true }); mostraSu();
-  su.addEventListener('click', () => { scrollTo({ top: 0, behavior: ridotto.matches ? 'auto' : 'smooth' }); document.querySelector('.marchio').focus({ preventScroll: true }); });
 
   Promise.all(Object.entries(FILES).map(([k, u]) => fetch(u).then(r => { if (!r.ok) throw new Error(u); return r.json(); }).then(j => [k, j])))
     .then(p => avvia(Object.fromEntries(p)))
@@ -174,16 +169,76 @@
       ...D.opere.non_misura.filter(t => !t.startsWith('Circa il')).map(t => el('li', { text: t })),
     ]));
 
-    /* sezione bilancio */
-    const anni = ['2026', '2027', '2028']; let anno = '2026';
+    /* sezione bilancio: ogni missione apre la sua scheda */
+    const anni = ['2026', '2027', '2028']; let anno = '2026', missioneSel = null;
+    const ridottoM = matchMedia('(prefers-reduced-motion: reduce)');
     const ag = $('bilancio-anni');
     anni.forEach(a => { const b = el('button', { type: 'button', role: 'radio', 'aria-checked': String(a === anno), text: a }); b.addEventListener('click', () => { anno = a; ag.querySelectorAll('button').forEach(x => x.setAttribute('aria-checked', String(x === b))); disegnaBilancio(); }); ag.append(b); });
+    const nome = s => s.charAt(0) + s.slice(1).toLowerCase();
+
+    /* scheda di una missione: importi, programmi, link al glossario ufficiale */
+    function schedaMissione() {
+      const box = $('bilancio-scheda');
+      if (!missioneSel) { box.hidden = true; box.replaceChildren(); return; }
+      const k = missioneSel, mm = D.bil.missioni[k], r = D.rgs.missioni[k];
+      const prog = Object.entries(mm.programmi).filter(([, p]) => p['competenza_' + anno] > 0)
+        .sort((a, b) => b[1]['competenza_' + anno] - a[1]['competenza_' + anno]);
+      const chiudi = el('button', { type: 'button', class: 'chiudi', 'aria-label': 'Chiudi la scheda della missione', text: '×' });
+      chiudi.addEventListener('click', () => { missioneSel = null; schedaMissione(); sincronizzaBarre(); });
+      box.hidden = false;
+      box.replaceChildren(
+        el('div', { class: 'testa' }, [el('p', { class: 'occhiello', text: `Missione ${k}` }), el('h3', { text: nome(mm.nome) }), chiudi]),
+        r ? el('p', { class: 'nota' }, [
+          el('span', { class: 'badge ufficiale', text: 'Fonte ufficiale' }), ' ', r.descrizione + ' ',
+          el('a', { href: D.rgs.url + '#page=' + r.pagina, text: `Glossario RGS, pag. ${r.pagina}`, target: '_blank', rel: 'noopener' }), '.',
+        ]) : null,
+        el('dl', {}, [
+          riga('Competenza ' + anno, mln(mm['competenza_' + anno], 1)),
+          riga('Cassa ' + anno, mln(mm['cassa_' + anno], 1)),
+          riga('Programmi con una previsione', `${prog.length} di ${Object.keys(mm.programmi).length}`),
+        ]),
+        el('h4', { text: `Programmi della missione nel ${anno}` }),
+        prog.length
+          ? el('ul', { class: 'programmi' }, prog.map(([pc, p]) => el('li', {}, [
+            el('span', { class: 'cod', text: `${k}.${pc}` }),
+            el('span', { class: 'nome', text: nome(p.nome) }),
+            el('b', { text: mln(p['competenza_' + anno], 1) })])))
+          : el('p', { class: 'nota', text: `Nessun programma di questa missione ha una previsione nel ${anno}.` }),
+        el('p', { class: 'nota progetti' }, [
+          'Il bilancio classifica la spesa per missioni e programmi, il Programma triennale delle opere per settore e sottosettore del CUP: sono due classificazioni diverse e nei dati aperti non c\'è un campo che le colleghi. Qui quindi si vedono i programmi, non i progetti. I progetti si esplorano a parte: ',
+          el('a', { href: '#opere', text: 'opere pubbliche programmate' }), ', ',
+          el('a', { href: 'progetti.html', text: 'elenco dei progetti e finanziamenti' }), '.',
+        ]),
+      );
+    }
+
+    function sincronizzaBarre() {
+      document.querySelectorAll('#bilancio-barre .barra').forEach(b => b.setAttribute('aria-expanded', String(b.dataset.m === missioneSel)));
+    }
+
     function disegnaBilancio() {
       const m = Object.entries(D.bil.missioni).map(([k, v]) => ({ k, nome: v.nome, v: v['competenza_' + anno] })).sort((a, b) => b.v - a.v);
       const maxB = m[0].v, totale = D.bil.totale_spese_competenza[anno];
-      $('bilancio-lede').replaceChildren(`Il Comune prevede di spendere `, el('strong', { text: mln(totale, 0) }), ` nel ${anno} (competenza). Le previsioni sono quelle del bilancio approvato il 26/05/2026, non spesa effettiva. Il bilancio non ha capitoli per circoscrizione.`);
-      const nome = s => s.charAt(0) + s.slice(1).toLowerCase();
-      $('bilancio-barre').replaceChildren(...m.filter(x => x.v > 0).slice(0, 12).map(x => barra(x.k === '99' ? 'conto-terzi' : '', nome(x.nome), x.k === '99' ? 'Partite di giro: entrano ed escono' : `Missione ${x.k}`, { n: x.v, max: maxB, testo: mln(x.v, 1) })));
+      $('bilancio-lede').replaceChildren(`Il Comune prevede di spendere `, el('strong', { text: mln(totale, 0) }), ` nel ${anno} (competenza). Le previsioni sono quelle del bilancio approvato il 26/05/2026, non spesa effettiva. Il bilancio non ha capitoli per circoscrizione. Scegli una missione per vedere i suoi programmi e il link alla descrizione ufficiale.`);
+      $('bilancio-barre').replaceChildren(...m.filter(x => x.v > 0).map(x => {
+        const b = barra(x.k === '99' ? 'conto-terzi' : '', nome(x.nome), x.k === '99' ? 'Partite di giro: entrano ed escono' : `Missione ${x.k}`, { n: x.v, max: maxB, testo: mln(x.v, 1) });
+        b.classList.add('cliccabile');
+        b.setAttribute('role', 'button');
+        b.setAttribute('tabindex', '0');
+        b.setAttribute('data-m', x.k);
+        b.setAttribute('aria-expanded', String(x.k === missioneSel));
+        b.title = `Apri la scheda della missione ${x.k}`;
+        b.querySelector('.val').append(el('span', { class: 'freccia', 'aria-hidden': 'true', text: ' →' }));
+        const apri = () => {
+          missioneSel = missioneSel === x.k ? null : x.k;
+          schedaMissione(); sincronizzaBarre();
+          if (missioneSel) $('bilancio-scheda').scrollIntoView({ block: 'nearest', behavior: ridottoM.matches ? 'auto' : 'smooth' });
+        };
+        b.addEventListener('click', apri);
+        b.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); apri(); } });
+        return b;
+      }));
+      schedaMissione();
     }
     disegnaBilancio();
     $('bilancio-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, D.bil.non_misura.map(t => el('li', { text: t }))));

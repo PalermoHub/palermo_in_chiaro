@@ -299,6 +299,7 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .dettaglio ul.link li.ufficiale .badge { margin-right: 6px; vertical-align: 1px; }
 .dettaglio ul.link li:last-child { border-bottom: 0; }
 .dettaglio .est { font-size: 0.8rem; color: var(--muto); display: block; }
+.dettaglio .cerca-cod { font-size: 0.8rem; margin-left: 4px; }
 .dettaglio .titolo-prog { font-size: clamp(1.2rem, 2vw, 1.5rem); margin: 6px 0 10px; }
 
 /* tabella appalti */
@@ -314,7 +315,7 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
   .dettaglio { grid-template-columns: 1fr; }
 }
 
-/* righe citate cliccabili (opere, PNRR, coesione) */
+/* righe citate cliccabili (opere, PNRR, coesione, missioni del bilancio) */
 .barra.cliccabile { cursor: pointer; }
 .barra.cliccabile:hover { background: var(--maiolica-chiara); }
 .barra.cliccabile .nome a { color: inherit; text-decoration: none; }
@@ -328,6 +329,28 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
 .chip button { font: inherit; line-height: 1; background: none; border: 0; color: inherit; cursor: pointer; padding: 2px 6px; border-radius: 99px; }
 .chip button:hover { background: var(--maiolica); color: var(--carta); }
 .barra .freccia { color: var(--maiolica-scura); font-weight: 600; }
+
+/* scheda di una missione del bilancio */
+.scheda-missione { background: var(--sfondo-scheda); border-left: 4px solid var(--cupola); padding: 14px 18px 16px; margin: 0 0 18px; position: relative; }
+.scheda-missione[hidden] { display: none; }
+.scheda-missione .testa { display: grid; gap: 2px; padding-right: 44px; }
+.scheda-missione .occhiello { font-size: 0.76rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muto); margin: 0; }
+.scheda-missione h3 { font-size: clamp(1.1rem, 1.9vw, 1.4rem); margin: 0; }
+.scheda-missione .chiudi { position: absolute; top: 10px; right: 10px; font: inherit; font-size: 1.3rem; line-height: 1; width: 32px; height: 32px; border-radius: 99px; border: 1px solid var(--linea); background: none; color: var(--muto); cursor: pointer; }
+.scheda-missione .chiudi:hover { color: var(--inchiostro); border-color: var(--inchiostro); }
+.scheda-missione dl { margin: 10px 0 0; max-width: 34rem; }
+.scheda-missione h4 { font-size: 0.98rem; margin: 16px 0 6px; }
+.scheda-missione ul.programmi { list-style: none; padding: 0; margin: 0; max-width: 46rem; }
+.scheda-missione ul.programmi li { display: grid; grid-template-columns: 3.4rem 1fr auto; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid var(--linea); font-size: 0.92rem; }
+.scheda-missione ul.programmi li:last-child { border-bottom: 0; }
+.scheda-missione ul.programmi .cod { color: var(--muto); font-variant-numeric: tabular-nums; }
+.scheda-missione ul.programmi b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.scheda-missione .nota { font-size: 0.86rem; color: var(--muto); margin: 8px 0 0; max-width: 52rem; }
+.scheda-missione .nota.progetti { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--linea); }
+.scheda-missione .badge.ufficiale { margin-right: 4px; }
+.barra[aria-expanded="true"] { background: var(--maiolica-chiara); }
+.barra[aria-expanded="true"] .nome { font-weight: 600; }
+@media (max-width: 900px) { .scheda-missione ul.programmi li { grid-template-columns: 3rem 1fr; } .scheda-missione ul.programmi b { grid-column: 2; } }
 
 /* che cosa sto guardando: contesto della selezione arrivata da una riga */
 .ambito {
