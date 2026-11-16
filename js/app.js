@@ -249,7 +249,7 @@
       if (!layerOn && !tutta) return;
       if (!c || tutta) vb = [0, 0, W, H];
       else { const b = gruppi[c].p.getBBox(), m = 24; vb = [b.x - m, b.y - m, b.width + 2 * m, b.height + 2 * m]; }
-      svg.setAttribute('viewBox', vb.join(' ')); ridimensiona();
+      svg.setAttribute('viewBox', vb.join(' ')); svg.style.setProperty('--ar', `${vb[2].toFixed(1)} / ${vb[3].toFixed(1)}`); ridimensiona();
     }
     function evidenziaProgetto() {
       gP.querySelectorAll('.sel').forEach(e => e.classList.remove('sel'));
