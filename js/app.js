@@ -45,6 +45,7 @@
       { id: 'opr', nome: 'Opere per residente', val: c => O(c).importo_triennio_per_residente_eur, f: n => it(n) + ' €', nota: 'Importo 2026-2028 diviso per i residenti 2021. Parziale: il 47% dell\'importo non ha circoscrizione.' },
     ];
     let ind = IND[0], sel = null, selProj = null, layerOn = false, PR = null;
+    let PROG = null, progStato = 'idle', qProg = '';   // elenco completo dei progetti, caricato alla prima circoscrizione scelta
 
     /* selettore */
     const sg = $('selettore');
@@ -63,8 +64,8 @@
       const p = document.createElementNS(NS, 'path');
       p.setAttribute('d', g.d); p.setAttribute('class', 'circ'); p.setAttribute('tabindex', '0'); p.setAttribute('role', 'button');
       p.setAttribute('aria-pressed', 'false'); p.setAttribute('aria-label', `Circoscrizione ${c}`);
-      p.addEventListener('click', () => scegli(c));
-      p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegli(c); } });
+      p.addEventListener('click', () => scegli(c, true));
+      p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegli(c, true); } });
       svg.append(p);
       gruppi[c] = { p };
     });
@@ -97,12 +98,26 @@
     }
 
     /* scheda */
-    function scegli(c) {
-      sel = c; selProj = null; evidenziaProgetto();
+    function scegli(c, scorri) {
+      sel = c; selProj = null; qProg = ''; evidenziaProgetto();
       ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === c)));
       document.querySelectorAll('#opere-barre .barra').forEach(b => b.removeAttribute('aria-current'));
       const b = document.querySelector(`#opere-barre .barra[data-c="${c}"]`); if (b) b.setAttribute('aria-current', 'true');
       scheda(); zoomA(c);
+      /* su schermo stretto la scheda sta sotto la mappa: senza questo resta fuori vista */
+      if (scorri && matchMedia('(max-width: 900px)').matches) {
+        $('scheda').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      }
+    }
+
+    /* i progetti della circoscrizione: data/progetti.json pesa, si carica solo quando serve */
+    function caricaProgetti() {
+      if (progStato !== 'idle') return;
+      progStato = 'carica';
+      fetch('data/progetti.json', { cache: 'no-cache' })
+        .then(r => { if (!r.ok) throw new Error('progetti'); return r.json(); })
+        .then(j => { PROG = j; progStato = 'pronto'; if (sel) scheda(); })
+        .catch(() => { progStato = 'errore'; if (sel) scheda(); });
     }
     function riga(k, v) { return el('div', { class: 'riga' }, [el('dt', { text: k }), el('dd', { text: v })]); }
     function scheda() {
@@ -114,7 +129,7 @@
           el('p', { text: `${it(D.prof.totale_palermo.residenti)} residenti al censimento 2021, in 8 circoscrizioni.` }),
           el('p', { text: 'Scegli una circoscrizione sulla mappa per vedere residenti, famiglie e opere programmate.' }),
           el('p', { class: 'nota', text: 'Il Comune non ha un bilancio per circoscrizione: le somme di bilancio, appalti, PNRR e coesione sono per tutto il Comune.' }),
-          ...elencoProgetti(),
+          ...progettiSullaMappa(),
         ]));
         return;
       }
@@ -134,10 +149,87 @@
         el('p', { class: 'quartieri', text: q.join(', ') }),
         dl,
         el('h3', { text: 'Opere programmate 2026-2028' }), dlo, sett,
-        el('p', { class: 'nota' }, [el('a', { href: elenco({ fonte: 'opere', circ: sel }), text: `Vedi i ${o.interventi} interventi in elenco` }), ' con la scheda di ciascuno.']),
         el('p', { class: 'nota', text: 'Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso.' }),
-        ...elencoProgetti()
+        ...progettiDellaCircoscrizione().filter(Boolean)
       );
+    }
+
+    /* quali progetti ricadono in questa circoscrizione, con la ricerca */
+    const ETICH = { opere: 'Opere', pnrr: 'PNRR', coesione: 'Coesione', appalti: 'Appalti' };
+    const importoMax = (p) => Math.max(
+      p.opere ? p.opere.importo_triennio_eur : -1,
+      p.pnrr && p.pnrr.importo_finanziato_eur != null ? p.pnrr.importo_finanziato_eur : -1,
+      p.coesione && p.coesione.length ? Math.max(...p.coesione.map(x => x.finanziamento_pubblico_netto_eur || 0)) : -1);
+    /* se il progetto è anche sulla mappa lo si apre qui, altrimenti nella sua pagina */
+    function apriVoce(p) {
+      const geo = p.id.startsWith('op-') ? p.id.slice(3) : null;
+      if (layerOn && PR && geo && PR.progetti.some(x => x.id === geo)) { apriProgetto(geo); return; }
+      location.href = 'progetto.html?id=' + encodeURIComponent(p.id);
+    }
+    /* un intervento con più circoscrizioni non si divide: vale solo per il suo insieme */
+    const inCirc = (p, c) => p.circoscrizioni.length === 1 && p.circoscrizioni[0] === c;
+    function progettiDellaCircoscrizione() {
+      if (!sel) return [];
+      const h = el('h3', { text: 'Progetti' });
+      if (!PROG) {
+        caricaProgetti();
+        return [h,
+          el('p', { class: 'nota', text: progStato === 'errore' ? 'L\'elenco dei progetti non si carica.' : 'Caricamento dei progetti della circoscrizione…' }),
+          el('p', { class: 'nota' }, [el('a', { href: elenco({ circ: sel }), text: 'Apri l\'elenco dei progetti della circoscrizione' }), '.'])];
+      }
+      const base = PROG.progetti.filter(p => inCirc(p, sel))
+        .sort((a, b) => (importoMax(b) - importoMax(a)) || a.titolo.localeCompare(b.titolo, 'it'));
+      const inp = el('input', { type: 'search', placeholder: 'Cerca fra i progetti (es. scuola, strada, via)', 'aria-label': `Cerca fra i progetti della Circoscrizione ${sel}` });
+      inp.value = qProg;
+      const out = el('div', { class: 'elenco-prog', role: 'list' });
+      const conta = el('p', { class: 'nota' });
+      const mostra = () => {
+        qProg = inp.value;
+        const q = qProg.trim().toLowerCase();
+        const r = base.filter(p => !q || (p.titolo + ' ' + (p.cup || '') + ' ' + (p.cui || '')).toLowerCase().includes(q));
+        const vis = r.slice(0, 12);
+        out.replaceChildren(...(vis.length ? vis.map(p => {
+          const imp = importoMax(p);
+          const b = el('button', { type: 'button', role: 'listitem', class: 'voce-prog', title: 'Apri la scheda: ' + p.titolo }, [
+            el('span', {}, [el('span', { class: 'tit', text: p.titolo.length > 96 ? p.titolo.slice(0, 94) + '…' : p.titolo }),
+              el('span', { class: 'fonti-riga mini' }, p.fonti.map(f => el('span', { class: 'badge ' + f, text: ETICH[f] || f })))]),
+            el('b', { text: imp > 0 ? mln(imp, 1) : 'importo non disponibile' })]);
+          b.addEventListener('click', () => apriVoce(p));
+          return b;
+        }) : [el('p', { class: 'nota', text: 'Nessun progetto trovato con questa ricerca.' })]));
+        conta.textContent = (r.length ? `${it(Math.min(12, r.length))} di ${it(r.length)} progetti` : 'Nessun progetto') +
+          (q ? ' con questa ricerca' : '') + (r.length ? ', per importo decrescente.' : '.');
+      };
+      inp.addEventListener('input', mostra);
+      mostra();
+      const nOpere = base.filter(p => p.fonti.includes('opere')).length;
+      const nAltre = base.length - nOpere;
+      const nGeo = layerOn && PR ? PR.progetti.filter(p => inCirc(p, sel)).length : null;
+      return [h,
+        el('p', { class: 'nota', text: `Le ${it(base.length)} voci che ricadono in Circoscrizione ${sel}: ${it(nOpere)} opere del Programma triennale` +
+          (nAltre ? ` e ${it(nAltre)} tra PNRR e coesione collegate per CUP o CUI` : '') +
+          `. L'importo è quello più alto fra le fonti del progetto: fonti diverse non si sommano.` }),
+        inp, out, conta,
+        nGeo == null ? null : el('p', { class: 'nota', text: `Sulla mappa ne hanno una posizione ${it(nGeo)}: aprendoli con il livello dei progetti attivo si evidenziano sulla mappa, gli altri aprono la loro scheda.` }),
+        el('p', { class: 'nota' }, [el('a', { href: elenco({ circ: sel }), text: `Vedi tutti i ${it(base.length)} progetti in elenco` }), ', con filtri e collegamenti alle fonti. Gli interventi che toccano più circoscrizioni non si dividono: restano nell\'elenco sotto «Più circoscrizioni».'])];
+    }
+
+    /* senza circoscrizione scelta la scheda è quella di Palermo: elenca gli interventi che stanno sulla mappa */
+    function progettiSullaMappa() {
+      if (!layerOn || !PR) return [];
+      const base = PR.progetti.slice().sort((a, b) => b.importo_triennio_eur - a.importo_triennio_eur);
+      const out = el('div', { class: 'elenco-prog', role: 'list' });
+      base.slice(0, 12).forEach(pr => {
+        const b = el('button', { type: 'button', role: 'listitem', class: 'voce-prog', title: 'Apri sulla mappa: ' + pr.descrizione }, [
+          el('span', {}, [el('span', { class: 'tit', text: pr.descrizione.length > 96 ? pr.descrizione.slice(0, 94) + '…' : pr.descrizione })]),
+          el('b', { text: mln(pr.importo_triennio_eur, 1) })]);
+        b.addEventListener('click', () => apriProgetto(pr.id));
+        out.append(b);
+      });
+      const quota = it(100 * base.reduce((s, p) => s + p.importo_triennio_eur, 0) / tot.importo_triennio_eur, 0);
+      return [el('h3', { text: `Progetti con posizione (${base.length})` }), out,
+        el('p', { class: 'nota', text: `I primi 12 per importo: sono ${base.length} interventi con una posizione, il ${quota}% dell'importo del Programma. Gli altri ${PR.senza_posizione} (reti, linee e interventi diffusi) non sono sulla mappa.` }),
+        el('p', { class: 'nota' }, [el('a', { href: 'progetti.html', text: 'Tutti i progetti e i finanziamenti, in elenco' }), ' (compresi quelli senza posizione).'])];
     }
 
     /* sezione opere */
@@ -332,22 +424,6 @@
       const l = $('legenda'); l.querySelector('.leg-prog')?.remove();
       if (!layerOn) return;
       l.append(el('span', { class: 'leg-prog' }, [el('i', { class: 'k pieno' }), ' posizione letta o dall\'etichetta  ', el('i', { class: 'k anello' }), ' approssimata (circa 300 m)  ', el('i', { class: 'k linea' }), ' linee e aree']));
-    }
-    function elencoProgetti() {
-      if (!layerOn || !PR) return [];
-      const base = PR.progetti.filter(p => !sel || p.circoscrizioni.includes(sel));
-      const inp = el('input', { type: 'search', id: 'cerca-prog', placeholder: 'Cerca un progetto (es. scuola, strada, via)', 'aria-label': 'Cerca un progetto' });
-      const out = el('div', { class: 'elenco-prog', role: 'list' });
-      const mostra = () => {
-        const q = inp.value.trim().toLowerCase(), r = base.filter(p => !q || (p.descrizione + ' ' + (p.cup || '')).toLowerCase().includes(q)).slice(0, 8);
-        out.replaceChildren(...(r.length ? r.map(p => el('button', { type: 'button', role: 'listitem', class: 'voce-prog' }, [el('span', { text: p.descrizione.length > 78 ? p.descrizione.slice(0, 76) + '…' : p.descrizione }), el('b', { text: mln(p.importo_triennio_eur, 1) })])) : [el('p', { class: 'nota', text: 'Nessun progetto trovato.' })]));
-        out.querySelectorAll('button').forEach((b, i) => b.addEventListener('click', () => apriProgetto(r[i].id)));
-      };
-      inp.addEventListener('input', mostra); mostra();
-      const nBase = base.length;
-      return [el('h3', { text: sel ? `Progetti con posizione in questa circoscrizione (${nBase})` : `Progetti con posizione (${nBase})` }), inp, out,
-        el('p', { class: 'nota', text: `Solo gli interventi con una posizione: ${PR.progetti.length} su 548, il ${it(100 * PR.progetti.reduce((s, p) => s + p.importo_triennio_eur, 0) / tot.importo_triennio_eur, 0)}% dell'importo. Gli altri ${PR.senza_posizione} (reti, linee e interventi diffusi) non sono sulla mappa. Elenco ordinato per importo.` }),
-        el('p', { class: 'nota' }, [el('a', { href: 'progetti.html', text: 'Tutti i progetti e i finanziamenti, in elenco' }), ' (compresi quelli senza posizione).'])];
     }
     function schedaProgetto(id) {
       const p = PR.progetti.find(x => x.id === id), tipo = [p.punti.length && 'punto', p.linee.length && 'linea', p.poligoni.length && 'area'].filter(Boolean).join(', ');
