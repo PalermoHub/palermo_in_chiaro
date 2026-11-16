@@ -151,13 +151,18 @@
     ]);
 
     const collegamenti = [];
+    const interni = [];
     if (p.link.opencup) collegamenti.push(voceUfficiale(p.link.opencup, 'Scheda OpenCUP del CUP', 'opencup.gov.it'));
     if (p.pnrr && p.pnrr.url) collegamenti.push(voceUfficiale(p.pnrr.url, 'Scheda PNRR del Comune', 'pnrr.comune.palermo.it'));
     if (p.link.opencoesione) collegamenti.push(voceUfficiale(p.link.opencoesione, 'Scheda OpenCoesione', 'opencoesione.gov.it'));
     if (p.link.opencup_candidato) collegamenti.push(voceVerifica(p.link.opencup_candidato, 'OpenCUP, CUP candidato', p.link.nota_opencup_candidato || 'collegamento da verificare'));
-    if (p.cup && !p.link.opencup) collegamenti.push(el('li', {}, [link('https://www.opencup.gov.it/portale/web/opencup/ricerca?cup=' + encodeURIComponent(p.cup), 'Cerca il CUP su OpenCUP'), el('span', { class: 'est', text: 'ricerca sul portale OpenCUP: nessuna scheda diretta nel Programma' })]));
+    if (p.cup && !p.link.opencup) collegamenti.push(el('li', { class: 'ufficiale' }, [el('span', { class: 'badge cerca', text: 'Ricerca' }), link('https://www.opencup.gov.it/portale/web/opencup/ricerca?cup=' + encodeURIComponent(p.cup), 'Cerca il CUP su OpenCUP'), el('span', { class: 'est', text: 'ricerca sul portale OpenCUP: nessuna scheda diretta nel Programma' })]));
     if (p.appalti && p.appalti.length) collegamenti.push(voceUfficiale('https://dati.anticorruzione.it/opendata/dataset/cig', 'Open data CIG (ANAC)', 'dati.anticorruzione.it', 'Dati ufficiali'));
-    if (p.localizzato) collegamenti.push(el('li', {}, [el('a', { href: './#mappa', text: 'Vedi la posizione sulla mappa' }), el('span', { class: 'est', text: 'attiva «Mostra i singoli progetti»' })]));
+    if (p.localizzato) interni.push(el('li', {}, [el('a', { href: './#mappa', text: 'Vedi la posizione sulla mappa' }), el('span', { class: 'est', text: 'attiva «Mostra i singoli progetti»' })]));
+
+    /* una voce su due non ha in fonte né CUP né collegamenti: meglio dirlo che lasciare il vuoto */
+    const vuoto = collegamenti.length === 0;
+    const notaCollegamenti = vuoto ? el('p', { class: 'nota' }, [el('span', { class: 'badge nessuno', text: 'Nessun collegamento in fonte' }), ' Il Programma triennale non riporta il CUP di questo intervento: senza CUP non c\'è una scheda ufficiale da collegare.']) : null;
 
     const docs = (p.pnrr && p.pnrr.documenti || []).map(d => el('li', {}, [link(d.url, d.titolo.slice(0, 90) + (d.titolo.length > 90 ? '…' : '')), el('span', { class: 'est', text: 'documento sul sito del Comune' })]));
 
@@ -171,7 +176,7 @@
         ]),
         el('div', { class: 'colonna' }, [
           riquadro('Identificativi e territorio', [ident, el('p', { class: 'nota' }, [el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cup || p.id), text: 'Cerca le voci collegate' })])]),
-          riquadro('Collegamenti', collegamenti.length ? el('ul', { class: 'link' }, collegamenti) : el('p', { class: 'nota', text: 'Nessun collegamento esterno disponibile per questa voce.' })),
+          riquadro('Collegamenti', [notaCollegamenti, (collegamenti.length || interni.length) ? el('ul', { class: 'link' }, [...collegamenti, ...interni]) : null]),
           docs.length ? riquadro('Documenti PNRR', el('ul', { class: 'link' }, docs)) : null,
         ]),
       ]),

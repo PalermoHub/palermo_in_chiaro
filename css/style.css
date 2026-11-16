@@ -276,8 +276,11 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .badge.pnrr { border-color: var(--cupola); color: var(--cupola); }
 .badge.coesione { border-color: var(--ocra); color: var(--muto); }
 .badge.appalti { border-color: var(--inchiostro); color: var(--inchiostro); }
-.badge.ufficiale { border-color: var(--maiolica); color: var(--maiolica-scura); background: var(--maiolica-chiara); }
-.badge.verifica { border-color: var(--cupola); color: var(--cupola); }
+.badge.ufficiale, .badge.cerca, .badge.nessuno { padding: 2px 10px; font-weight: 600; }
+.badge.ufficiale { background: var(--maiolica); border-color: var(--maiolica); color: var(--carta); }
+.badge.cerca { background: var(--carta-2); border-color: var(--linea); color: var(--inchiostro); }
+.badge.verifica { background: var(--cupola); border-color: var(--cupola); color: var(--carta); padding: 2px 10px; font-weight: 600; }
+.badge.nessuno { border-color: var(--muto); color: var(--muto); }
 .altro { margin-top: 16px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--carta); background: var(--inchiostro); border: 0; border-radius: 99px; padding: 9px 20px; cursor: pointer; }
 .altro:hover { background: var(--maiolica-scura); }
 .altro[hidden] { display: none; }
