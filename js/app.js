@@ -46,6 +46,7 @@
     ];
     let ind = IND[0], sel = null, selProj = null, layerOn = false, PR = null;
     let PROG = null, progStato = 'idle', qProg = '';   // elenco completo dei progetti, caricato alla prima circoscrizione scelta
+    let progGeoStato = 'idle';                         // posizioni dei progetti per la mappa
 
     /* selettore */
     const sg = $('selettore');
@@ -95,19 +96,39 @@
       });
       $('mappa-nota').textContent = ind.nota;
       $('legenda').replaceChildren(el('span', { text: ind.f(mn) }), el('span', { class: 'scala' }), el('span', { text: ind.f(mx) }));
+      legendaProgetti();
     }
 
     /* scheda */
     function scegli(c, scorri) {
+      /* un secondo clic sulla stessa circoscrizione riporta a tutta la città */
+      if (c === sel && !selProj && scorri) { deseleziona(); return; }
       sel = c; selProj = null; qProg = ''; evidenziaProgetto();
       ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === c)));
       document.querySelectorAll('#opere-barre .barra').forEach(b => b.removeAttribute('aria-current'));
       const b = document.querySelector(`#opere-barre .barra[data-c="${c}"]`); if (b) b.setAttribute('aria-current', 'true');
-      scheda(); zoomA(c);
+      tutta.hidden = false;
+      /* sulla mappa restano i progetti di questa circoscrizione, dentro il suo poligono */
+      if (!layerOn) accendiProgetti();
+      else { aggiornaVisibilitaProgetti(); zoomA(c); scheda(); }
       /* su schermo stretto la scheda sta sotto la mappa: senza questo resta fuori vista */
       if (scorri && matchMedia('(max-width: 900px)').matches) {
         $('scheda').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       }
+    }
+
+    /* dalle barre delle opere: circoscrizione sulla mappa e scheda, senza cambiare pagina */
+    function mostraCircoscrizione(c) {
+      scegli(c, false);
+      document.querySelector('.mappa-blocco').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    }
+
+    function deseleziona() {
+      sel = null; selProj = null; qProg = ''; evidenziaProgetto();
+      ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', 'false'));
+      document.querySelectorAll('#opere-barre .barra').forEach(b => b.removeAttribute('aria-current'));
+      tutta.hidden = true;
+      zoomA(null, true); aggiornaVisibilitaProgetti(); legendaProgetti(); scheda();
     }
 
     /* i progetti della circoscrizione: data/progetti.json pesa, si carica solo quando serve */
@@ -210,7 +231,7 @@
           (nAltre ? ` e ${it(nAltre)} tra PNRR e coesione collegate per CUP o CUI` : '') +
           `. L'importo è quello più alto fra le fonti del progetto: fonti diverse non si sommano.` }),
         inp, out, conta,
-        nGeo == null ? null : el('p', { class: 'nota', text: `Sulla mappa ne hanno una posizione ${it(nGeo)}: aprendoli con il livello dei progetti attivo si evidenziano sulla mappa, gli altri aprono la loro scheda.` }),
+        nGeo == null ? null : el('p', { class: 'nota', text: `I progetti con una posizione sono già disegnati sulla mappa: scegliendone uno qui sotto lo si evidenzia, gli altri aprono la loro scheda.` }),
         el('p', { class: 'nota' }, [el('a', { href: elenco({ circ: sel }), text: `Vedi tutti i ${it(base.length)} progetti in elenco` }), ', con filtri e collegamenti alle fonti. Gli interventi che toccano più circoscrizioni non si dividono: restano nell\'elenco sotto «Più circoscrizioni».'])];
     }
 
@@ -235,22 +256,28 @@
     /* sezione opere */
     $('opere-lede').replaceChildren(
       'Gli interventi del Programma triennale dei lavori pubblici valgono ', el('strong', { text: mln(tot.importo_triennio_eur, 0) }),
-      `. Il ${it(100 * nonLoc.importo_triennio_eur / tot.importo_triennio_eur, 0)}% (${mln(nonLoc.importo_triennio_eur, 0)}, ${nonLoc.interventi} interventi) non ha una circoscrizione: sono reti e linee che attraversano la città.`);
+      `. Il ${it(100 * nonLoc.importo_triennio_eur / tot.importo_triennio_eur, 0)}% (${mln(nonLoc.importo_triennio_eur, 0)}, ${nonLoc.interventi} interventi) non ha una circoscrizione: sono reti e linee che attraversano la città.`,
+      ' Scegli una circoscrizione: la mappa la mostra con i progetti che hanno una posizione; il nome della circoscrizione apre l\'elenco completo.');
     const maxO = Math.max(...ROM.map(c => O(c).importo_triennio_eur), D.opere.piu_circoscrizioni.importo_triennio_eur, nonLoc.importo_triennio_eur);
-    const barra = (cls, nome, sub, v, extra = {}, href = null) => {
+    const barra = (cls, nome, sub, v, extra = {}, href = null, vai = null) => {
       const riga = el('div', Object.assign({ class: 'barra ' + cls + (href ? ' cliccabile' : ''), role: 'listitem' }, extra), [
-        el('div', { class: 'nome' }, [href ? el('a', { href, text: nome, 'aria-label': `${nome}${sub ? ': ' + sub : ''}, ${v.testo}. Apri l'elenco dei progetti` }) : nome, sub ? el('small', { text: sub }) : null]),
+        el('div', { class: 'nome' }, [href ? el('a', { href, text: nome, 'aria-label': `${nome}${sub ? ': ' + sub + ', ' : ': '}${v.testo}. Apri l'elenco dei progetti` }) : nome, sub ? el('small', { text: sub }) : null]),
         el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${100 * v.n / v.max}%` })]),
-        el('div', { class: 'val' }, [v.testo, href ? el('span', { class: 'freccia', 'aria-hidden': 'true', text: ' →' }) : null])]);
+        el('div', { class: 'val' }, [v.testo, href && !vai ? el('span', { class: 'freccia', 'aria-hidden': 'true', text: ' →' }) : null])]);
       if (href) {
-        riga.addEventListener('click', (e) => { if (!e.target.closest('a')) location.href = href; });
-        riga.title = `Apri l'elenco: ${sub ? sub + ', ' : ''}${v.testo}`;
+        riga.addEventListener('click', (e) => {
+          if (e.target.closest('a')) return;
+          if (vai) vai(); else location.href = href;
+        });
+        riga.title = vai
+          ? `Mostra ${nome} sulla mappa, con i progetti che hanno una posizione. Il nome apre l'elenco.`
+          : `Apri l'elenco: ${sub ? sub + ', ' : ''}${v.testo}`;
       }
       return riga;
     };
     const elenco = (params) => 'progetti.html?' + Object.entries(params).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&');
     const ob = $('opere-barre');
-    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c }, elenco({ fonte: 'opere', circ: c }))));
+    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c }, elenco({ fonte: 'opere', circ: c }), () => mostraCircoscrizione(c))));
     const pc = D.opere.piu_circoscrizioni;
     ob.append(barra('piu', 'Più circoscrizioni', `${pc.interventi} interventi, non divisi`, { n: pc.importo_triennio_eur, max: maxO, testo: mln(pc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__multi' })));
     ob.append(barra('senza', 'Senza circoscrizione', `${nonLoc.interventi} interventi`, { n: nonLoc.importo_triennio_eur, max: maxO, testo: mln(nonLoc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__nessuna' })));
@@ -384,11 +411,43 @@
     const nodi = {};   // id progetto -> elementi svg
     const swit = el('button', { type: 'button', role: 'switch', 'aria-checked': 'false', class: 'interruttore' }, [el('span', { class: 'pallino-sw' }), 'Mostra i singoli progetti']);
     sg.after(swit);
+    const tutta = el('button', { type: 'button', class: 'interruttore torna', hidden: true, text: 'Tutta la città' });
+    swit.after(tutta);
+    tutta.addEventListener('click', () => deseleziona());
+
+    /* livello dei progetti: on/off, classi sul disegno, legenda e visibilità per circoscrizione */
+    function statoProgetti(on) {
+      layerOn = on;
+      swit.setAttribute('aria-checked', String(on));
+      svg.classList.toggle('con-progetti', on);
+      gP.toggleAttribute('hidden', !on);
+      aggiornaVisibilitaProgetti();
+      legendaProgetti();
+    }
+    function aggiornaVisibilitaProgetti() {
+      svg.classList.toggle('filtro-circ', layerOn && !!sel);
+      if (!PR) return;
+      PR.progetti.forEach(pr => {
+        const n = nodi[pr.id]; if (!n) return;
+        const mostra = !sel || pr.circoscrizioni.includes(sel);
+        [...n.pol, ...n.lin, ...n.pt].forEach(e => { e.style.display = mostra ? '' : 'none'; });
+      });
+    }
+    /* accende il livello dei progetti: le posizioni si scaricano la prima volta che servono */
+    function accendiProgetti() {
+      const finito = () => { statoProgetti(true); zoomA(sel); scheda(); };
+      if (PR) return finito();
+      if (progGeoStato === 'carica') return;
+      progGeoStato = 'carica';
+      $('mappa-nota').textContent = 'Carico le posizioni dei progetti…';
+      fetch('data/geo/progetti.json')
+        .then(r => { if (!r.ok) throw new Error('posizioni'); return r.json(); })
+        .then(j => { PR = j; progGeoStato = 'pronto'; disegnaProgetti(); colora(); finito(); })
+        .catch(() => { progGeoStato = 'errore'; statoProgetti(false); $('mappa-nota').textContent = 'Le posizioni dei progetti non si caricano.'; });
+    }
     swit.addEventListener('click', () => {
-      layerOn = !layerOn; swit.setAttribute('aria-checked', String(layerOn));
-      const attiva = () => { svg.classList.toggle('con-progetti', layerOn); gP.toggleAttribute('hidden', !layerOn); if (layerOn) zoomA(sel); else zoomA(null, true); scheda(); legendaProgetti(); };
-      if (PR || !layerOn) return attiva();
-      fetch('data/geo/progetti.json').then(r => r.json()).then(j => { PR = j; disegnaProgetti(); attiva(); }).catch(() => { layerOn = false; swit.setAttribute('aria-checked', 'false'); $('mappa-nota').textContent = 'I progetti non si caricano.'; });
+      if (layerOn) { statoProgetti(false); zoomA(null, true); scheda(); }
+      else accendiProgetti();
     });
     function disegnaProgetti() {
       const mk = (tag, a) => { const e = document.createElementNS(NS, tag); for (const k in a) e.setAttribute(k, a[k]); return e; };
@@ -406,6 +465,7 @@
         });
       });
       gP.append(gPol, gLin, gPt); ridimensiona();
+      aggiornaVisibilitaProgetti();
     }
     let vb = [0, 0, W, H];
     function ridimensiona() { const k = vb[2] / 1000; gP.querySelectorAll('.g-pt').forEach(e => e.setAttribute('r', (+e.dataset.r * k).toFixed(2))); svg.style.setProperty('--k', k); }
@@ -419,11 +479,14 @@
       gP.querySelectorAll('.sel').forEach(e => e.classList.remove('sel'));
       if (selProj && nodi[selProj]) { const n = nodi[selProj]; [...n.pol, ...n.lin, ...n.pt].forEach(e => { e.classList.add('sel'); e.parentNode.append(e); }); }
     }
-    function apriProgetto(id) { selProj = id; evidenziaProgetto(); const pr = PR.progetti.find(x => x.id === id); if (pr && pr.circoscrizioni.length === 1 && sel !== pr.circoscrizioni[0]) { sel = pr.circoscrizioni[0]; ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === sel))); zoomA(sel); } scheda(); if (matchMedia('(max-width: 900px)').matches) $('scheda').scrollIntoView({ block: 'start', behavior: 'smooth' }); }
+    function apriProgetto(id) { selProj = id; evidenziaProgetto(); const pr = PR.progetti.find(x => x.id === id); if (pr && pr.circoscrizioni.length === 1 && sel !== pr.circoscrizioni[0]) { sel = pr.circoscrizioni[0]; ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === sel))); zoomA(sel); } tutta.hidden = !sel; aggiornaVisibilitaProgetti(); scheda(); if (matchMedia('(max-width: 900px)').matches) $('scheda').scrollIntoView({ block: 'start', behavior: 'smooth' }); }
     function legendaProgetti() {
       const l = $('legenda'); l.querySelector('.leg-prog')?.remove();
-      if (!layerOn) return;
-      l.append(el('span', { class: 'leg-prog' }, [el('i', { class: 'k pieno' }), ' posizione letta o dall\'etichetta  ', el('i', { class: 'k anello' }), ' approssimata (circa 300 m)  ', el('i', { class: 'k linea' }), ' linee e aree']));
+      if (!layerOn) { l.querySelector('.leg-circ')?.remove(); return; }
+      const voci = [el('i', { class: 'k pieno' }), ' posizione letta o dall\'etichetta  ', el('i', { class: 'k anello' }), ' approssimata (circa 300 m)  ', el('i', { class: 'k linea' }), ' linee e aree'];
+      const n = sel && PR ? PR.progetti.filter(p => p.circoscrizioni.includes(sel)).length : null;
+      if (n != null) voci.push(el('b', { class: 'leg-nota', text: `Circoscrizione ${sel}: ${it(n)} progetti disegnati` }));
+      l.append(el('span', { class: 'leg-prog' }, voci));
     }
     function schedaProgetto(id) {
       const p = PR.progetti.find(x => x.id === id), tipo = [p.punti.length && 'punto', p.linee.length && 'linea', p.poligoni.length && 'area'].filter(Boolean).join(', ');
