@@ -253,14 +253,18 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
   .testata nav { order: 2; }
 }
 
-/* intestazione dell'elenco: con una circoscrizione scelta si apre una colonna a destra per la mappa */
-.pagina-testa.con-mappa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 380px); column-gap: clamp(20px, 3vw, 48px); align-items: start; }
-.pagina-testa.con-mappa > *:not(.mini-mappa) { grid-column: 1; }
-.pagina-testa.con-mappa .mini-mappa { grid-column: 2; grid-row: 1 / span 99; position: sticky; top: calc(var(--testata) + 16px); margin: 24px 0 0; }
+/* con una circoscrizione scelta l'elenco lascia una colonna a destra alla mappa,
+   che resta ferma mentre si scorre la lista */
+.page.con-mappa { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 380px); column-gap: clamp(20px, 3vw, 48px); align-items: start; }
+.page.con-mappa > *:not(.mini-mappa) { grid-column: 1; }
+.page.con-mappa .mini-mappa { grid-column: 2; grid-row: 1 / span 99; position: sticky; top: calc(var(--testata) + 16px); margin: 0; }
 .mini-mappa[hidden] { display: none; }
 .mini-mappa { padding: 0; }
-.mini-mappa a { display: block; }
 .mini-mappa svg { display: block; width: 100%; height: auto; max-height: 46vh; }
+.mini-mappa .pol, .mini-mappa .lin, .mini-mappa .pt { cursor: pointer; }
+.mini-mappa .pt:hover { fill: var(--cupola); }
+.mini-mappa .pol:hover { fill-opacity: 0.85; }
+.mini-mappa .lin:hover { stroke: var(--cupola); }
 .mini-mappa figcaption { font-size: 0.82rem; color: var(--muto); margin-top: 6px; text-align: right; }
 .mini-mappa figcaption a { color: var(--maiolica-scura); }
 .mini-mappa .circ { fill: var(--s0); fill-opacity: 0.9; stroke: var(--cupola); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
@@ -268,11 +272,15 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .mini-mappa .lin { fill: none; stroke: var(--inchiostro); stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .mini-mappa .pt { fill: var(--maiolica-scura); stroke: var(--carta); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .mini-mappa .pt.approx { fill: none; stroke: var(--maiolica-scura); stroke-width: 1.3; stroke-dasharray: 2 2; }
-.mini-mappa a:hover .circ, .mini-mappa a:focus-visible .circ { stroke: var(--inchiostro); }
-.mini-mappa a:focus-visible { outline: 2px solid var(--cupola); outline-offset: 2px; }
+.mini-mappa figcaption a:hover { text-decoration-thickness: 2px; }
+/* progetto scelto (in mappa o in elenco): resta segnato */
+.mini-mappa .pt.sel { fill: var(--cupola); stroke: var(--carta); stroke-width: 1.6; }
+.mini-mappa .pt.approx.sel { fill: var(--cupola); fill-opacity: 0.35; }
+.mini-mappa .lin.sel { stroke: var(--cupola); stroke-width: 3.5; }
+.mini-mappa .pol.sel { fill-opacity: 0.95; stroke: var(--inchiostro); stroke-width: 2; }
 @media (max-width: 900px) {
-  .pagina-testa.con-mappa { grid-template-columns: 1fr; }
-  .pagina-testa.con-mappa .mini-mappa { grid-column: 1; grid-row: auto; position: static; margin: 18px 0 0; }
+  .page.con-mappa { grid-template-columns: 1fr; }
+  .page.con-mappa .mini-mappa { grid-column: 1; grid-row: auto; position: static; margin: 0 0 18px; }
 }
 
 /* ---- pagine di elenco e scheda progetto ---- */
@@ -303,6 +311,9 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .elenco { display: grid; margin-top: 6px; }
 .voce { display: grid; grid-template-columns: minmax(0, 1fr) minmax(9rem, auto); gap: 6px 20px; padding: 15px 2px; border-bottom: 1px solid var(--linea); }
 .voce:hover { background: color-mix(in srgb, var(--maiolica-chiara) 45%, transparent); }
+/* riga raggiunta da un punto della mappa: si accende per qualche secondo */
+.voce.evidenzia { background: var(--maiolica-chiara); box-shadow: inset 4px 0 0 var(--cupola); }
+.voce.evidenzia .titolo a { text-decoration: underline; text-underline-offset: 3px; }
 .voce .titolo { font-family: var(--font-titoli); font-weight: 500; font-size: 1.06rem; line-height: 1.25; margin: 0; }
 .voce .titolo a { color: var(--inchiostro); text-decoration: none; }
 .voce .titolo a:hover { text-decoration: underline; text-underline-offset: 3px; }

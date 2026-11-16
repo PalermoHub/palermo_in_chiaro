@@ -91,7 +91,7 @@
     if (p.cup) dove.push(el('span', { text: 'CUP ' + p.cup }));
     if (p.cui) dove.push(el('span', { text: 'CUI ' + p.cui }));
     const imp = importi(p).map(x => el('span', {}, [x.fonte + ': ', el('b', { text: eur(x.valore) })]));
-    return el('article', { class: 'voce' }, [
+    return el('article', { class: 'voce', 'data-id': p.id }, [
       el('div', {}, [
         el('h2', { class: 'titolo' }, [el('a', { href, text: p.titolo.length > 210 ? p.titolo.slice(0, 208) + '…' : p.titolo })]),
         el('div', { class: 'dove' }, dove),
@@ -112,6 +112,17 @@
       : `${it(Math.min(stato.limite, n))} di ${it(n)} voci${n !== D.progetti.length ? ` (su ${it(D.progetti.length)} totali)` : ''}. Un progetto può comparire in più fonti: gli importi restano separati e non si sommano.`;
     $('altri').hidden = n <= stato.limite;
     $('altri').textContent = `Mostra altri ${it(Math.min(30, n - stato.limite))}`;
+    /* clic sulla riga (fuori dal titolo) o passaggio del mouse: il progetto si accende sulla mappa */
+    $('elenco').querySelectorAll('.voce').forEach(art => {
+      art.addEventListener('click', (ev) => {
+        if (ev.target.closest('a')) return;
+        selezionato = art.dataset.id;
+        evidenziaRiga(selezionato);
+        evidenziaInMini(selezionato);
+      });
+      art.addEventListener('mouseenter', () => evidenziaInMini(art.dataset.id));
+      art.addEventListener('mouseleave', () => evidenziaInMini(selezionato));
+    });
   }
 
   /* Che cosa sto guardando: titolo, conteggio, importo e filtri attivi */
@@ -149,6 +160,39 @@
   /* ---- mini mappa della circoscrizione filtrata: poligono e progetti con posizione ---- */
   const NS = 'http://www.w3.org/2000/svg';
   let GEO = null, PRJ = null, geoStato = 'idle', miniCirc = null;
+  let vaiAllaRiga = null;   // assegnato in avvia: dal punto sulla mappa alla voce dell'elenco
+  let miniPunti = [];       // posizioni disegnate, per il clic caduto vicino a un pallino
+  let miniClicPronto = false;
+  let rigaEvidenziata = null, timerRiga = null;
+  let selezionato = null;   // progetto scelto: resta acceso sulla mappa
+
+  /* la riga si accende per qualche secondo (vale per il clic in mappa e per quello in elenco) */
+  function evidenziaRiga(id) {
+    if (rigaEvidenziata) rigaEvidenziata.classList.remove('evidenzia');
+    const riga = [...document.querySelectorAll('#elenco .voce')].find(e => e.dataset.id === id);
+    if (!riga) return null;
+    riga.classList.add('evidenzia');
+    rigaEvidenziata = riga;
+    clearTimeout(timerRiga);
+    timerRiga = setTimeout(() => {
+      riga.classList.remove('evidenzia');
+      if (rigaEvidenziata === riga) rigaEvidenziata = null;
+    }, 6000);
+    return riga;
+  }
+  /* e il progetto resta segnato sulla mini mappa */
+  function evidenziaInMini(id) {
+    const svg = $('mini-svg');
+    svg.querySelectorAll('.sel').forEach(e => {
+      e.classList.remove('sel');
+      if (e.dataset.r0) e.setAttribute('r', e.dataset.r0);
+    });
+    if (!id) return;
+    svg.querySelectorAll('[data-id="' + id + '"]').forEach(e => {
+      e.classList.add('sel');
+      if (e.dataset.r0) e.setAttribute('r', (+e.dataset.r0 * 1.9).toFixed(2));
+    });
+  }
   function caricaGeo() {
     if (geoStato !== 'idle') return;
     geoStato = 'carica';
@@ -159,26 +203,32 @@
       .catch(() => { geoStato = 'errore'; disegnaMini(true); });
   }
   function disegnaMini(forza) {
-    const c = stato.circ, box = $('mini-mappa'), testa = $('testa');
+    const c = stato.circ, box = $('mini-mappa'), pagina = $('contenuto');
     if (!ROM.includes(c) || geoStato === 'errore') {
-      box.hidden = true; testa.classList.remove('con-mappa'); miniCirc = null; return;
+      box.hidden = true; pagina.classList.remove('con-mappa'); miniCirc = null; return;
     }
     if (geoStato !== 'pronto') { caricaGeo(); return; }
     if (!forza && miniCirc === c) return;
-    miniCirc = c;
-    box.hidden = false; testa.classList.add('con-mappa');
+    miniCirc = c; selezionato = null;
+    box.hidden = false; pagina.classList.add('con-mappa');
     const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
     /* il titolo compare al passaggio del mouse, come sulla mappa della home */
     const conTitolo = (e, testo) => { e.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: testo })); return e; };
     const pol = mk('path', { d: GEO.circoscrizioni[c].d, class: 'circ' });
     const gPol = mk('g'), gLin = mk('g'), gPt = mk('g');
-    const prj = PRJ.progetti.filter(p => p.circoscrizioni.includes(c));
+    /* gli stessi progetti dell'elenco: quelli con una sola circoscrizione */
+    const prj = PRJ.progetti.filter(p => p.circoscrizioni.length === 1 && p.circoscrizioni[0] === c);
+    const punti = [];
     prj.forEach(p => {
-      p.poligoni.forEach(x => gPol.append(conTitolo(mk('path', { d: x.d, class: 'pol' }), p.descrizione)));
-      p.linee.forEach(x => gLin.append(conTitolo(mk('path', { d: x.d, class: 'lin' }), p.descrizione)));
+      /* l'id della posizione è quello dell'intervento, senza il prefisso «op-» delle voci dell'elenco */
+      const idVoce = p.id.startsWith('op-') ? p.id : 'op-' + p.id;
+      const apri = (e) => { e.addEventListener('click', () => { if (vaiAllaRiga) vaiAllaRiga(idVoce); }); return e; };
+      p.poligoni.forEach(x => gPol.append(apri(conTitolo(mk('path', { d: x.d, class: 'pol', 'data-id': idVoce }), p.descrizione + ' — clicca per la riga nell\'elenco'))));
+      p.linee.forEach(x => gLin.append(apri(conTitolo(mk('path', { d: x.d, class: 'lin', 'data-id': idVoce }), p.descrizione + ' — clicca per la riga nell\'elenco'))));
       p.punti.forEach(q => {
         const approx = q[2] === 'toponimo' || q[2] === 'da_poligono';
-        gPt.append(conTitolo(mk('circle', { cx: q[0], cy: q[1], class: 'pt' + (approx ? ' approx' : ''), 'data-r': approx ? 1.7 : 1 }), p.descrizione));
+        gPt.append(apri(conTitolo(mk('circle', { cx: q[0], cy: q[1], class: 'pt' + (approx ? ' approx' : ''), 'data-r': approx ? 1.7 : 1, 'data-id': idVoce }), p.descrizione + ' — clicca per la riga nell\'elenco')));
+        punti.push({ x: q[0], y: q[1], id: idVoce });
       });
     });
     const svg = $('mini-svg');
@@ -188,10 +238,27 @@
     svg.setAttribute('viewBox', vb.join(' '));
     svg.setAttribute('aria-label', `Mappa della Circoscrizione ${c}: il poligono e ${it(prj.length)} progetti con una posizione`);
     const k = vb[2] / 110;
-    gPt.querySelectorAll('.pt').forEach(e => e.setAttribute('r', (+e.dataset.r * k).toFixed(2)));
+    gPt.querySelectorAll('.pt').forEach(e => {
+      const r0 = (+e.dataset.r * k).toFixed(2);
+      e.setAttribute('data-r0', r0);
+      e.setAttribute('r', r0);
+    });
+    miniPunti = punti;
+    if (!miniClicPronto) {
+      miniClicPronto = true;
+      /* i pallini sono 6 px: un clic sul vuoto entro 12 px apre la riga del progetto più vicino */
+      svg.addEventListener('click', (ev) => {
+        if (ev.target !== svg || !vaiAllaRiga) return;
+        const m = svg.getScreenCTM(); if (!m) return;
+        const pt = new DOMPoint(ev.clientX, ev.clientY).matrixTransform(m.inverse());
+        const limite = 12 / Math.hypot(m.a, m.b);
+        let best = null, d0 = Infinity;
+        miniPunti.forEach(o => { const d = Math.hypot(o.x - pt.x, o.y - pt.y); if (d < d0) { d0 = d; best = o.id; } });
+        if (best) vaiAllaRiga(best);
+      });
+    }
     const url = './?circ=' + encodeURIComponent(c) + '#mappa';
-    $('mini-link').setAttribute('href', url);
-    $('mini-cap').replaceChildren(`Circoscrizione ${c}: ${it(prj.length)} progetti con una posizione. `,
+    $('mini-cap').replaceChildren(`Circoscrizione ${c}: ${it(prj.length)} progetti con una posizione. Clicca un punto per la sua riga. `,
       el('a', { href: url, text: 'Aprila sulla mappa' }), ' per vederli uno per uno.');
   }
 
@@ -248,6 +315,26 @@
     if (params.get('ordine') && NOMI_ORDINE[params.get('ordine')]) { stato.ordine = params.get('ordine'); $('ordine').value = stato.ordine; }
     else if (stato.fonte && ORDINE_PER_FONTE[stato.fonte]) { stato.ordine = ORDINE_PER_FONTE[stato.fonte]; $('ordine').value = stato.ordine; }
     if (params.get('incroci') === '1') { stato.incroci = true; $('incroci').checked = true; }
+
+    /* dal punto sulla mini mappa alla riga dell'elenco: se un filtro la nasconde, lo si toglie */
+    vaiAllaRiga = (id) => {
+      const cerca = () => filtra().findIndex(p => p.id === id);
+      let i = cerca();
+      if (i < 0) {
+        stato.q = ''; $('q').value = '';
+        stato.fonte = ''; $('fonte').value = '';
+        stato.incroci = false; $('incroci').checked = false;
+        i = cerca();
+      }
+      if (i < 0) return;
+      if (i + 1 > stato.limite) stato.limite = i + 1;
+      disegna(); chips(); sincronizzaUrl();
+      selezionato = id;
+      const riga = evidenziaRiga(id);
+      evidenziaInMini(id);
+      if (!riga) return;
+      riga.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    };
     aggiorna();
 
     $('carica-cig').addEventListener('click', () => {
