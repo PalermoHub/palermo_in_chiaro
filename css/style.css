@@ -198,3 +198,90 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
   .barra { grid-template-columns: 7.4rem 1fr auto; gap: 8px; }
   .testata nav { margin-left: 0; width: 100%; }
 }
+
+/* ---- pagine di elenco e scheda progetto ---- */
+.page { max-width: 1560px; margin: 0 auto; padding: clamp(24px, 4vw, 48px) var(--gutter) clamp(48px, 6vw, 96px); }
+.page header.pagina-testa { max-width: 54rem; margin-bottom: 22px; }
+.page h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); }
+.page .lede { margin-top: 12px; }
+.page h2 { font-size: clamp(1.3rem, 2.2vw, 1.7rem); margin: 39px 0 12px; }
+.page h3 { font-size: 1.05rem; margin: 20px 0 6px; }
+.briciole { font-size: 0.88rem; color: var(--muto); margin: 0 0 14px; }
+.briciole a { color: var(--muto); }
+
+/* filtri */
+.filtri { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin: 20px 0 8px; }
+.filtri label { display: grid; gap: 4px; font-size: 0.84rem; color: var(--muto); }
+.filtri input, .filtri select {
+  font: inherit; font-size: 0.95rem; color: var(--inchiostro); background: var(--carta);
+  border: 1px solid var(--linea); border-radius: 3px; padding: 7px 10px; min-height: 38px;
+}
+.filtri input[type="search"] { min-width: min(100%, 22rem); }
+.filtri .cerca { flex: 1 1 22rem; }
+.filtri .cerca input { width: 100%; }
+.filtri .spunta { display: flex; flex-direction: row; align-items: center; gap: 8px; padding-bottom: 9px; white-space: nowrap; }
+.filtri .spunta input { min-height: 0; }
+.conteggio { font-size: 0.9rem; color: var(--muto); margin: 8px 0 0; font-variant-numeric: tabular-nums; }
+
+/* elenco */
+.elenco { display: grid; margin-top: 6px; }
+.voce { display: grid; grid-template-columns: minmax(0, 1fr) minmax(9rem, auto); gap: 6px 20px; padding: 15px 2px; border-bottom: 1px solid var(--linea); }
+.voce:hover { background: color-mix(in srgb, var(--maiolica-chiara) 45%, transparent); }
+.voce .titolo { font-family: var(--font-titoli); font-weight: 500; font-size: 1.06rem; line-height: 1.25; margin: 0; }
+.voce .titolo a { color: var(--inchiostro); text-decoration: none; }
+.voce .titolo a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.voce .dove { font-size: 0.86rem; color: var(--muto); display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 4px; }
+.voce .importi { grid-column: 2; grid-row: 1 / span 2; display: flex; flex-direction: column; align-items: flex-end; gap: 3px; text-align: right; font-variant-numeric: tabular-nums; }
+.voce .importi span { font-size: 0.88rem; color: var(--muto); white-space: nowrap; }
+.voce .importi b { color: var(--inchiostro); font-weight: 600; }
+.fonti-riga { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.badge { font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase; border: 1px solid var(--linea); border-radius: 99px; padding: 1px 9px; color: var(--muto); white-space: nowrap; }
+.badge.opere { border-color: var(--maiolica); color: var(--maiolica-scura); }
+.badge.pnrr { border-color: var(--cupola); color: var(--cupola); }
+.badge.coesione { border-color: var(--ocra); color: var(--muto); }
+.badge.appalti { border-color: var(--inchiostro); color: var(--inchiostro); }
+.altro { margin-top: 16px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--carta); background: var(--inchiostro); border: 0; border-radius: 99px; padding: 9px 20px; cursor: pointer; }
+.altro:hover { background: var(--maiolica-scura); }
+.altro[hidden] { display: none; }
+
+/* scheda progetto */
+.dettaglio { display: grid; grid-template-columns: minmax(0, 7fr) minmax(280px, 4fr); gap: 22px clamp(20px, 4vw, 48px); align-items: start; }
+.dettaglio .colonna { min-width: 0; }
+.dettaglio .riquadro { background: var(--sfondo-scheda); border-top: 3px solid var(--maiolica); padding: 16px 18px 18px; margin-bottom: 18px; }
+.dettaglio .riquadro h2 { font-size: 1.1rem; margin: 0 0 8px; }
+.dettaglio dl { margin: 0; }
+.dettaglio .nota { font-size: 0.86rem; color: var(--muto); margin: 8px 0 0; }
+.dettaglio .grande { font-family: var(--font-titoli); font-size: 1.9rem; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.dettaglio ul.link { list-style: none; padding: 0; margin: 0; }
+.dettaglio ul.link li { padding: 6px 0; border-bottom: 1px solid var(--linea); font-size: 0.94rem; }
+.dettaglio ul.link li:last-child { border-bottom: 0; }
+.dettaglio .est { font-size: 0.8rem; color: var(--muto); display: block; }
+.dettaglio .titolo-prog { font-size: clamp(1.2rem, 2vw, 1.5rem); margin: 6px 0 10px; }
+
+/* tabella appalti */
+.tabella-scroll { overflow-x: auto; }
+table.appalti { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 44rem; }
+table.appalti th, table.appalti td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--linea); vertical-align: top; }
+table.appalti th { font-weight: 600; color: var(--muto); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.03em; }
+table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .voce { grid-template-columns: 1fr; }
+  .voce .importi { grid-column: 1; grid-row: auto; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; gap: 2px 14px; text-align: left; }
+  .dettaglio { grid-template-columns: 1fr; }
+}
+
+/* righe citate cliccabili (opere, PNRR, coesione) */
+.barra.cliccabile { cursor: pointer; }
+.barra.cliccabile:hover { background: var(--maiolica-chiara); }
+.barra.cliccabile .nome a { color: inherit; text-decoration: none; }
+.barra.cliccabile:hover .nome a, .barra.cliccabile:focus-within .nome a { text-decoration: underline; text-underline-offset: 3px; }
+.barra.cliccabile:focus-within { outline: 2px solid var(--cupola); outline-offset: -2px; }
+
+/* filtri attivi */
+.filtri-attivi { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 0; }
+.filtri-attivi:empty { display: none; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.84rem; background: var(--maiolica-chiara); border: 1px solid var(--maiolica); border-radius: 99px; padding: 2px 4px 2px 10px; }
+.chip button { font: inherit; line-height: 1; background: none; border: 0; color: inherit; cursor: pointer; padding: 2px 6px; border-radius: 99px; }
+.chip button:hover { background: var(--maiolica); color: var(--carta); }
+.barra .freccia { color: var(--maiolica-scura); font-weight: 600; }

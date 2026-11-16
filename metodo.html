@@ -52,6 +52,7 @@
     <span class="beta">Versione beta</span>
     <nav aria-label="Sezioni">
       <a href="./">Mappa e dati</a>
+      <a href="progetti.html">Elenco progetti</a>
       <a href="#numeri">Come nascono i numeri</a>
       <a href="#limiti">Cosa non misura</a>
       <a href="#fonti">Fonti e licenze</a>
@@ -73,6 +74,10 @@
     <li><b>PNRR.</b> I 61 progetti elencati sul sito del Comune, con importo finanziato e spesa rendicontata come dichiarati dal Comune.</li>
     <li><b>Coesione.</b> I progetti OpenCoesione in cui il Comune di Palermo è tra i beneficiari. Lo stesso CUP può comparire in più linee di finanziamento, quindi si contano i progetti e non i CUP.</li>
     <li><b>Progetti sulla mappa.</b> Posizioni elaborate da OpenDataSicilia dalle tavole PDF del Programma triennale. PNRR, coesione e appalti compaiono sul progetto solo dove il CUP o il codice dell'intervento coincide.</li>
+    <li><b>Righe cliccabili.</b> Dove il sito cita un gruppo di interventi (le barre per circoscrizione in «Opere», gli stati del PNRR, i programmi di coesione) il nome apre l'elenco filtrato: <code>progetti.html?fonte=opere&amp;circ=I</code>. I filtri disponibili sono <code>fonte</code> (opere, pnrr, coesione, appalti), <code>circ</code> (I…VIII, <code>__nessuna</code>, <code>__multi</code>), <code>stato</code>, <code>programma</code>, <code>q</code>. Il filtro attivo diverso dai menu compare come etichetta rimovibile sopra l'elenco.</li>
+    <li><b>Elenco e schede dei progetti.</b> Una voce per progetto in <code>data/progetti.json</code>: le 548 opere del Programma triennale, 50 schede PNRR che non hanno un CUP nel Programma, 289 CUP di coesione che non hanno un'opera collegata. Una scheda per voce in <code>progetto.html?id=…</code>: importi per fonte, CUP, CUI, circoscrizione, finanziamenti dichiarati e collegamenti. Gli appalti sono in <code>data/snapshot/appalti_cig.json</code>, una riga per CIG.</li>
+    <li><b>Collegamenti tra fonti.</b> Solo per CUP o CUI identico. Il CUP viene normalizzato (maiuscole, spazi) prima del confronto; non si collega per somiglianza del titolo o vicinanza dell'importo. Una voce può avere più fonti: le mostra tutte e non somma gli importi.</li>
+    <li><b>Link esterni.</b> La scheda di ogni CUP apre la pagina OpenCUP del CUP quando il Programma triennale la riporta, la scheda OpenCoesione quando esiste un progetto OpenCoesione con quel CUP, la scheda PNRR del Comune quando il CUP coincide. Il soggetto proponente di un progetto PNRR apre il sito del ministero o dell'ente, verificato con una richiesta il 16/11/2026. Dove il link non c'è, la scheda non lo inventa: restano 12 schede senza link (Città Metropolitana di Palermo, certificato del sito scaduto, e Agenzia per la Coesione Territoriale, sito che non risponde).</li>
   </ul>
   <p>Ogni script ferma l'elaborazione se un controllo di somma non torna con la fonte. Un dato mancante resta «non disponibile»: non diventa zero e non viene stimato.</p>
 
@@ -85,22 +90,26 @@
     <li><b>Dati sempre aggiornati.</b> Il profilo è del censimento 2021 (il Comune stima 628.693 residenti nel 2024, senza dettaglio per circoscrizione). I CIG 2026 sono quelli disponibili al 01/11/2026 e possono essere incompleti.</li>
     <li><b>Posizioni ufficiali.</b> Le posizioni dei progetti non sono coordinate del Comune. Hanno una precisione che va da 3 a 10 metri (punto letto sulla tavola) a circa 300 metri (ricavata dal nome del luogo).</li>
     <li><b>Anomalie della fonte.</b> Due CIG ANAC hanno un importo di circa 2.684 milioni di euro, evidentemente errato. Non li ho corretti: i totali sono riportati con e senza.</li>
+    <li><b>Copertura dei collegamenti.</b> Solo 11 schede PNRR su 61 hanno un CUP che compare nel Programma triennale, e 22 voci di coesione. Per le altre il collegamento non è dimostrabile con i dati aperti: restano voci separate, non un progetto unico.</li>
+    <li><b>Conteggi dei link.</b> Una riga «Circoscrizione I: 55 interventi» apre 55 voci; per la coesione il numero di voci può essere inferiore a quello dei progetti, perché più linee di finanziamento stanno sullo stesso CUP.</li>
+    <li><b>Schede PNRR complete.</b> L'elenco riporta per ogni scheda fino a 6 documenti, non tutti quelli pubblicati dal Comune. I documenti restano sul sito del Comune.</li>
   </ul>
   <p>Stanziamenti, importi di gara e costi dei progetti misurano cose diverse e non si sommano. Un valore insolito è un segnale da approfondire, non la prova di uno spreco o di un illecito.</p>
 
   <h2 id="fonti">Fonti e licenze</h2>
-  <p>Ogni dato resta sotto la licenza della sua fonte. Qui sotto c'è quello che ho letto direttamente il 16/11/2026.</p>
+  <p>Ogni dato resta sotto la licenza della sua fonte. Qui sotto c'è quello che ho letto direttamente il 16/11/2026. Il nome della fonte apre la pagina ufficiale: <a href="https://www.istat.it/notizia/basi-territoriali-e-variabili-censuarie/" target="_blank" rel="noopener">ISTAT</a>, <a href="https://dati.anticorruzione.it/opendata/dataset/cig" target="_blank" rel="noopener">ANAC</a>, <a href="https://opencoesione.gov.it/it/opendata/" target="_blank" rel="noopener">OpenCoesione</a>, <a href="https://repository.comune.palermo.it/bilancio-rendiconti.php?id=1&per=2026%2F2028" target="_blank" rel="noopener">bilancio del Comune</a>, <a href="https://pnrr.comune.palermo.it/" target="_blank" rel="noopener">schede PNRR del Comune</a>, <a href="https://www.opencup.gov.it/" target="_blank" rel="noopener">OpenCUP</a>.</p>
   <div class="tabella-scroll">
   <table class="licenze">
     <thead><tr><th scope="col">Dato</th><th scope="col">Fonte</th><th scope="col">Licenza dichiarata</th></tr></thead>
     <tbody>
-      <tr><td>Profilo delle circoscrizioni</td><td>ISTAT, censimento 2021</td><td><span class="stato-ok">CC BY 4.0</span>, citando la fonte</td></tr>
-      <tr><td>Appalti (CIG)</td><td>ANAC, open data</td><td><span class="stato-ok">CC BY-SA 4.0</span>: i dati derivati restano sotto la stessa licenza</td></tr>
-      <tr><td>Fondi di coesione</td><td>OpenCoesione</td><td><span class="stato-ok">CC BY 4.0</span></td></tr>
-      <tr><td>Bilancio 2026-2028 e DUP</td><td>Comune di Palermo</td><td><span class="stato-no">Non dichiarata</span> nella pagina dei bilanci: atto pubblico, si cita la fonte</td></tr>
-      <tr><td>Schede PNRR</td><td>Comune di Palermo</td><td><span class="stato-no">Non dichiarata</span> nelle pagine lette: si cita la fonte</td></tr>
+      <tr><td>Profilo delle circoscrizioni</td><td><a href="https://www.istat.it/notizia/basi-territoriali-e-variabili-censuarie/" target="_blank" rel="noopener">ISTAT, censimento 2021</a></td><td><span class="stato-ok">CC BY 4.0</span>, citando la fonte</td></tr>
+      <tr><td>Appalti (CIG)</td><td><a href="https://dati.anticorruzione.it/opendata/dataset/cig" target="_blank" rel="noopener">ANAC, open data</a></td><td><span class="stato-ok">CC BY-SA 4.0</span>: i dati derivati restano sotto la stessa licenza</td></tr>
+      <tr><td>Fondi di coesione</td><td><a href="https://opencoesione.gov.it/it/opendata/" target="_blank" rel="noopener">OpenCoesione</a></td><td><span class="stato-ok">CC BY 4.0</span></td></tr>
+      <tr><td>Bilancio 2026-2028 e DUP</td><td><a href="https://repository.comune.palermo.it/bilancio-rendiconti.php?id=1&per=2026%2F2028" target="_blank" rel="noopener">Comune di Palermo</a></td><td><span class="stato-no">Non dichiarata</span> nella pagina dei bilanci: atto pubblico, si cita la fonte</td></tr>
+      <tr><td>Schede PNRR</td><td><a href="https://pnrr.comune.palermo.it/" target="_blank" rel="noopener">Comune di Palermo</a></td><td><span class="stato-no">Non dichiarata</span> nelle pagine lette: si cita la fonte</td></tr>
       <tr><td>Repertorio statistico</td><td>Comune di Palermo, Ufficio Statistica</td><td>Riproduzione e diffusione consentite citando la fonte</td></tr>
       <tr><td>Opere e posizioni dei progetti</td><td>Atto del Comune (DCC 553/2026), elaborazione OpenDataSicilia</td><td><span class="stato-no">Nessuna licenza</span> nel repository di origine: da confermare con l'autore</td></tr>
+      <tr><td>Collegamenti ai CUP</td><td><a href="https://www.opencup.gov.it/" target="_blank" rel="noopener">OpenCUP</a>, portale pubblico</td><td>Pagina pubblica, si cita la fonte. Il nostro collegamento non è un dato OpenCUP: è l'indirizzo della scheda del CUP</td></tr>
     </tbody>
   </table>
   </div>
@@ -110,7 +119,7 @@
   <p>Un numero sbagliato può essere usato nel dibattito pubblico, quindi ogni segnalazione conta. Indica dove compare il numero, il link alla fonte ufficiale che lo smentisce e cosa dovrebbe essere secondo la fonte. Senza fonte ufficiale un numero non si cambia.</p>
   <p>Canale di segnalazione: da definire prima della pubblicazione.</p>
 
-  <p class="piede"><a href="./">Torna alla mappa</a></p>
+  <p class="piede"><a href="./">Torna alla mappa</a> · <a href="progetti.html">Elenco dei progetti</a></p>
 </main>
 </body>
 </html>

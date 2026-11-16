@@ -139,6 +139,7 @@
         el('p', { class: 'quartieri', text: q.join(', ') }),
         dl,
         el('h3', { text: 'Opere programmate 2026-2028' }), dlo, sett,
+        el('p', { class: 'nota' }, [el('a', { href: elenco({ fonte: 'opere', circ: sel }), text: `Vedi i ${o.interventi} interventi in elenco` }), ' con la scheda di ciascuno.']),
         el('p', { class: 'nota', text: 'Residenti e profilo: censimento ISTAT 2021. Opere: dove cadono, non spesa della circoscrizione né denaro già speso.' }),
         ...elencoProgetti()
       );
@@ -149,18 +150,27 @@
       'Gli interventi del Programma triennale dei lavori pubblici valgono ', el('strong', { text: mln(tot.importo_triennio_eur, 0) }),
       `. Il ${it(100 * nonLoc.importo_triennio_eur / tot.importo_triennio_eur, 0)}% (${mln(nonLoc.importo_triennio_eur, 0)}, ${nonLoc.interventi} interventi) non ha una circoscrizione: sono reti e linee che attraversano la città.`);
     const maxO = Math.max(...ROM.map(c => O(c).importo_triennio_eur), D.opere.piu_circoscrizioni.importo_triennio_eur, nonLoc.importo_triennio_eur);
-    const barra = (cls, nome, sub, v, extra = {}) => el('div', Object.assign({ class: 'barra ' + cls, role: 'listitem' }, extra), [
-      el('div', { class: 'nome' }, [nome, sub ? el('small', { text: sub }) : null]),
-      el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${100 * v.n / v.max}%` })]),
-      el('div', { class: 'val', text: v.testo })]);
+    const barra = (cls, nome, sub, v, extra = {}, href = null) => {
+      const riga = el('div', Object.assign({ class: 'barra ' + cls + (href ? ' cliccabile' : ''), role: 'listitem' }, extra), [
+        el('div', { class: 'nome' }, [href ? el('a', { href, text: nome, 'aria-label': `${nome}${sub ? ': ' + sub : ''}, ${v.testo}. Apri l'elenco dei progetti` }) : nome, sub ? el('small', { text: sub }) : null]),
+        el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${100 * v.n / v.max}%` })]),
+        el('div', { class: 'val' }, [v.testo, href ? el('span', { class: 'freccia', 'aria-hidden': 'true', text: ' →' }) : null])]);
+      if (href) {
+        riga.addEventListener('click', (e) => { if (!e.target.closest('a')) location.href = href; });
+        riga.title = `Apri l'elenco: ${sub ? sub + ', ' : ''}${v.testo}`;
+      }
+      return riga;
+    };
+    const elenco = (params) => 'progetti.html?' + Object.entries(params).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&');
     const ob = $('opere-barre');
-    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c })));
+    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c }, elenco({ fonte: 'opere', circ: c }))));
     const pc = D.opere.piu_circoscrizioni;
-    ob.append(barra('piu', 'Più circoscrizioni', `${pc.interventi} interventi, non divisi`, { n: pc.importo_triennio_eur, max: maxO, testo: mln(pc.importo_triennio_eur, 0) }));
-    ob.append(barra('senza', 'Senza circoscrizione', `${nonLoc.interventi} interventi`, { n: nonLoc.importo_triennio_eur, max: maxO, testo: mln(nonLoc.importo_triennio_eur, 0) }));
+    ob.append(barra('piu', 'Più circoscrizioni', `${pc.interventi} interventi, non divisi`, { n: pc.importo_triennio_eur, max: maxO, testo: mln(pc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__multi' })));
+    ob.append(barra('senza', 'Senza circoscrizione', `${nonLoc.interventi} interventi`, { n: nonLoc.importo_triennio_eur, max: maxO, testo: mln(nonLoc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__nessuna' })));
     const big = nonLoc.principali_interventi[0];
     $('opere-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, [
-      el('li', { text: `L'intervento più grande senza circoscrizione vale ${mln(big.importo_triennio_eur, 0)}: ${big.descrizione.replace(/\s+/g, ' ')}.` }),
+      el('li', {}, ['L\'intervento più grande senza circoscrizione vale ' + mln(big.importo_triennio_eur, 0) + ': ',
+        el('a', { href: 'progetto.html?id=' + encodeURIComponent(big.id), text: big.descrizione.replace(/\s+/g, ' ') }), '.']),
       ...D.opere.non_misura.filter(t => !t.startsWith('Circa il')).map(t => el('li', { text: t })),
     ]));
 
@@ -185,33 +195,40 @@
       const a = A[anno];
       return el('div', { class: 'coppia' }, [el('h3', { text: anno }), el('div', { class: 'grande', text: mln(a.importo_base_gara_eur_senza_anomali, 0) }),
         el('p', { class: 'nota', text: `a base di gara, ${it(a.cig_senza_anomali)} CIG${a.cig_con_importo_anomalo_non_corretti.length ? `. Esclusi ${a.cig_con_importo_anomalo_non_corretti.length} CIG con importo anomalo in fonte (${mln(a.importo_base_gara_eur_come_in_fonte, 0)} con essi)` : ''}.` }),
-        el('p', { class: 'nota', text: `Più usata: ${a.per_procedura[0].voce.toLowerCase()} (${a.per_procedura[0].cig} CIG).` })]);
+        el('p', { class: 'nota', text: `Più usata: ${a.per_procedura[0].voce.toLowerCase()} (${a.per_procedura[0].cig} CIG).` }),
+        el('p', { class: 'nota' }, [el('a', { href: 'progetti.html#cig', text: `Vedi i ${it(a.cig)} CIG con oggetto e importo` }), '.'])]);
     };
     $('appalti-dati').replaceChildren(coppia('2025'), coppia('2026'));
     $('appalti-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, D.app.non_misura.map(t => el('li', { text: t }))));
 
     /* PNRR e coesione */
-    $('progetti-lede').replaceChildren('Progetti del Comune finanziati dal PNRR e dalla politica di coesione europea e nazionale. Le due fonti non hanno la circoscrizione e non si sommano.');
+    $('progetti-lede').replaceChildren('Progetti del Comune finanziati dal PNRR e dalla politica di coesione europea e nazionale. Le due fonti non hanno la circoscrizione e non si sommano. Ogni progetto ha una scheda: ', el('a', { href: 'progetti.html?fonte=pnrr', text: 'elenco dei progetti PNRR' }), ' e ', el('a', { href: 'progetti.html?fonte=coesione', text: 'elenco dei progetti di coesione' }), '.');
     const bloccoSt = (titolo, grande, nota, righe, limiti) => {
       const mx = Math.max(...righe.map(r => r.n));
       return el('div', {}, [el('h3', { text: titolo }), el('div', { class: 'grande', text: grande }), el('p', { class: 'nota', text: nota }),
-        el('div', { class: 'barre', role: 'list' }, righe.map(r => barra('', r.nome, r.sub, { n: r.n, max: mx, testo: r.testo }))),
+        el('div', { class: 'barre', role: 'list' }, righe.map(r => barra('', r.nome, r.sub, { n: r.n, max: mx, testo: r.testo }, {}, r.href))),
         el('div', { class: 'limiti' }, [el('h3', { text: 'Cosa non misura' }), el('ul', {}, limiti.map(t => el('li', { text: t })))])]);
     };
     const pn = D.pnrr;
     $('pnrr-blocco').replaceChildren(bloccoSt('PNRR', mln(pn.totale.importo_finanziato_eur, 0),
       `finanziati su ${pn.totale.progetti} progetti, ${mln(pn.totale.spesa_rendicontata_eur, 0)} rendicontati.`,
-      pn.per_stato.map(s => ({ nome: s.voce.charAt(0).toUpperCase() + s.voce.slice(1), sub: `${s.progetti} progetti`, n: s.importo_finanziato_eur, testo: mln(s.importo_finanziato_eur, 0) })), pn.non_misura));
+      pn.per_stato.map(s => ({ nome: s.voce.charAt(0).toUpperCase() + s.voce.slice(1), sub: `${s.progetti} progetti`, n: s.importo_finanziato_eur, testo: mln(s.importo_finanziato_eur, 0), href: elenco({ fonte: 'pnrr', stato: s.voce }) })), pn.non_misura));
     const co = D.coe;
     $('coesione-blocco').replaceChildren(bloccoSt('Coesione', mln(co.totale.finanziamento_pubblico_netto_eur, 0),
       `di finanziamento pubblico su ${co.totale.progetti} progetti con il Comune tra i beneficiari.`,
-      co.per_programma.slice(0, 6).map(s => ({ nome: s.voce.split(':::')[0].replace(/^./, c => c).slice(0, 40), sub: `${s.progetti} progetti`, n: s.finanziamento_pubblico_netto_eur, testo: mln(s.finanziamento_pubblico_netto_eur, 0) })), co.non_misura));
+      co.per_programma.slice(0, 6).map(s => ({ nome: s.voce.split(':::')[0].slice(0, 40), sub: `${s.progetti} progetti`, n: s.finanziamento_pubblico_netto_eur, testo: mln(s.finanziamento_pubblico_netto_eur, 0), href: elenco({ fonte: 'coesione', programma: s.voce.split(':::')[0] }) })), co.non_misura));
 
     /* fonti */
-    $('fonti').replaceChildren(...[['Profilo', D.prof], ['Opere pubbliche', D.opere], ['Bilancio', D.bil], ['Appalti', D.app], ['PNRR', D.pnrr], ['Coesione', D.coe]].map(([n, s]) => {
+    const fonte = (n, s) => {
       const periodo = typeof s.periodo === 'string' ? s.periodo : Object.values(s.periodo).join('; ');
-      return el('li', {}, [el('b', { text: n + ': ' }), s.fonte.nome, el('span', { class: 'ver', text: `Periodo: ${periodo}. Letto il ${s.verificato.split('-').reverse().join('/')}.` })]);
-    }));
+      const nome = s.fonte.link ? el('a', { href: s.fonte.link, text: s.fonte.nome, target: '_blank', rel: 'noopener' }) : s.fonte.nome;
+      return el('li', {}, [el('b', { text: n + ': ' }), nome,
+        el('span', { class: 'ver', text: `Periodo: ${periodo}. Letto il ${s.verificato.split('-').reverse().join('/')}.${s.fonte.link ? ' Il nome della fonte apre la pagina ufficiale.' : ''}` })]);
+    };
+    $('fonti').replaceChildren(...[['Profilo', D.prof], ['Opere pubbliche', D.opere], ['Bilancio', D.bil], ['Appalti', D.app], ['PNRR', D.pnrr], ['Coesione', D.coe]].map(([n, s]) => fonte(n, s)));
+    $('fonti').append(el('li', {}, [el('b', { text: 'Tutti i progetti: ' }),
+      el('a', { href: 'progetti.html', text: 'elenco e singole schede' }),
+      el('span', { class: 'ver', text: 'Una voce per progetto con CUP, importi per fonte e collegamenti a OpenCUP, OpenCoesione, PNRR del Comune e ANAC.' })]));
 
 
     /* ---- singoli progetti sulla mappa ---- */
@@ -274,7 +291,8 @@
       inp.addEventListener('input', mostra); mostra();
       const nBase = base.length;
       return [el('h3', { text: sel ? `Progetti con posizione in questa circoscrizione (${nBase})` : `Progetti con posizione (${nBase})` }), inp, out,
-        el('p', { class: 'nota', text: `Solo gli interventi con una posizione: ${PR.progetti.length} su 548, il ${it(100 * PR.progetti.reduce((s, p) => s + p.importo_triennio_eur, 0) / tot.importo_triennio_eur, 0)}% dell'importo. Gli altri ${PR.senza_posizione} (reti, linee e interventi diffusi) non sono sulla mappa. Elenco ordinato per importo.` })];
+        el('p', { class: 'nota', text: `Solo gli interventi con una posizione: ${PR.progetti.length} su 548, il ${it(100 * PR.progetti.reduce((s, p) => s + p.importo_triennio_eur, 0) / tot.importo_triennio_eur, 0)}% dell'importo. Gli altri ${PR.senza_posizione} (reti, linee e interventi diffusi) non sono sulla mappa. Elenco ordinato per importo.` }),
+        el('p', { class: 'nota' }, [el('a', { href: 'progetti.html', text: 'Tutti i progetti e i finanziamenti, in elenco' }), ' (compresi quelli senza posizione).'])];
     }
     function schedaProgetto(id) {
       const p = PR.progetti.find(x => x.id === id), tipo = [p.punti.length && 'punto', p.linee.length && 'linea', p.poligoni.length && 'area'].filter(Boolean).join(', ');
@@ -290,6 +308,7 @@
       if (p.pnrr) extra.push(el('p', { class: 'nota' }, ['Compare anche nel PNRR del Comune' + (p.pnrr.stato ? ` (${p.pnrr.stato.toLowerCase()})` : '') + ': ', el('a', { href: p.pnrr.url, text: 'scheda sul sito del Comune', target: '_blank', rel: 'noopener' }), `, ${mln(p.pnrr.importo_finanziato_eur, 2)} finanziati. Gli importi di fonti diverse non si sommano.`]));
       if (p.coesione) extra.push(el('p', { class: 'nota', text: 'Compare anche tra i progetti di coesione: ' + p.coesione.join('; ') + '.' }));
       if (p.cig) extra.push(el('p', { class: 'nota', text: `Appalti ANAC collegati tramite il codice dell'intervento: ${p.cig.length} CIG (${p.cig.slice(0, 3).join(', ')}${p.cig.length > 3 ? '…' : ''}).` }));
+      extra.push(el('p', { class: 'nota' }, [el('a', { href: 'progetto.html?id=' + encodeURIComponent('op-' + p.id), text: 'Scheda completa del progetto' }), ' con importi per fonte, finanziamenti e collegamenti.']));
       return [indietro, el('h2', { class: 'titolo-prog', text: p.descrizione.length > 140 ? p.descrizione.slice(0, 138) + '…' : p.descrizione }), dl, ...extra,
         el('p', { class: 'nota', text: 'Posizione ' + (precs.length ? precs.join('; ') : 'dalla geometria') + '. È una posizione elaborata da OpenDataSicilia dalle tavole PDF del Programma, non una coordinata ufficiale del Comune. Importo programmato, non speso.' })];
     }

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Progetti e finanziamenti · Palermo in chiaro</title>
+<meta name="description" content="Elenco dei progetti e dei finanziamenti del Comune di Palermo: opere del Programma triennale, schede PNRR, fondi di coesione e appalti, con CUP, importi e collegamenti alle fonti ufficiali.">
+<link rel="canonical" href="https://palermohub.github.io/palermo_in_chiaro/progetti.html">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#edf1f0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1b27">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:site_name" content="Palermo in chiaro">
+<meta property="og:title" content="Progetti e finanziamenti · Palermo in chiaro">
+<meta property="og:description" content="Una scheda per progetto: opere, PNRR, coesione e appalti del Comune di Palermo, con CUP e collegamenti alle fonti ufficiali.">
+<meta property="og:url" content="https://palermohub.github.io/palermo_in_chiaro/progetti.html">
+<meta property="og:image" content="https://palermohub.github.io/palermo_in_chiaro/img/social-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Progetti e finanziamenti · Palermo in chiaro">
+<meta name="twitter:description" content="Una scheda per progetto: opere, PNRR, coesione e appalti del Comune di Palermo, con CUP e collegamenti alle fonti ufficiali.">
+<meta name="twitter:image" content="https://palermohub.github.io/palermo_in_chiaro/img/social-card.png">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#contenuto">Vai al contenuto</a>
+
+<header class="testata">
+  <div class="testata-in">
+    <a class="marchio" href="./" aria-label="Palermo in chiaro, inizio pagina">Palermo in chiaro</a>
+    <span class="beta" title="I dati sono in revisione: prima di citare un numero controlla la fonte">Versione beta</span>
+    <nav aria-label="Sezioni">
+      <a href="./#mappa">Circoscrizioni</a>
+      <a href="./#opere">Opere</a>
+      <a href="./#bilancio">Bilancio</a>
+      <a href="./#appalti">Appalti</a>
+      <a href="./#progetti">PNRR e coesione</a>
+      <a href="progetti.html" aria-current="page">Elenco progetti</a>
+      <a href="metodo.html">Metodo e licenze</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenuto" class="page">
+  <div class="pagina-testa">
+    <p class="briciole"><a href="./">Palermo in chiaro</a> · Elenco progetti</p>
+    <h1>Progetti e finanziamenti</h1>
+    <p class="lede" id="lede">Una voce per progetto: le opere del Programma triennale, le schede PNRR del Comune, i fondi di coesione e gli appalti. Il collegamento tra fonti avviene solo per CUP o CUI identico. Per la coesione una voce può raccogliere più linee di finanziamento sullo stesso CUP: le voci possono essere meno dei progetti.</p>
+    <div class="limiti" id="regole">
+      <h3>Cosa non fa questo elenco</h3>
+      <ul>
+        <li>Non somma gli importi: stanziamento, finanziamento PNRR, fondo di coesione e base di gara misurano cose diverse.</li>
+        <li>Non divide un importo tra più progetti o tra circoscrizioni: ogni cifra resta quella della sua fonte.</li>
+        <li>Non inventa collegamenti: dove il CUP o il CUI non coincidono, i progetti restano voci separate.</li>
+        <li>Non attribuisce una circoscrizione a PNRR, coesione e appalti: quelle fonti non la riportano.</li>
+      </ul>
+    </div>
+  </div>
+
+  <form class="filtri" id="filtri" role="search" aria-label="Filtra i progetti">
+    <label class="cerca">Cerca per titolo, CUP o CUI
+      <input type="search" id="q" name="q" autocomplete="off" placeholder="es. asilo, tram, D71D18000520001">
+    </label>
+    <label>Fonte
+      <select id="fonte" name="fonte">
+        <option value="">Tutte le fonti</option>
+        <option value="opere">Opere pubbliche</option>
+        <option value="pnrr">PNRR</option>
+        <option value="coesione">Fondi di coesione</option>
+        <option value="appalti">Appalti collegati</option>
+      </select>
+    </label>
+    <label>Circoscrizione
+      <select id="circ" name="circ">
+        <option value="">Tutte</option>
+      </select>
+    </label>
+    <label>Ordina per
+      <select id="ordine" name="ordine">
+        <option value="opere">Importo opere 2026-2028</option>
+        <option value="pnrr">Importo PNRR finanziato</option>
+        <option value="coesione">Finanziamento di coesione</option>
+        <option value="titolo">Titolo</option>
+      </select>
+    </label>
+    <label class="spunta"><input type="checkbox" id="incroci" name="incroci"> Solo progetti presenti in più fonti</label>
+  </form>
+
+  <div class="filtri-attivi" id="filtri-attivi"></div>
+  <p class="conteggio" id="conteggio" aria-live="polite"></p>
+  <div class="elenco" id="elenco"></div>
+  <button type="button" class="altro" id="altri" hidden>Mostra altri</button>
+
+  <section id="cig" aria-labelledby="t-cig">
+    <h2 id="t-cig">Appalti avviati (CIG)</h2>
+    <p class="lede">Un appalto per CIG, con l'importo a base di gara. Solo una parte dei CIG ha un CUI che compare nel Programma triennale: gli altri non sono attribuibili a un progetto e restano qui, senza scheda.</p>
+    <p class="conteggio" id="cig-conteggio">L'elenco degli appalti si carica su richiesta: sono circa 1.450 righe.</p>
+    <p><button type="button" class="altro" id="carica-cig">Carica gli appalti</button></p>
+    <div id="cig-blocco" hidden>
+      <form class="filtri" id="filtri-cig" role="search" aria-label="Filtra gli appalti">
+        <label class="cerca">Cerca per oggetto, CIG o CUI
+          <input type="search" id="q-cig" autocomplete="off" placeholder="es. manutenzione, B7129C8050">
+        </label>
+        <label>Anno di pubblicazione
+          <select id="anno-cig">
+            <option value="">Tutti</option>
+            <option value="2025">2025</option>
+            <option value="2026">2026</option>
+          </select>
+        </label>
+      </form>
+      <p class="conteggio" id="cig-numero" aria-live="polite"></p>
+      <div class="tabella-scroll">
+        <table class="appalti">
+          <thead><tr><th scope="col">CIG</th><th scope="col">Oggetto</th><th scope="col">Anno</th><th scope="col" class="num">Base di gara</th><th scope="col">Progetto</th></tr></thead>
+          <tbody id="cig-righe"></tbody>
+        </table>
+      </div>
+      <button type="button" class="altro" id="altri-cig" hidden>Mostra altri</button>
+    </div>
+  </section>
+
+  <p class="piede">Elenco generato da <code>scripts/build_indice_progetti.py</code>: una voce per progetto e per CIG. Le fonti sono quelle del sito: Programma triennale 2026-2028, schede PNRR del Comune, OpenCoesione e ANAC. Regole complete in <a href="metodo.html">metodo e licenze</a>.</p>
+</main>
+
+<script src="js/progetti.js?v=20261116f"></script>
+</body>
+</html>

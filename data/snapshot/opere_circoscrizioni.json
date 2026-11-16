@@ -414,31 +414,37 @@
     ],
     "principali_interventi": [
       {
+        "id": "op-01-01_023",
         "descrizione": "Linea Metropolitana Leggera Automatica 'Svincolo Oreto - Partanna' - Prima Linea (Oreto Notarbartolo)",
         "settore": "01.05 - Trasporto urbano",
         "importo_triennio_eur": 1250000000.0
       },
       {
+        "id": "op-10-99_082",
         "descrizione": "Efficientamento degli impianti di illuminazione pubblica, semaforici e tecnologici a servizio degli edifici del Comune di Palermo",
         "settore": "10.99 - Altri servizi per la collettivita'",
         "importo_triennio_eur": 180000000.0
       },
       {
+        "id": "op-01-05_004",
         "descrizione": "Nuove linee tramviarie della città di Palermo - Tratte D, E2, F, G e Parcheggi di interscambio Stralcio I.2",
         "settore": "01.05 - Trasporto urbano",
         "importo_triennio_eur": 119466884.5
       },
       {
+        "id": "op-05-35_043",
         "descrizione": "COMPLETAMENTO DEL SISTEMA NORD OCCIDENTALE PER LO SMALTIMENTO DELLE ACQUE METEORICHE-OPERE DI URBANIZZAZIONE ZEN 2 GRUPPO PA1 LOTTO B2 (EX A",
         "settore": "02.10 - Smaltimento rifiuti",
         "importo_triennio_eur": 43853000.0
       },
       {
+        "id": "op-02-15_006",
         "descrizione": "RISTRUTTURAZIONE DEL CANALE DI SCILLATO",
         "settore": "02.15 - Risorse idriche e acque reflue",
         "importo_triennio_eur": 43500000.0
       },
       {
+        "id": "op-05-35_077",
         "descrizione": "SOTTORETE 1 - BRANCACCIO - ROMAGNOLO",
         "settore": "01.05 - Trasporto urbano",
         "importo_triennio_eur": 30000000.0
