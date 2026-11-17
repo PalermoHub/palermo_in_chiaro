@@ -757,26 +757,99 @@
         el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: 'progetti.html#cig', text: `Vedi i ${it(a.cig)} CIG con oggetto e importo` })])]);
     };
     $('appalti-dati').replaceChildren(coppia('2025'), coppia('2026'));
+
+    /* la stessa voce letta in due modi: quanto pesa sull'importo e quanto sul numero di CIG.
+       Le due barre stanno sulla stessa scala 0-100%, cosi` il confronto è immediato. */
+    const confronto = (o) => {
+      const box = el('div', { class: 'confronto' });
+      o.righe.forEach(r => {
+        const g = el('div', { class: 'confronto-gruppo', role: 'group' });
+        g.setAttribute('aria-label', `${r.nome}: ${o.misure.map((m, k) => `${m.nome} ${pct(r.valori[k])}`).join(', ')}`);
+        g.append(el('div', { class: 'nome' }, [el('b', { text: r.nome }), r.sub ? el('small', { text: r.sub }) : null]));
+        o.misure.forEach((m, k) => {
+          const q = Math.max(0, r.valori[k] || 0);
+          g.append(el('div', { class: 'confronto-barra' + (k ? ' numero' : ''), title: `${m.nome}: ${pct(q)}` }, [
+            el('span', { class: 'et', text: m.nome }),
+            el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${Math.max(0.6, q)}%` })]),
+            el('span', { class: 'val', text: pct(q) }),
+          ]));
+        });
+        box.append(g);
+      });
+      return box;
+    };
+    const bloccoConfronto = (titolo, nota, righe, misure) => el('div', {}, [
+      el('h3', { text: titolo }), el('p', { class: 'nota', text: nota }), confronto({ righe, misure })]);
+
+    const A25 = A['2025'], anomalo = A25.cig_con_importo_anomalo_non_corretti.length;
+    const baseCig = `Importi a base di gara, non aggiudicati né pagati. ${it(A25.cig_senza_anomali)} CIG del 2025 con importo valido` +
+      (anomalo ? `: esclusi ${it(anomalo)} CIG con un importo anomalo in fonte (circa 2.684 M€ ciascuno)` : '') + '.';
+    $('appalti-grafici').replaceChildren(
+      bloccoConfronto('Come è scelto il contraente (2025)',
+        `${baseCig} Una quota alta di affidamenti diretti è la norma sotto le soglie di legge: non è da sola un'anomalia. Il confronto che conta è fra le due barre.`,
+        A25.per_classe_procedura.map(r => ({ nome: r.voce, sub: `${it(r.cig)} CIG · ${mln(r.importo_eur, 1)}`, valori: [r.quota_importo_pct, r.quota_cig_pct] })),
+        [{ nome: 'importo' }, { nome: 'CIG' }]),
+      bloccoConfronto('In che fasce di importo (2025)',
+        `Le fasce sono quelle delle soglie del codice degli appalti. Pochi contratti grandi fanno quasi tutto l'importo, molti contratti piccoli fanno quasi tutto il numero: sono due cose diverse e vanno lette insieme.`,
+        A25.per_fascia_importo.map(r => ({ nome: r.voce, sub: `${it(r.cig)} CIG · ${mln(r.importo_eur, 1)}`, valori: [r.quota_importo_pct, r.quota_cig_pct] })),
+        [{ nome: 'importo' }, { nome: 'CIG' }]),
+    );
     $('appalti-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, D.app.non_misura.map(t => el('li', { text: t }))));
 
     /* PNRR e coesione */
     $('progetti-lede').replaceChildren('Progetti del Comune finanziati dal PNRR e dalla politica di coesione europea e nazionale. Le due fonti non hanno la circoscrizione e non si sommano. Ogni progetto ha una scheda nell\'elenco, filtrato per fonte:', el('span', { class: 'badge-riga' }, [
       el('a', { class: 'badge-link', href: 'progetti.html?fonte=pnrr', text: 'Elenco dei progetti PNRR' }),
       el('a', { class: 'badge-link', href: 'progetti.html?fonte=coesione', text: 'Elenco dei progetti di coesione' })]));
-    const bloccoSt = (titolo, grande, nota, righe, limiti) => {
-      const mx = Math.max(...righe.map(r => r.n));
+    const bloccoSt = (titolo, grande, nota, righe, limiti, extra) => {
+      const mx = righe && righe.length ? Math.max(...righe.map(r => r.n)) : 1;
       return el('div', {}, [el('h3', { text: titolo }), el('div', { class: 'grande', text: grande }), el('p', { class: 'nota', text: nota }),
-        el('div', { class: 'barre', role: 'list' }, righe.map(r => barra('', r.nome, r.sub, { n: r.n, max: mx, testo: r.testo }, {}, r.href))),
+        righe && righe.length ? el('div', { class: 'barre', role: 'list' }, righe.map(r => barra('', r.nome, r.sub, { n: r.n, max: mx, testo: r.testo }, {}, r.href))) : null,
+        extra || null,
         el('div', { class: 'limiti' }, [el('h3', { text: 'Cosa non misura' }), el('ul', {}, limiti.map(t => el('li', { text: t })))])]);
+    };
+    const zero = (n) => n ? mln(n, 0) : '0 €';
+    /* quanto è stato speso di quanto è stato stanziato: barra chiara = finanziato, barra piena = speso */
+    const avanzamento = (titolo, nota, righe, etSpeso) => {
+      const mx = Math.max(...righe.map(r => r.fin)) || 1;
+      const box = el('div', { class: 'avanz' });
+      righe.forEach(r => {
+        const q = r.fin ? 100 * r.speso / r.fin : 0;
+        const dentro = [
+          el('div', { class: 'nome' }, [el('b', { text: r.nome }), el('small', { text: r.sub })]),
+          el('div', { class: 'pista', title: `${r.nome}: ${etSpeso} ${mln(r.speso, 1)} su ${mln(r.fin, 1)} finanziati` }, [
+            el('span', { class: 'fondo', style: `width:${100 * r.fin / mx}%` }),
+            el('span', { class: 'riempi', style: `width:${Math.max(r.speso ? 0.4 : 0, 100 * r.speso / mx)}%` }),
+          ]),
+          el('div', { class: 'val' }, [pct(q), el('small', { text: `${zero(r.speso)} di ${zero(r.fin)}` })]),
+        ];
+        const etichetta = `${r.nome}: ${etSpeso} ${mln(r.speso, 1)} su ${mln(r.fin, 1)} finanziati, ${pct(q)}`;
+        const riga = r.href
+          ? el('a', { class: 'avanz-riga link', href: r.href, 'aria-label': etichetta + '. Apri l\'elenco filtrato', title: etichetta }, dentro)
+          : el('div', { class: 'avanz-riga', 'aria-label': etichetta }, dentro);
+        box.append(riga);
+      });
+      return el('div', { class: 'avanz-blocco' }, [
+        el('h4', { class: 'avanz-titolo', text: titolo }),
+        el('p', { class: 'nota', text: nota }), box,
+        el('p', { class: 'nota', text: `Barra chiara: importo finanziato. Barra piena: ${etSpeso.toLowerCase()}. La scala è la stessa per tutte le righe.` }),
+      ]);
     };
     const pn = D.pnrr;
     $('pnrr-blocco').replaceChildren(bloccoSt('PNRR', mln(pn.totale.importo_finanziato_eur, 0),
       `finanziati su ${pn.totale.progetti} progetti, ${mln(pn.totale.spesa_rendicontata_eur, 0)} rendicontati.`,
-      pn.per_stato.map(s => ({ nome: s.voce.charAt(0).toUpperCase() + s.voce.slice(1), sub: `${s.progetti} progetti`, n: s.importo_finanziato_eur, testo: mln(s.importo_finanziato_eur, 0), href: elenco({ fonte: 'pnrr', stato: s.voce }) })), pn.non_misura));
+      null, pn.non_misura,
+      avanzamento('Quanto è stato rendicontato',
+        `La spesa rendicontata è quella che il Comune dichiara nella scheda del progetto, non un pagamento verificato da un terzo. Un progetto «in progettazione o gara» ha speso poco perché non è ancora partito, non perché i soldi siano spariti.`,
+        pn.per_stato.map(s => ({ nome: s.voce.charAt(0).toUpperCase() + s.voce.slice(1), sub: `${s.progetti} progetti`, fin: s.importo_finanziato_eur, speso: s.spesa_rendicontata_eur, href: elenco({ fonte: 'pnrr', stato: s.voce }) }))
+          .concat([{ nome: 'Tutti i 61 progetti', sub: 'somma delle schede', fin: pn.totale.importo_finanziato_eur, speso: pn.totale.spesa_rendicontata_eur, href: elenco({ fonte: 'pnrr' }) }]), 'Rendicontato')));
     const co = D.coe;
+    const prog6 = co.per_programma.slice(0, 6);
     $('coesione-blocco').replaceChildren(bloccoSt('Coesione', mln(co.totale.finanziamento_pubblico_netto_eur, 0),
       `di finanziamento pubblico su ${co.totale.progetti} progetti con il Comune tra i beneficiari.`,
-      co.per_programma.slice(0, 6).map(s => ({ nome: s.voce.split(':::')[0].slice(0, 40), sub: `${s.progetti} progetti`, n: s.finanziamento_pubblico_netto_eur, testo: mln(s.finanziamento_pubblico_netto_eur, 0), href: elenco({ fonte: 'coesione', programma: s.voce.split(':::')[0] }) })), co.non_misura));
+      null, co.non_misura,
+      avanzamento('Quanto è stato pagato',
+        `I pagamenti sono quelli certificati su OpenCoesione allo stesso 31/08/2026 del finanziamento. Una percentuale bassa può voler dire progetto appena avviato: è un dato di avanzamento, non un giudizio. Il programma con la percentuale più bassa è il POR FESR Sicilia, 152,1 M€ senza pagamenti.`,
+        prog6.map(s => ({ nome: s.voce.split(':::')[0].slice(0, 40), sub: `${s.progetti} progetti`, fin: s.finanziamento_pubblico_netto_eur, speso: s.pagamenti_eur, href: elenco({ fonte: 'coesione', programma: s.voce.split(':::')[0] }) })), 'Pagato')));
 
     /* ---- singoli progetti sulla mappa ---- */
     const PREC = { pallino: 'letta sulla tavola, circa 3-10 m', etichetta: 'dall\'etichetta sulla tavola, circa 25-40 m', toponimo: 'ricavata dal nome del luogo, circa 300 m (approssimata)', da_poligono: 'centro di un poligono' };

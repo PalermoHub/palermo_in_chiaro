@@ -372,7 +372,53 @@
         nota: `I cinque settori con l'importo più alto, più il resto. Il settore è quello del CUP (classificazione delle opere), non la missione del bilancio: sono due modi diversi di classificare la spesa e non si incrociano. I primi cinque valgono il ${pct(100 * sommaSett / O.importo_triennio_eur)} dell'importo.`,
       }), { voci: sett, formatta: (n) => mln(n, 1) });
 
-      /* 5. dove sono i soldi del triennio: la parte che non si può attribuire */
+      /* 5. la composizione per settore delle otto: non quanto spendono, ma per cosa */
+      const nomeSett = {}, perSett = {}, totSett = {};
+      D.prog.progetti.forEach((p) => {
+        if (!p.opere) return;
+        const sigla = p.opere.settore.split(' - ')[0];
+        nomeSett[sigla] = p.opere.settore.split(' - ')[1];
+        if (p.circoscrizioni.length !== 1) return;
+        const m = perSett[p.circoscrizioni[0]] = perSett[p.circoscrizioni[0]] || {};
+        m[sigla] = (m[sigla] || 0) + p.opere.importo_triennio_eur;
+        totSett[sigla] = (totSett[sigla] || 0) + p.opere.importo_triennio_eur;
+      });
+      const topSett = Object.entries(totSett).sort((a, b) => b[1] - a[1]).slice(0, 5).map((x) => x[0]);
+      const valoriSett = (c) => {
+        const m = perSett[c] || {}, t = somma(Object.values(m));
+        const cima = topSett.map((s) => m[s] || 0);
+        return { valori: cima.concat([t - somma(cima)]), totale: t, m };
+      };
+      const settQui = valoriSett(CIRCO);
+      const inTop = topSett.filter((s) => (settQui.m[s] || 0) > 0).sort((a, b) => (settQui.m[b] || 0) - (settQui.m[a] || 0))[0];
+      const primoQui = inTop || Object.entries(settQui.m).sort((a, b) => b[1] - a[1]).map((x) => x[0])[0] || topSett[0];
+      const quotaPrimo = 100 * (settQui.m[primoQui] || 0) / (settQui.totale || 1);
+      const quotaPrimoOtto = 100 * (totSett[primoQui] || 0) / (somma(ROM.map((c) => valoriSett(c).totale)) || 1);
+      impilate(figura(G, {
+        titolo: 'Per cosa sono le opere, circoscrizione per circoscrizione',
+        nota: `Ogni riga è il 100% dell'importo 2026-2028 di una circoscrizione, diviso per settore del CUP. Qui il settore più pesante è «${nomeSett[primoQui] || primoQui}» con il ${pct(quotaPrimo)}; nelle otto circoscrizioni insieme è il ${pct(quotaPrimoOtto)}. Resta fuori la quota di importo che non ha una circoscrizione o ne tocca più di una.`,
+        larga: true,
+      }), {
+        righe: ROM.map((c) => ({ nome: 'Circ. ' + c, valori: valoriSett(c).valori, scelta: c === CIRCO })),
+        segmenti: topSett.map((s, k) => ({ nome: nomeSett[s] || s, colore: ['--s6', '--s5', '--s4', '--s3', '--s2'][k] })).concat([{ nome: 'Altri settori', colore: '--s1' }]),
+        formatta: (n) => mln(n, 1),
+      });
+
+      /* 6. in che anno cadono gli importi delle otto: chi è spostato in avanti */
+      const quota2028 = (c) => { const o = OP(c); return 100 * o.importo_2028_eur / (o.importo_triennio_eur || 1); };
+      const piuAvanti = ROM.slice().sort((a, b) => quota2028(b) - quota2028(a))[0];
+      const quotaOtto2028 = 100 * somma(ROM.map((c) => OP(c).importo_2028_eur)) / (opereCitta || 1);
+      impilate(figura(G, {
+        titolo: 'In che anno cadono gli importi, circoscrizione per circoscrizione',
+        nota: `La composizione del triennio anno per anno. Nelle otto circoscrizioni il ${pct(quotaOtto2028)} dell'importo cade nel 2028, l'anno più lontano e il più esposto ai cambiamenti del Programma; la più spostata in avanti è la Circoscrizione ${piuAvanti} (${pct(quota2028(piuAvanti))}). Non è una previsione di spesa: gli investimenti vengono iscritti anno per anno.`,
+        larga: true,
+      }), {
+        righe: ROM.map((c) => ({ nome: 'Circ. ' + c, valori: [OP(c).importo_2026_eur, OP(c).importo_2027_eur, OP(c).importo_2028_eur], scelta: c === CIRCO })),
+        segmenti: [{ nome: '2026', colore: '--s2' }, { nome: '2027', colore: '--s4' }, { nome: '2028', colore: '--s6' }],
+        formatta: (n) => mln(n, 1),
+      });
+
+      /* 7. dove sono i soldi del triennio: la parte che non si può attribuire */
       const localizzati = TO.importo_triennio_eur - MULTI.importo_triennio_eur - NON.importo_triennio_eur;
       const corpo = figura(G, {
         titolo: 'Dove sono i 4,37 miliardi del triennio',
@@ -585,7 +631,7 @@
         conTip(seg, o.segmenti[k].nome, [[r.nome, o.formatta(v)], ['Quota', pct(q)]]);
         pista.append(seg);
       });
-      box.append(el('div', { class: 'riga-imp' }, [el('div', { class: 'nome', text: r.nome }), pista]));
+      box.append(el('div', { class: 'riga-imp' + (r.scelta ? ' scelta' : '') + (r.citta ? ' citta' : ''), 'aria-current': r.scelta ? 'true' : null }, [el('div', { class: 'nome', text: r.nome }), pista]));
     });
     host.append(box);
     host.append(el('div', { class: 'legenda-imp' }, o.segmenti.map((s) => el('span', { class: 'voce-leg' }, [

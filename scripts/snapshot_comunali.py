@@ -15,6 +15,22 @@ def f(v):
 def top(c, n=8):
     return [{'voce': k, 'cig': v[0], 'importo_eur': round(v[1], 2)} for k, v in sorted(c.items(), key=lambda kv: -kv[1][1])[:n]]
 
+# classi di procedura: le stesse quattro in tutti gli anni, cosi` i grafici si confrontano
+def classe_procedura(s):
+    s = (s or '').strip().upper()
+    if s.startswith('AFFIDAMENTO DIRETTO'): return 'Affidamento diretto, anche in house'
+    if s in ('PROCEDURA APERTA', 'PROCEDURA RISTRETTA', 'PROCEDURA DI GARA'): return 'Procedura aperta o ristretta'
+    if s.startswith('PROCEDURA NEGOZIATA'): return 'Procedura negoziata'
+    return 'Altre procedure o non indicata'
+
+# fasce di importo sui valori di soglia del codice degli appalti
+FASCE = [(0, 40000, 'fino a 40.000 €'), (40000, 150000, 'da 40.000 a 150.000 €'),
+         (150000, 1000000, 'da 150.000 a 1 milione €'), (1000000, float('inf'), 'oltre 1 milione €')]
+def fascia_importo(v):
+    for lo, hi, nome in FASCE:
+        if lo <= v < hi: return nome
+    return FASCE[-1][2]
+
 # ---------- APPALTI ----------
 def leggi(nome):
     return list(csv.DictReader(open(os.path.join(D, nome), encoding='utf-8'), delimiter=';'))
@@ -31,10 +47,22 @@ def appalti(anno):
     def tot(lst): return round(sum(f(r['importo_lotto']) for r in lst), 2)
     senza = [r for r in rs if r['cig'] not in ANOMALI]
     scelta = collections.defaultdict(lambda: [0, 0.0]); ogg = collections.defaultdict(lambda: [0, 0.0]); cpv = collections.defaultdict(lambda: [0, 0.0])
+    classi = collections.defaultdict(lambda: [0, 0.0]); fasce = collections.defaultdict(lambda: [0, 0.0])
     for r in senza:
         for d, k in ((scelta, r['tipo_scelta_contraente']), (ogg, r['oggetto_principale_contratto']), (cpv, (r['cod_cpv'] or '')[:2] + ' ' + r['descrizione_cpv'])):
             d[k][0] += 1; d[k][1] += f(r['importo_lotto'])
+        for d, k in ((classi, classe_procedura(r['tipo_scelta_contraente'])), (fasce, fascia_importo(f(r['importo_lotto'])))):
+            d[k][0] += 1; d[k][1] += f(r['importo_lotto'])
+    ordine_classi = ['Affidamento diretto, anche in house', 'Procedura aperta o ristretta', 'Procedura negoziata', 'Altre procedure o non indicata']
+    ordine_fasce = [n for _, _, n in FASCE]
+    imp = tot(senza)
     return {'cig': len(rs), 'importo_base_gara_eur_come_in_fonte': tot(rs),
+            'per_classe_procedura': [{'voce': k, 'cig': classi[k][0], 'importo_eur': round(classi[k][1], 2),
+                                      'quota_cig_pct': round(100 * classi[k][0] / len(senza), 1) if senza else None,
+                                      'quota_importo_pct': round(100 * classi[k][1] / imp, 1) if imp else None} for k in ordine_classi if classi[k][0]],
+            'per_fascia_importo': [{'voce': k, 'cig': fasce[k][0], 'importo_eur': round(fasce[k][1], 2),
+                                    'quota_cig_pct': round(100 * fasce[k][0] / len(senza), 1) if senza else None,
+                                    'quota_importo_pct': round(100 * fasce[k][1] / imp, 1) if imp else None} for k in ordine_fasce if fasce[k][0]],
             'cig_con_importo_anomalo_non_corretti': sorted(r['cig'] for r in rs if r['cig'] in ANOMALI),
             'importo_base_gara_eur_senza_anomali': tot(senza), 'cig_senza_anomali': len(senza),
             'cig_flag_pnrr_pnc': sum(1 for r in rs if r['FLAG_PNRR_PNC'] == '1'),

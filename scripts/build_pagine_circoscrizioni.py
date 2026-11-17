@@ -17,8 +17,8 @@ from string import Template
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 SITO = 'https://palermohub.github.io/palermo_in_chiaro'
-V_CSS = '20261118b'
-V_APP = '20261118a'
+V_CSS = '20261118d'
+V_APP = '20261118c'
 
 GEO = json.load(open(os.path.join(BASE, 'data/geo/circoscrizioni.json'), encoding='utf-8'))['circoscrizioni']
 

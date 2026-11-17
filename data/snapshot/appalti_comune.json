@@ -23,6 +23,66 @@
     "2025": {
       "cig": 684,
       "importo_base_gara_eur_come_in_fonte": 5999240242.7,
+      "per_classe_procedura": [
+        {
+          "voce": "Affidamento diretto, anche in house",
+          "cig": 581,
+          "importo_eur": 85622362.13,
+          "quota_cig_pct": 85.2,
+          "quota_importo_pct": 13.6
+        },
+        {
+          "voce": "Procedura aperta o ristretta",
+          "cig": 64,
+          "importo_eur": 522164461.75,
+          "quota_cig_pct": 9.4,
+          "quota_importo_pct": 82.8
+        },
+        {
+          "voce": "Procedura negoziata",
+          "cig": 34,
+          "importo_eur": 22214093.62,
+          "quota_cig_pct": 5.0,
+          "quota_importo_pct": 3.5
+        },
+        {
+          "voce": "Altre procedure o non indicata",
+          "cig": 3,
+          "importo_eur": 398827.2,
+          "quota_cig_pct": 0.4,
+          "quota_importo_pct": 0.1
+        }
+      ],
+      "per_fascia_importo": [
+        {
+          "voce": "fino a 40.000 €",
+          "cig": 403,
+          "importo_eur": 5782880.95,
+          "quota_cig_pct": 59.1,
+          "quota_importo_pct": 0.9
+        },
+        {
+          "voce": "da 40.000 a 150.000 €",
+          "cig": 160,
+          "importo_eur": 14149857.15,
+          "quota_cig_pct": 23.5,
+          "quota_importo_pct": 2.2
+        },
+        {
+          "voce": "da 150.000 a 1 milione €",
+          "cig": 79,
+          "importo_eur": 38807640.05,
+          "quota_cig_pct": 11.6,
+          "quota_importo_pct": 6.2
+        },
+        {
+          "voce": "oltre 1 milione €",
+          "cig": 40,
+          "importo_eur": 571659366.55,
+          "quota_cig_pct": 5.9,
+          "quota_importo_pct": 90.7
+        }
+      ],
       "cig_con_importo_anomalo_non_corretti": [
         "B7129C8050",
         "B71B482B61"
@@ -137,6 +197,66 @@
     "2026": {
       "cig": 447,
       "importo_base_gara_eur_come_in_fonte": 139847493.01,
+      "per_classe_procedura": [
+        {
+          "voce": "Affidamento diretto, anche in house",
+          "cig": 357,
+          "importo_eur": 45533967.2,
+          "quota_cig_pct": 79.9,
+          "quota_importo_pct": 32.6
+        },
+        {
+          "voce": "Procedura aperta o ristretta",
+          "cig": 38,
+          "importo_eur": 73756772.1,
+          "quota_cig_pct": 8.5,
+          "quota_importo_pct": 52.7
+        },
+        {
+          "voce": "Procedura negoziata",
+          "cig": 46,
+          "importo_eur": 17564172.47,
+          "quota_cig_pct": 10.3,
+          "quota_importo_pct": 12.6
+        },
+        {
+          "voce": "Altre procedure o non indicata",
+          "cig": 6,
+          "importo_eur": 2992581.24,
+          "quota_cig_pct": 1.3,
+          "quota_importo_pct": 2.1
+        }
+      ],
+      "per_fascia_importo": [
+        {
+          "voce": "fino a 40.000 €",
+          "cig": 275,
+          "importo_eur": 4850814.84,
+          "quota_cig_pct": 61.5,
+          "quota_importo_pct": 3.5
+        },
+        {
+          "voce": "da 40.000 a 150.000 €",
+          "cig": 87,
+          "importo_eur": 7822428.11,
+          "quota_cig_pct": 19.5,
+          "quota_importo_pct": 5.6
+        },
+        {
+          "voce": "da 150.000 a 1 milione €",
+          "cig": 59,
+          "importo_eur": 27633559.55,
+          "quota_cig_pct": 13.2,
+          "quota_importo_pct": 19.8
+        },
+        {
+          "voce": "oltre 1 milione €",
+          "cig": 26,
+          "importo_eur": 99540690.51,
+          "quota_cig_pct": 5.8,
+          "quota_importo_pct": 71.2
+        }
+      ],
       "cig_con_importo_anomalo_non_corretti": [],
       "importo_base_gara_eur_senza_anomali": 139847493.01,
       "cig_senza_anomali": 447,

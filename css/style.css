@@ -697,6 +697,41 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 .voce-leg { display: inline-flex; align-items: center; gap: 6px; }
 .pastiglia { width: 11px; height: 11px; border-radius: 2px; flex: none; }
 
+/* la stessa voce letta in due modi (importo e numero): due barre sulla stessa scala 0-100% */
+.confronto { display: grid; }
+.confronto-gruppo { display: grid; grid-template-columns: minmax(7rem, 13rem) minmax(0, 1fr); gap: 4px 14px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--linea); }
+.confronto-gruppo .nome { grid-row: 1 / span 2; font-size: 0.9rem; line-height: 1.25; }
+.confronto-gruppo .nome b { font-weight: 500; }
+.confronto-gruppo .nome small { display: block; color: var(--muto); font-size: 0.76rem; margin-top: 2px; }
+.confronto-barra { display: grid; grid-template-columns: 4.4rem minmax(0, 1fr) 3.8rem; gap: 8px; align-items: center; }
+.confronto-barra .et { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muto); }
+.confronto-barra .pista { height: 10px; background: var(--carta-2); box-shadow: inset 0 0 0 1px var(--linea); }
+.confronto-barra .riempi { display: block; height: 100%; background: var(--s4); min-width: 2px; }
+.confronto-barra.numero .riempi { background: var(--ocra); }
+.confronto-barra .val { text-align: right; font-size: 0.8rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.confronto-barra:hover .riempi { filter: brightness(0.92); }
+
+/* avanzamento: quanto è stato speso o pagato di quanto è stato stanziato */
+.avanz { display: grid; }
+.avanz-blocco { margin-top: 18px; border-top: 1px solid var(--linea); padding-top: 14px; }
+.avanz-titolo { font-family: var(--font-titoli); font-size: 1rem; margin: 0 0 4px; }
+.avanz-blocco .nota { color: var(--muto); font-size: 0.86rem; margin: 2px 0 10px; }
+.avanz-blocco .nota:last-child { margin: 8px 0 0; }
+.avanz-riga { display: grid; grid-template-columns: minmax(6rem, 13rem) minmax(0, 1fr) minmax(6rem, auto); gap: 12px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--linea); }
+.avanz-riga .nome { font-size: 0.9rem; line-height: 1.25; }
+.avanz-riga .nome b { font-weight: 500; }
+.avanz-riga .nome small { display: block; color: var(--muto); font-size: 0.76rem; }
+.avanz-riga .pista { position: relative; height: 14px; }
+.avanz-riga .fondo { position: absolute; left: 0; top: 0; bottom: 0; background: var(--s2); }
+.avanz-riga .riempi { position: absolute; left: 0; top: 0; bottom: 0; background: var(--s4); min-width: 2px; }
+.avanz-riga .val { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; font-size: 0.88rem; }
+.avanz-riga .val small { display: block; font-weight: 400; font-size: 0.74rem; color: var(--muto); }
+.avanz-riga:hover .riempi { filter: brightness(0.92); }
+.avanz-riga.link { color: inherit; text-decoration: none; }
+.avanz-riga.link:hover { background: color-mix(in srgb, var(--maiolica-chiara) 55%, transparent); }
+.avanz-riga.link:hover .nome b { text-decoration: underline; text-underline-offset: 3px; }
+.avanz-riga.link:focus-visible { outline: 2px solid var(--cupola); outline-offset: -2px; }
+
 /* grafici SVG */
 .statistiche svg { display: block; width: 100%; height: auto; }
 .statistiche svg text { font-family: var(--font-testo); fill: var(--muto); }
@@ -807,6 +842,11 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
   .grafico.larga { grid-column: auto; }
   .riga-barra { grid-template-columns: minmax(4.4rem, 7rem) minmax(0, 1fr) auto; gap: 8px; }
   .riga-imp { grid-template-columns: minmax(3.6rem, 5.5rem) minmax(0, 1fr); gap: 8px; }
+  .confronto-gruppo { grid-template-columns: 1fr; gap: 6px; }
+  .confronto-gruppo .nome { grid-row: auto; }
+  .avanz-riga { grid-template-columns: minmax(0, 1fr) auto; gap: 3px 10px; }
+  .avanz-riga .nome { grid-column: 1 / -1; }
+  .avanz-riga .val small { display: inline; margin-left: 6px; }
   .minigriglia { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
   .linguette { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .linguette::-webkit-scrollbar { display: none; }
