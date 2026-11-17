@@ -39,8 +39,8 @@ def norm_cup(v):
 interventi = json.load(open(os.path.join(BASE, 'dati/piano_triennale/interventi_2026_2028.json'), encoding='utf-8'))
 posizioni = {p['id']: p for p in json.load(open(os.path.join(BASE, 'data/geo/progetti.json'), encoding='utf-8'))['progetti']}
 
-def circoscrizioni_da_geo(x):
-    """Le circoscrizioni del campo geo, che nel file e' la stringa di una lista di tuple."""
+def territorio_da_geo(x):
+    """Circoscrizione, quartiere e UPL del campo geo, che nel file e' la stringa di una lista di tuple (circ, quartiere, upl)."""
     import ast
     g = x.get('geo')
     if isinstance(g, str) and ok(g):
@@ -48,13 +48,16 @@ def circoscrizioni_da_geo(x):
             g = ast.literal_eval(g)
         except (ValueError, SyntaxError):
             g = None
-    return sorted({r[0] for r in (g or []) if r})
+    g = [r for r in (g or []) if r and len(r) > 2]
+    return (sorted({r[0] for r in g if r[0]}),
+            sorted({r[1] for r in g if r[1]}),
+            sorted({r[2] for r in g if r[2]}))
 
 opere = {}
 for x in interventi:
     pid = 'op-' + x['cod_int_amm']
     pos = posizioni.get(x['cod_int_amm'])
-    circ = circoscrizioni_da_geo(x)
+    circ, quart, upl = territorio_da_geo(x)
     if pos:
         circ = pos.get('circoscrizioni') or circ
     finanziamenti = []
@@ -71,6 +74,8 @@ for x in interventi:
         'cup': norm_cup(x.get('cup')),
         'cui': (x.get('cui') or '').strip() or None,
         'circoscrizioni': circ,
+        'quartieri': quart,
+        'upl': upl,
         'localizzato': bool(pos),
         'opere': {
             'settore': x.get('settore_sottosettore'),
@@ -148,6 +153,8 @@ for p in pnrr:
             'cup': cup,
             'cui': None,
             'circoscrizioni': [],
+            'quartieri': [],
+            'upl': [],
             'localizzato': False,
             'pnrr': dati,
             'finanziamenti': [],
@@ -191,6 +198,8 @@ for cup, righe in sorted(per_cup_coe.items()):
             'cup': cup,
             'cui': None,
             'circoscrizioni': [],
+            'quartieri': [],
+            'upl': [],
             'localizzato': False,
             'coesione': dettaglio,
             'finanziamenti': [],
@@ -245,12 +254,15 @@ out = {
         'Un progetto puo\' comparire in piu\' fonti: la scheda le elenca tutte, ma gli importi non si sommano (stanziamento, finanziamento PNRR, fondo di coesione e base di gara misurano cose diverse).',
         'Il collegamento tra fonti avviene solo per CUP o CUI identico: dove il codice manca o e\' diverso, i progetti restano voci separate.',
         'Molti progetti PNRR e di coesione non hanno una circoscrizione: la localizzazione resta comunale.',
+        'Quartiere e UPL sono quelli dichiarati nel Programma triennale per ogni intervento (campo geo della tavola): non sono calcolati qui e mancano dove la fonte non li indica.',
         'I CIG senza CUI collegato non hanno un progetto a cui appartenere: restano nella lista appalti, senza scheda progetto.',
     ],
     'conteggi': {
         'voci': len(tutti),
         'opere': len(opere),
         'opere_localizzate': sum(1 for r in opere.values() if r['localizzato']),
+        'opere_con_quartiere': sum(1 for r in opere.values() if r['quartieri']),
+        'opere_con_upl': sum(1 for r in opere.values() if r['upl']),
         'pnrr_totali': len(pnrr),
         'pnrr_collegati_a_opere': sum(1 for r in opere.values() if 'pnrr' in r),
         'pnrr_voci_proprie': sum(1 for r in senza_match if 'pnrr' in r['fonti']),

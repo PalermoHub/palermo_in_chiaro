@@ -21,11 +21,15 @@ def geo(x):
 prog = {}
 def get(c):
     if c not in prog:
-        x = items[c]; circ = sorted({g[0] for g in geo(x)})
+        x = items[c]; g = geo(x)
+        # circoscrizione, quartiere e UPL sono quelli dichiarati nel Programma (campo geo), non una stima
+        circ = sorted({r[0] for r in g if r})
+        quart = sorted({r[1] for r in g if r and len(r) > 1 and r[1]})
+        upl = sorted({r[2] for r in g if r and len(r) > 2 and r[2]})
         prog[c] = {'id': c, 'descrizione': ' '.join(x['descrizione_intervento'].split()), 'settore': x['settore_sottosettore'],
                    'importo_triennio_eur': round(f(x['importo']), 2), 'importo_complessivo_eur': round(f(x['importo_complessivo']), 2),
                    'cup': x['cup'] if ok(x['cup']) else None, 'cui': x['cui'] if ok(x.get('cui')) else None,
-                   'circoscrizioni': circ, 'punti': [], 'linee': [], 'poligoni': []}
+                   'circoscrizioni': circ, 'quartieri': quart, 'upl': upl, 'punti': [], 'linee': [], 'poligoni': []}
     return prog[c]
 
 for ft in json.load(open(os.path.join(G, 'punti.geojson')))['features']:
