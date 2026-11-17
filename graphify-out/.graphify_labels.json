@@ -23,5 +23,7 @@
   "21": "circoscrizione.js",
   "22": "build_pagine_circoscrizioni.py",
   "23": "crediti.js",
-  "24": "menu.js"
+  "24": "menu.js",
+  "25": "cerca.js",
+  "26": "build_ricerca.py"
 }

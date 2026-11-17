@@ -7,10 +7,15 @@
       in testata solo le voci dirette, e le sezioni elencate in «In questa pagina». */
 (() => {
   'use strict';
-  const nav = document.querySelector('.testata nav');
+  const nav = document.querySelector('.testata nav.menu-principale')
+    || document.querySelector('.testata nav:not(.briciole-testata)');
   if (!nav) return;
 
   const testata = document.querySelector('.testata');
+  /* la briciola in testata: la pagina sta nel documento, la sezione che si legge
+     la aggiunge questo file, così il percorso resta attaccato a ciò che si vede */
+  const briciole = document.querySelector('.briciole-testata');
+  const briciolaSezione = briciole && briciole.querySelector('[data-briciola-sezione]');
   /* l'altezza vera della testata serve a questa pagina e alle ancore del menù:
      cambia quando le voci vanno a capo su schermi stretti */
   if (testata) {
@@ -73,8 +78,21 @@
     });
   }
 
+  const aggiornaBriciola = (attiva) => {
+    if (!briciolaSezione) return;
+    const riga = briciolaSezione.closest('li');
+    if (!attiva) {
+      if (riga) riga.hidden = true;
+      return;
+    }
+    briciolaSezione.textContent = attiva.link.textContent.trim();
+    briciolaSezione.setAttribute('href', '#' + attiva.sezione.id);
+    if (riga) riga.hidden = false;
+  };
+
   if (voci.length) {
     const segna = (attiva) => {
+      aggiornaBriciola(attiva);
       /* mentre si legge una sezione resta una sola voce sottolineata: quella della pagina
          perde il segno grafico ma tiene l'attributo, che dice ancora dove si è */
       if (attiva) nav.setAttribute('data-sezione', ''); else nav.removeAttribute('data-sezione');

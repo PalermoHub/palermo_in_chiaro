@@ -74,7 +74,15 @@
   applica(decidi());
 
   let b = null;
-  const avvia = () => { b = pulsante(); if (b && !b.isConnected) (document.querySelector('.testata nav') || document.querySelector('.testata-in')).after(b); };
+  const avvia = () => {
+    b = pulsante();
+    if (b && !b.isConnected) {
+      (document.querySelector('.cerca-apri')
+        || document.querySelector('.testata nav.menu-principale')
+        || document.querySelector('.testata nav:not(.briciole-testata)')
+        || document.querySelector('.testata-in')).after(b);
+    }
+  };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', avvia);
   else avvia();
 

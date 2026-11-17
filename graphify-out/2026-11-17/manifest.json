@@ -35,8 +35,8 @@
     "semantic_hash": ""
   },
   "data/snapshot/appalti_comune.json": {
-    "mtime": 1794859861.511633,
-    "ast_hash": "4bcb744eacce7aead2aa153d38e8ad87",
+    "mtime": 1794915799.0258057,
+    "ast_hash": "2f31d2fec0b279110c50e9efc7d2743a",
     "semantic_hash": ""
   },
   "data/snapshot/bilancio_comune.json": {
@@ -45,7 +45,7 @@
     "semantic_hash": ""
   },
   "data/snapshot/coesione_comune.json": {
-    "mtime": 1794859862.6930752,
+    "mtime": 1794915800.564473,
     "ast_hash": "4f7aae97401470cb6b9e55f3aaab6d2c",
     "semantic_hash": ""
   },
@@ -60,7 +60,7 @@
     "semantic_hash": ""
   },
   "data/snapshot/pnrr_comune.json": {
-    "mtime": 1794859861.5196235,
+    "mtime": 1794915799.028736,
     "ast_hash": "377df0da05c2cf26778f3dd4f20a5780",
     "semantic_hash": ""
   },
@@ -80,8 +80,8 @@
     "semantic_hash": ""
   },
   "js/app.js": {
-    "mtime": 1794914264.8921993,
-    "ast_hash": "91d7583a93fbc34b3cd7d05e41ae4853",
+    "mtime": 1794917631.3866742,
+    "ast_hash": "bcad961ad3a3089c29d6b8938dface59",
     "semantic_hash": ""
   },
   "js/consenso.js": {
@@ -155,8 +155,8 @@
     "semantic_hash": ""
   },
   "scripts/snapshot_comunali.py": {
-    "mtime": 1794859860.5681026,
-    "ast_hash": "2d89fc5d70bb324229c42fd01d193763",
+    "mtime": 1794915797.58714,
+    "ast_hash": "7f65a65351642da69f773a1955ee0a3d",
     "semantic_hash": ""
   },
   "scripts/snapshot_opere.py": {
@@ -190,33 +190,33 @@
     "semantic_hash": ""
   },
   "fonti.html": {
-    "mtime": 1794914236.68021,
-    "ast_hash": "8faa991f28c40e153a2eadee30cc793c",
+    "mtime": 1794920339.9434993,
+    "ast_hash": "8ccc07cac511db4cedfb7e7e7d5bf9bf",
     "semantic_hash": ""
   },
   "index.html": {
-    "mtime": 1794914230.9340127,
-    "ast_hash": "75784c000b7b3ef10b8527a79e39bc8d",
+    "mtime": 1794920340.052528,
+    "ast_hash": "190032c7e146e8418e2862e9799253b1",
     "semantic_hash": ""
   },
   "metodo.html": {
-    "mtime": 1794914413.415748,
-    "ast_hash": "4d236497f36b96a47f8c5cc246f8cf4f",
+    "mtime": 1794920339.9687994,
+    "ast_hash": "49fdbc1586855d2dea47465832acaade",
     "semantic_hash": ""
   },
   "privacy.html": {
-    "mtime": 1794914236.6819506,
-    "ast_hash": "4d1c8704a07e9b61992c5b2707206cdb",
+    "mtime": 1794920340.0284636,
+    "ast_hash": "aba86c71d1233235eac8c8335e92ad47",
     "semantic_hash": ""
   },
   "progetti.html": {
-    "mtime": 1794914236.682489,
-    "ast_hash": "e313929e08992d0d2f61d21e020dd8d8",
+    "mtime": 1794920340.078309,
+    "ast_hash": "8f713ec61a0f32bd4cd5a6ed3e5e5369",
     "semantic_hash": ""
   },
   "progetto.html": {
-    "mtime": 1794914236.6814768,
-    "ast_hash": "a803de34578c1eed7a091252fd83e203",
+    "mtime": 1794920339.9939103,
+    "ast_hash": "6564bdae94192c2d6444ad6b7df20951",
     "semantic_hash": ""
   },
   "scripts/social_card.html": {
@@ -225,8 +225,8 @@
     "semantic_hash": ""
   },
   "statistiche.html": {
-    "mtime": 1794914264.8932087,
-    "ast_hash": "6606c0d41581cd9d4e9d83725e3bfb94",
+    "mtime": 1794920340.1007612,
+    "ast_hash": "0e7225bc186e1bed6d02ea73be65ead8",
     "semantic_hash": ""
   },
   "img/favicon.png": {
@@ -260,53 +260,63 @@
     "semantic_hash": ""
   },
   "js/circoscrizione.js": {
-    "mtime": 1794914403.5807834,
-    "ast_hash": "f2b5795c24d55a5c7482e46975ea160c",
+    "mtime": 1794916003.0584493,
+    "ast_hash": "926d9a76613e4bb0bb7b882db20b96fd",
     "semantic_hash": ""
   },
   "scripts/build_pagine_circoscrizioni.py": {
-    "mtime": 1794914463.8057547,
-    "ast_hash": "294d34025bfa4177bde14562f2bb09f6",
+    "mtime": 1794920346.8385632,
+    "ast_hash": "21bd7549683e92aedc8ff1483530e25c",
     "semantic_hash": ""
   },
   "circoscrizione/1/index.html": {
-    "mtime": 1794914234.0854115,
-    "ast_hash": "959014879f8eb13aedebcf20ac922a4f",
+    "mtime": 1794920340.1695406,
+    "ast_hash": "de27fb4c8f1b533381d93e7af52e4c9e",
     "semantic_hash": ""
   },
   "circoscrizione/2/index.html": {
-    "mtime": 1794914234.08574,
-    "ast_hash": "3baed746e9adf20f8432c9f75fe9c31b",
+    "mtime": 1794920340.26054,
+    "ast_hash": "933092264731b6f90b7698b0364cd54f",
     "semantic_hash": ""
   },
   "circoscrizione/3/index.html": {
-    "mtime": 1794914234.0861452,
-    "ast_hash": "cde7c575bcc359a119c3327a783b9ca3",
+    "mtime": 1794920340.1923227,
+    "ast_hash": "3bf871b0736868099579ae4172b1d510",
     "semantic_hash": ""
   },
   "circoscrizione/4/index.html": {
-    "mtime": 1794914234.0863974,
-    "ast_hash": "fe944d5d3fa70d718e782b436c9d61e8",
+    "mtime": 1794920340.1441805,
+    "ast_hash": "27ae4f42f8e448c13afd672436e4c61b",
     "semantic_hash": ""
   },
   "circoscrizione/5/index.html": {
-    "mtime": 1794914234.086706,
-    "ast_hash": "9d3cb4530e716d96def1894a13a81e0b",
+    "mtime": 1794920340.2138472,
+    "ast_hash": "f1acafe93c12374987ab35783f1676dc",
     "semantic_hash": ""
   },
   "circoscrizione/6/index.html": {
-    "mtime": 1794914234.0869145,
-    "ast_hash": "87afe306f5e1438fed9721ae0fbedf77",
+    "mtime": 1794920340.2832868,
+    "ast_hash": "393635f8b9ee6767cda1dde45444ecf5",
     "semantic_hash": ""
   },
   "circoscrizione/7/index.html": {
-    "mtime": 1794914234.08716,
-    "ast_hash": "5ae73364c5091e06500fa7a117ffc8c9",
+    "mtime": 1794920340.2367153,
+    "ast_hash": "40b69d0ad70f3a4e55a6362ba65a79d4",
     "semantic_hash": ""
   },
   "circoscrizione/8/index.html": {
-    "mtime": 1794914234.0874288,
-    "ast_hash": "8ec4af5f0a25d987fe4a52a2c184aa6f",
+    "mtime": 1794920340.1221468,
+    "ast_hash": "7b5fd1f5b09599b7ee1492c804c2768a",
+    "semantic_hash": ""
+  },
+  "js/crediti.js": {
+    "mtime": 1794920328.0595942,
+    "ast_hash": "f040390d14f74b6700000f2a1f90446e",
+    "semantic_hash": ""
+  },
+  "js/menu.js": {
+    "mtime": 1794918733.2912643,
+    "ast_hash": "b160e63f7784b788f4ba0300297e6be9",
     "semantic_hash": ""
   }
 }

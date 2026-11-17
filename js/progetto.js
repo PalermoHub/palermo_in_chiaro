@@ -57,6 +57,11 @@
   function mostra(p, D) {
     const fonti = p.fonti.map(f => el('span', { class: 'badge ' + f, text: ETICHETTE[f] || f }));
     document.title = p.titolo.slice(0, 70) + ' · Palermo in chiaro';
+    const briciola = document.querySelector('[data-briciola-corrente]');
+    if (briciola) {
+      briciola.textContent = p.titolo;
+      briciola.title = p.titolo;
+    }
     const testa = el('header', { class: 'pagina-testa' }, [
       el('h1', { text: p.titolo }),
       el('div', { class: 'fonti-riga', style: 'margin-top:10px' }, fonti),

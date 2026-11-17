@@ -137,9 +137,6 @@
       const n = ROM.indexOf(CIRCO);
       const prev = ROM[(n + 7) % 8], next = ROM[(n + 1) % 8];
       testa.replaceChildren(
-        el('p', { class: 'briciole' }, [
-          el('a', { href: U('index.html'), text: 'Palermo in chiaro' }), ' · ',
-          el('a', { href: U('index.html#mappa'), text: 'Circoscrizioni' }), ' · Circoscrizione ' + CIRCO]),
         el('p', { class: 'occhiello', text: `Circoscrizione ${CIRCO} di 8` }),
         el('h1', { id: 't-circ', text: `Circoscrizione ${CIRCO}` }),
         el('p', { class: 'circ-quartieri' }, quartieri.map((q, k) => [

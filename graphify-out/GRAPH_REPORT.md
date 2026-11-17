@@ -1,16 +1,16 @@
 # Graph Report - palermo_in_chiaro  (2026-11-17)
 
 ## Corpus Check
-- 42 files · ~154,486 words
+- 45 files · ~182,324 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 148 nodes · 175 edges · 25 communities (18 shown, 7 thin omitted)
-- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.65)
+- 172 nodes · 219 edges · 27 communities (20 shown, 7 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 7 edges (avg confidence: 0.59)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `83580ceb`
+- Built from commit: `5216b557`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -36,18 +36,20 @@
 - circoscrizione.js
 - build_pagine_circoscrizioni.py
 - crediti.js
+- cerca.js
+- build_ricerca.py
 
 ## God Nodes (most connected - your core abstractions)
 1. `disegna()` - 8 edges
-2. `avvia()` - 6 edges
-3. `quota()` - 6 edges
-4. `Licenze` - 6 edges
-5. `avvia()` - 5 edges
-6. `scegli()` - 5 edges
-7. `appalti()` - 5 edges
-8. `baricentro()` - 4 edges
-9. `converti()` - 4 edges
-10. `ok()` - 4 edges
+2. `creaFinestra()` - 6 edges
+3. `cerca()` - 6 edges
+4. `avvia()` - 6 edges
+5. `quota()` - 6 edges
+6. `Licenze` - 6 edges
+7. `disegna()` - 5 edges
+8. `avvia()` - 5 edges
+9. `scegli()` - 5 edges
+10. `appalti()` - 5 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `geo()` --calls--> `ok()`  [INFERRED]
@@ -58,7 +60,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (25 total, 7 thin omitted)
+## Communities (27 total, 7 thin omitted)
 
 ### Community 0 - "build_indice_progetti.py"
 Cohesion: 0.14
@@ -116,6 +118,14 @@ Nodes (4): nav(), Genera le otto pagine di circoscrizione (circoscrizione/1…8/
 Cohesion: 0.70
 Nodes (4): apri(), chiudi(), collega(), costruisci()
 
+### Community 25 - "cerca.js"
+Cohesion: 0.28
+Nodes (14): apri(), carica(), cerca(), chiudiFinestra(), creaFinestra(), disegna(), distanza(), evidenzia() (+6 more)
+
+### Community 26 - "build_ricerca.py"
+Cohesion: 0.39
+Nodes (7): attributi(), leggi_pagina(), pulisci(), Indice unico della ricerca globale del sito (data/ricerca.json). Uso: python3…, Testo di un titolo HTML: via i tag, via gli spazi doppi., scrivi(), voce_progetto()
+
 ## Knowledge Gaps
 - **8 isolated node(s):** `Come`, `Cosa non si fa`, `Dati`, `Cosa ne segue`, `Codice` (+3 more)
   These have ≤1 connection - possible missing edges or undocumented components.
@@ -124,6 +134,8 @@ Nodes (4): apri(), chiudi(), collega(), costruisci()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
+- **Are the 2 inferred relationships involving `creaFinestra()` (e.g. with `cerca()` and `chiudiFinestra()`) actually correct?**
+  _`creaFinestra()` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `Come`, `Cosa non si fa`, `Dati` to the rest of the system?**
   _8 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `build_indice_progetti.py` be split into smaller, more focused modules?**

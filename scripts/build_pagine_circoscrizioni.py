@@ -2,7 +2,7 @@
 
 Uso: python3 -I scripts/build_pagine_circoscrizioni.py
 
-Le pagine sono involucri statici: titolo, descrizione, breadcrumb e testata sono nel
+Le pagine sono involucri statici: titolo, descrizione, percorso e testata sono nel
 file, la mappa e i grafici li disegna js/circoscrizione.js leggendo gli snapshot. Sono scritte da
 qui perché testata e piede restino uguali in tutte e otto (e a quelli del resto del
 sito): se cambia il menu, si cambia in questo script e si rigenerano, non a mano.
@@ -17,8 +17,8 @@ from string import Template
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 SITO = 'https://palermohub.github.io/palermo_in_chiaro'
-V_CSS = '20261119a'
-V_APP = '20261118c'
+V_CSS = '20261120a'
+V_APP = '20261120a'
 
 GEO = json.load(open(os.path.join(BASE, 'data/geo/circoscrizioni.json'), encoding='utf-8'))['circoscrizioni']
 
@@ -53,7 +53,7 @@ PAGINA = Template('''<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../css/style.css?v=$vcss">
-<script src="../../js/tema.js?v=20261116y"></script>
+<script src="../../js/tema.js?v=20261120a"></script>
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
   {"@type": "ListItem", "position": 1, "name": "Palermo in chiaro", "item": "$sito/"},
@@ -69,6 +69,18 @@ PAGINA = Template('''<!doctype html>
   <div class="testata-in">
     <a class="marchio" href="../../" aria-label="Palermo in chiaro, inizio pagina">Palermo in chiaro</a>
 $nav
+    <button type="button" class="cerca-apri" aria-haspopup="dialog" aria-controls="cerca-finestra" aria-expanded="false" title="Cerca in tutto il sito (premi /)">
+      <svg class="cerca-ico" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12.6 12.6 17 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+      <span class="cerca-apri-parola">Cerca</span>
+      <kbd class="cerca-tasto" aria-hidden="true">/</kbd>
+    </button>
+    <nav class="briciole-testata" aria-label="Percorso di navigazione">
+      <ol>
+        <li><a href="../../">Palermo in chiaro</a></li>
+        <li><a href="../../index.html#mappa">Circoscrizioni</a></li>
+        <li><span aria-current="page">Circoscrizione $rom</span></li>
+      </ol>
+    </nav>
   </div>
 </header>
 
@@ -140,7 +152,8 @@ $nav
   </div>
 </footer>
 
-<script src="../../js/menu.js?v=20261118f"></script>
+<script src="../../js/menu.js?v=20261120a"></script>
+<script src="../../js/cerca.js?v=20261120a"></script>
 <script src="../../js/crediti.js?v=20261119a"></script>
 <script src="../../js/su.js?v=20261116y"></script>
 <script src="../../js/circoscrizione.js?v=$vapp"></script>
@@ -159,7 +172,7 @@ def nav(rom):
         righe.append(f'          <li><a href="../{i}/"{corrente}>Circoscrizione {r}</a></li>')
     elenco = '\n'.join(righe)
     return (
-        '    <nav aria-label="Sezioni">\n'
+        '    <nav class="menu-principale" aria-label="Sezioni">\n'
         '      <details class="tendina">\n'
         '        <summary>Home</summary>\n'
         '        <ul>\n'

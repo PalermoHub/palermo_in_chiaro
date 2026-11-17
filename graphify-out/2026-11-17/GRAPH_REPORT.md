@@ -1,16 +1,16 @@
 # Graph Report - palermo_in_chiaro  (2026-11-17)
 
 ## Corpus Check
-- 40 files · ~150,219 words
+- 42 files · ~154,486 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 138 nodes · 161 edges · 23 communities (15 shown, 8 thin omitted)
+- 148 nodes · 175 edges · 25 communities (18 shown, 7 thin omitted)
 - Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `e7e58c2a`
+- Built from commit: `83580ceb`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -35,6 +35,7 @@
 - snapshot_bilancio.py
 - circoscrizione.js
 - build_pagine_circoscrizioni.py
+- crediti.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `disegna()` - 8 edges
@@ -43,10 +44,10 @@
 4. `Licenze` - 6 edges
 5. `avvia()` - 5 edges
 6. `scegli()` - 5 edges
-7. `baricentro()` - 4 edges
-8. `converti()` - 4 edges
-9. `ok()` - 4 edges
-10. `get()` - 4 edges
+7. `appalti()` - 5 edges
+8. `baricentro()` - 4 edges
+9. `converti()` - 4 edges
+10. `ok()` - 4 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `geo()` --calls--> `ok()`  [INFERRED]
@@ -57,7 +58,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (23 total, 8 thin omitted)
+## Communities (25 total, 7 thin omitted)
 
 ### Community 0 - "build_indice_progetti.py"
 Cohesion: 0.14
@@ -88,8 +89,8 @@ Cohesion: 0.29
 Nodes (6): Codice, Cosa ne segue, Dati, Licenze, Logo e immagini, Non affiliazione
 
 ### Community 7 - "snapshot_comunali.py"
-Cohesion: 0.38
-Nodes (4): appalti(), f(), Snapshot a livello comunale: appalti (ANAC CIG), PNRR (sito del Comune), fondi…, top()
+Cohesion: 0.33
+Nodes (6): appalti(), classe_procedura(), f(), fascia_importo(), Snapshot a livello comunale: appalti (ANAC CIG), PNRR (sito del Comune), fondi…, top()
 
 ### Community 8 - "snapshot_opere.py"
 Cohesion: 0.53
@@ -107,10 +108,18 @@ Nodes (3): applica(), etichetta(), pulsante()
 Cohesion: 0.50
 Nodes (6): avvia(), barre(), conTip(), dettagli(), figura(), impilate()
 
+### Community 22 - "build_pagine_circoscrizioni.py"
+Cohesion: 0.50
+Nodes (4): nav(), Genera le otto pagine di circoscrizione (circoscrizione/1…8/index.html). Uso:…, Il menù della testata, uguale a quello delle altre pagine: una tendina per ogni…, scrivi()
+
+### Community 23 - "crediti.js"
+Cohesion: 0.70
+Nodes (4): apri(), chiudi(), collega(), costruisci()
+
 ## Knowledge Gaps
 - **8 isolated node(s):** `Come`, `Cosa non si fa`, `Dati`, `Cosa ne segue`, `Codice` (+3 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
