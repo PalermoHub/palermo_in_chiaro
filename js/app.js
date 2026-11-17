@@ -535,6 +535,54 @@
       ...D.opere.non_misura.filter(t => !t.startsWith('Circa il')).map(t => el('li', { text: t })),
     ]));
 
+    /* gli stessi importi letti in altro modo: pro capite, i più grandi senza circoscrizione, l'anno in cui cadono */
+    const nota = (t) => el('p', { class: 'nota', text: t });
+
+    /* 1. importo per abitante: gli euro da soli non dicono quanto pesa su chi ci abita */
+    const residentiTot = ROM.reduce((s, c) => s + P(c).residenti, 0);
+    const mediaPc = ROM.reduce((s, c) => s + O(c).importo_triennio_eur, 0) / residentiTot;
+    const pcRank = ROM.map(c => ({ c, v: O(c).importo_triennio_per_residente_eur })).sort((a, b) => b.v - a.v);
+    const maxPc = Math.max(pcRank[0].v, mediaPc);
+    const pcRighe = el('div', { class: 'pc-righe' }, pcRank.map(x => {
+      const b = el('button', { type: 'button', class: 'pc-riga', title: `Circoscrizione ${x.c}: ${it(x.v)} € per abitante. Mostra la circoscrizione sulla mappa.` }, [
+        el('span', { class: 'pc-nome', text: x.c }),
+        el('span', { class: 'pc-pista' }, [el('span', { class: 'pc-riempi', style: `width:${100 * x.v / maxPc}%` })]),
+        el('span', { class: 'pc-val', text: it(x.v) + ' €' })]);
+      b.addEventListener('click', () => mostraCircoscrizione(x.c));
+      return b;
+    }));
+    pcRighe.append(el('div', { class: 'pc-media' }, [
+      el('span', { class: 'pc-nome', text: 'Media' }),
+      el('span', { class: 'pc-pista' }, [el('span', { class: 'pc-riempi', style: `width:${100 * mediaPc / maxPc}%` })]),
+      el('span', { class: 'pc-val', text: it(mediaPc) + ' €' })]));
+    $('opere-pro-capite').replaceChildren(
+      el('h3', { text: 'Quanto vale per abitante' }), pcRighe,
+      nota(`Interventi con una sola circoscrizione divisi per i residenti del censimento 2021. La media delle 8 circoscrizioni è ${it(mediaPc)} €; il ${it(100 * nonLoc.importo_triennio_eur / tot.importo_triennio_eur, 0)}% dell'importo non ha circoscrizione e resta fuori da queste cifre. Una riga porta alla circoscrizione sulla mappa.`));
+
+    /* 2. i più grandi fra i 94 interventi senza circoscrizione: rendono verificabile la cifra aggregata */
+    const topSenza = nonLoc.principali_interventi.slice(0, 5);
+    $('opere-senza').replaceChildren(
+      el('h3', { text: 'I più grandi senza circoscrizione' }),
+      el('ul', { class: 'senza-righe' }, topSenza.map(x => {
+        const d = x.descrizione.replace(/\s+/g, ' ');
+        return el('li', {}, [
+          el('a', { href: 'progetto.html?id=' + encodeURIComponent(x.id), title: 'Apri la scheda del progetto: ' + d, text: d.length > 92 ? d.slice(0, 90) + '…' : d }),
+          el('b', { text: mln(x.importo_triennio_eur, 0) })]);
+      })),
+      nota(`I primi 5 per importo dei ${nonLoc.interventi} interventi senza circoscrizione (${mln(nonLoc.importo_triennio_eur, 0)}): reti, linee e lavori diffusi che il Programma non assegna a una circoscrizione. Il primo vale da solo il ${it(100 * topSenza[0].importo_triennio_eur / tot.importo_triennio_eur, 0)}% del triennio.`),
+      el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: elenco({ fonte: 'opere', circ: '__nessuna' }), text: `Tutti i ${nonLoc.interventi} interventi senza circoscrizione` })]));
+
+    /* 3. in che anno cadono gli importi: quasi due terzi stanno nel 2028 */
+    const anniOp = [['2026', tot.importo_2026_eur], ['2027', tot.importo_2027_eur], ['2028', tot.importo_2028_eur]];
+    const quotaAnno = (v) => 100 * v / tot.importo_triennio_eur;
+    $('opere-anni').replaceChildren(
+      el('h3', { text: 'In che anno cadono gli importi' }),
+      el('div', { class: 'anno-barra', 'aria-hidden': 'true' }, anniOp.map(([a, v]) => el('span', { class: 'anno-seg a' + a, style: `width:${quotaAnno(v)}%` }))),
+      el('div', { class: 'anno-legenda' }, anniOp.map(([a, v]) => el('div', {}, [
+        el('i', { class: 'a' + a }), el('span', { text: a }),
+        el('span', { class: 'quota', text: mln(v, 0) }), el('b', { text: it(quotaAnno(v)) + '%' })]))),
+      nota(`Il ${it(quotaAnno(tot.importo_2028_eur))}% dell'importo è programmato nel 2028: è la parte più lontana, e la più esposta ai cambiamenti del Programma. Il CUP, il codice che permette di seguire un'opera fino alla gara, c'è per ${tot.con_cup} interventi su ${tot.interventi}.`));
+
     /* sezione bilancio: ogni missione apre la sua scheda */
     const anni = ['2026', '2027', '2028']; let anno = '2026', missioneSel = null;
     const ridottoM = matchMedia('(prefers-reduced-motion: reduce)');

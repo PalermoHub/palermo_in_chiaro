@@ -290,6 +290,51 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .limiti ul { margin: 0; padding-left: 1.1em; }
 .limiti li { margin: 3px 0; font-size: 0.94rem; }
 
+/* sezione opere: le barre restano a sinistra, a destra tre letture degli stessi dati */
+.opere-corpo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 30px clamp(24px, 4vw, 56px); align-items: start; }
+.opere-lato { display: grid; gap: 28px; }
+.opere-lato h3 { font-size: 1.02rem; margin: 0 0 6px; }
+.opere-lato .nota { color: var(--muto); font-size: 0.86rem; margin: 7px 0 0; }
+.opere-lato .nota a { color: var(--maiolica-scura); }
+.opere-lato .pc-righe { margin-top: 8px; }
+@media (max-width: 1000px) { .opere-corpo { grid-template-columns: 1fr; } }
+
+/* importo per abitante: una riga per circoscrizione, la più alta in cima */
+.pc-righe { display: grid; }
+.pc-riga, .pc-media { display: grid; grid-template-columns: 3.1rem minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 2px; border-bottom: 1px solid var(--linea); }
+.pc-riga { font: inherit; font-size: 0.92rem; text-align: left; color: inherit; background: none; border: 0; border-bottom: 1px solid var(--linea); cursor: pointer; }
+.pc-riga:hover { background: var(--maiolica-chiara); }
+.pc-nome { font-weight: 600; }
+.pc-pista { height: 12px; }
+.pc-riempi { display: block; height: 100%; min-width: 2px; background: var(--maiolica); }
+.pc-val { font-variant-numeric: tabular-nums; font-weight: 600; text-align: right; }
+.pc-media { font-size: 0.82rem; color: var(--muto); border-bottom: 0; }
+.pc-media .pc-nome { font-weight: 400; }
+.pc-media .pc-riempi { background: repeating-linear-gradient(135deg, var(--muto) 0 4px, transparent 4px 8px); }
+.pc-media .pc-val { font-weight: 400; }
+
+/* i più grandi fra gli interventi che il Programma non assegna a una circoscrizione */
+.senza-righe { list-style: none; margin: 8px 0 0; padding: 0; display: grid; }
+.senza-righe li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--linea); font-size: 0.92rem; }
+.senza-righe a { color: var(--inchiostro); text-decoration: none; }
+.senza-righe a:hover { color: var(--maiolica-scura); text-decoration: underline; }
+.senza-righe b { font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+/* in che anno cadono gli importi: 2026, 2027, 2028 */
+.anno-barra { display: flex; height: 18px; margin: 10px 0 10px; }
+.anno-seg { height: 100%; min-width: 2px; }
+.anno-legenda { display: grid; gap: 4px; font-size: 0.88rem; }
+.anno-legenda div { display: grid; grid-template-columns: 12px 3.4rem minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+.anno-legenda i { width: 12px; height: 12px; border-radius: 2px; }
+.anno-legenda .quota { color: var(--muto); text-align: right; }
+.anno-legenda b { font-variant-numeric: tabular-nums; }
+.anno-legenda .a2026 { background: var(--maiolica-scura); }
+.anno-legenda .a2027 { background: var(--maiolica); }
+.anno-legenda .a2028 { background: var(--ocra); }
+.anno-seg.a2026 { background: var(--maiolica-scura); }
+.anno-seg.a2027 { background: var(--maiolica); }
+.anno-seg.a2028 { background: var(--ocra); }
+
 .coppie { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 clamp(20px, 4vw, 56px); max-width: 62rem; }
 .coppia { padding: 6px 0 14px; }
 .coppia h3 { font-size: 1.15rem; margin-bottom: 6px; }
