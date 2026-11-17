@@ -133,7 +133,9 @@
       finestra.setAttribute('open', '');
       finestra.classList.add('senza-modale');
     }
-    requestAnimationFrame(() => prev.focus({ preventScroll: true }));
+    /* il fuoco va sulla finestra, non sulle frecce: le frecce si accendono solo
+       quando ci si arriva con Tab, e ← → funzionano lo stesso */
+    requestAnimationFrame(() => finestra.focus({ preventScroll: true }));
   }
 
   function chiudiGalleria() {
