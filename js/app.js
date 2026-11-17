@@ -16,7 +16,7 @@
 
   const FILES = { geo: 'data/geo/circoscrizioni.json', prof: 'data/snapshot/profilo_circoscrizioni.json', opere: 'data/snapshot/opere_circoscrizioni.json',
     bil: 'data/snapshot/bilancio_comune.json', app: 'data/snapshot/appalti_comune.json', pnrr: 'data/snapshot/pnrr_comune.json', coe: 'data/snapshot/coesione_comune.json',
-    rgs: 'data/missioni_rgs.json' };
+    rgs: 'data/missioni_rgs.json', cnt: 'data/snapshot/conteggi_territorio.json' };
 
   // altezza reale della testata (va a capo su schermi stretti): serve per far stare la mappa nello schermo
   const testata = document.querySelector('.testata');
@@ -67,6 +67,7 @@
       p.setAttribute('aria-pressed', 'false'); p.setAttribute('aria-label', `Circoscrizione ${c}`);
       p.addEventListener('click', (ev) => { const id = progettoSotto(ev); if (id) apriProgetto(id); else scegli(c, true); });
       p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegli(c, true); } });
+      agganciaTip(p, () => [`Circoscrizione ${c}`, righeCirc(c)]);
       svg.append(p);
       gruppi[c] = { p };
     });
@@ -74,11 +75,76 @@
     ROM.forEach(c => {
       const g = Object.assign({}, D.geo.circoscrizioni[c]);
       if (SPOSTA[c]) { g.cx += SPOSTA[c][0]; g.cy += SPOSTA[c][1]; }
-      const t1 = document.createElementNS(NS, 'text'), t2 = document.createElementNS(NS, 'text');
-      t1.setAttribute('x', g.cx); t1.setAttribute('y', g.cy - 4); t1.setAttribute('class', 'etichetta'); t1.textContent = c;
-      t2.setAttribute('x', g.cx); t2.setAttribute('y', g.cy + 26); t2.setAttribute('class', 'valore');
-      svg.append(t1, t2); gruppi[c].t1 = t1; gruppi[c].t2 = t2;
+      /* sul poligono resta solo il numero della circoscrizione: le cifre stanno nel popup */
+      const t1 = document.createElementNS(NS, 'text');
+      t1.setAttribute('x', g.cx); t1.setAttribute('y', g.cy); t1.setAttribute('dy', '0.35em');
+      t1.setAttribute('class', 'etichetta'); t1.textContent = c;
+      svg.append(t1); gruppi[c].t1 = t1;
     });
+
+    /* ---- popup della mappa ----
+       Tutto quello che non sta scritto sul poligono (il valore dell'indicatore, gli altri indicatori,
+       la circoscrizione di un quartiere) compare qui al passaggio del mouse o col fuoco da tastiera. */
+    const tip = el('div', { class: 'tip', hidden: true, 'aria-hidden': 'true' });
+    document.body.append(tip);
+    function posizionaTip(x, y) {
+      tip.hidden = false;
+      const r = tip.getBoundingClientRect();
+      let left = x + 14, top = y + 14;
+      if (left + r.width > innerWidth - 8) left = x - r.width - 14;
+      if (top + r.height > innerHeight - 8) top = y - r.height - 14;
+      tip.style.left = Math.max(8, left) + 'px';
+      tip.style.top = Math.max(8, top) + 'px';
+    }
+    addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
+    function contenutoTip(titolo, righe) {
+      tip.replaceChildren(el('b', { text: titolo }), ...righe.map(r => el('div', { class: 'tip-riga' + (r[2] ? ' divisa' : '') }, [
+        el('span', { text: r[0] }), el('strong', { text: r[1] })])));
+    }
+    const conteggiDi = (livello, nome) => (D.cnt && D.cnt[livello] && D.cnt[livello][nome]) || null;
+    /* quante voci, quante con PNRR o coesione, quante linee di finanziamento, quanti CIG: le stesse
+       voci che si aprono scegliendo il territorio (data/snapshot/conteggi_territorio.json) */
+    const righeConteggi = (livello, nome) => {
+      const n = conteggiDi(livello, nome);
+      if (!n) return [];
+      const out = [['Progetti in elenco', it(n.voci), true]];
+      if (n.straordinari) out.push(['Con PNRR o coesione', it(n.straordinari)]);
+      out.push(['Finanziamenti dichiarati', it(n.finanziamenti)]);
+      out.push(['CIG collegati', it(n.appalti)]);
+      return out;
+    };
+    const righeCirc = (c) => {
+      const g = D.geo.circoscrizioni[c];
+      const upl = Object.values(g.upl).reduce((s, l) => s + l.length, 0);
+      return [
+        ...IND.map(i => [i.nome, i.f(i.val(c))]),
+        ['Quartieri e UPL', `${it(g.quartieri.length)} · ${it(upl)}`, true],
+        ...righeConteggi('circoscrizioni', c),
+      ];
+    };
+    const righeQuartiere = (n, g) => {
+      const upl = new Set();
+      Object.values(D.geo.circoscrizioni).forEach(v => (v.upl[n] || []).forEach(u => upl.add(u)));
+      const circQ = (g.circ && g.circ[0]) || '';
+      return [
+        ['Circoscrizione', (g.circ || []).join(', ') || 'non indicata'],
+        ['UPL', it(upl.size)],
+        /* la cifra è quella della circoscrizione: il quartiere non ha un indicatore proprio */
+        ...(circQ ? [[`${ind.nome} (circ. ${circQ})`, ind.f(ind.val(circQ))]] : []),
+        ...righeConteggi('quartieri', n),
+      ];
+    };
+    const righeUpl = (n, g) => [['Quartiere', g.quartiere], ['Circoscrizione', g.circ], ...righeConteggi('upl', n)];
+    function agganciaTip(nodo, contenuto) {
+      nodo.addEventListener('pointerenter', (e) => { contenutoTip(...contenuto()); posizionaTip(e.clientX, e.clientY); });
+      nodo.addEventListener('pointermove', (e) => { if (!tip.hidden) posizionaTip(e.clientX, e.clientY); });
+      nodo.addEventListener('pointerleave', () => { tip.hidden = true; });
+      nodo.addEventListener('focus', () => {
+        const b = nodo.getBoundingClientRect();
+        contenutoTip(...contenuto()); posizionaTip(b.left + b.width / 2, b.top + b.height / 2);
+      });
+      nodo.addEventListener('blur', () => { tip.hidden = true; });
+    }
 
     /* ---- livelli sotto la circoscrizione: quartieri e UPL ----
        I poligoni si disegnano solo quando il livello è scelto; la gerarchia invece è già nei confini,
@@ -109,18 +175,23 @@
     /* i due menù si riempiono a scalare: la circoscrizione limita i quartieri, il quartiere limita le UPL */
     function popolaQuartieri() {
       const nomi = quartieriDi(sel);
-      selQEl.replaceChildren(el('option', { value: '', text: nomi.length ? 'Tutti i quartieri' : 'Quartieri' }),
+      /* il contatore nell'opzione vuota dice subito quanto è grande il livello che si sta guardando */
+      selQEl.replaceChildren(el('option', { value: '', text: nomi.length ? `Tutti i quartieri (${nomi.length})` : 'Quartieri' }),
         ...nomi.map(n => el('option', { value: n, text: n })));
       selQEl.value = selQ || '';
+      $('pillola-quartiere').dataset.attivo = String(!!selQ);
       popolaUpl();
     }
     function popolaUpl() {
       const nomi = uplDi(selQ, sel);
-      selUEl.replaceChildren(el('option', { value: '', text: nomi.length ? 'Tutte le UPL' : 'Nessuna UPL' }),
+      selUEl.replaceChildren(el('option', { value: '', text: nomi.length ? `Tutte le UPL (${nomi.length})` : 'Nessuna UPL' }),
         ...nomi.map(n => el('option', { value: n, text: n })));
       selUEl.disabled = !nomi.length;
       selUEl.value = selU || '';
+      $('pillola-upl').dataset.attivo = String(!!selU);
     }
+    /* le quattro cifre di sintesi stanno sotto la scheda: si vedono solo quando non c'è una selezione */
+    function aggiornaCifre() { $('cifre-apertura').hidden = !!(sel || selQ || selU || selProj); }
     /* menù, poligoni e classe della mappa allineati allo stato: un solo punto da chiamare dopo ogni scelta */
     function allinea() {
       ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === sel && !selQ)));
@@ -140,6 +211,7 @@
         p.style.display = !selQ || UG.upl[n].quartiere === selQ ? '' : 'none';
       });
       legendaProgetti();
+      aggiornaCifre();
     }
     function disegnaQuartieri() {
       Object.entries(QG.quartieri).forEach(([n, g]) => {
@@ -152,6 +224,7 @@
           if (n === selQ && !selU) scegli(sel, false); else scegliQuartiere(n);
         });
         p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegliQuartiere(n); } });
+        agganciaTip(p, () => [`Quartiere ${n}`, righeQuartiere(n, g)]);
         gQ.append(p); GQ[n] = p;
       });
     }
@@ -166,6 +239,7 @@
           if (n === selU) scegliQuartiere(selQ); else scegliUpl(n);
         });
         p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegliUpl(n); } });
+        agganciaTip(p, () => [`UPL ${n}`, righeUpl(n, g)]);
         gU.append(p); GU[n] = p;
       });
     }
@@ -200,8 +274,8 @@
         const t = mx === mn ? 0.5 : (ind.val(c) - mn) / (mx - mn), rgb = mix(c0, c4, t);
         gruppi[c].p.style.fill = `rgb(${rgb})`;
         const lum = (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255, txt = lum > 0.55 ? '#0f2233' : '#ffffff';
-        gruppi[c].t1.style.fill = txt; gruppi[c].t2.style.fill = txt;
-        gruppi[c].t1.style.stroke = 'none'; gruppi[c].t2.textContent = ind.f(ind.val(c));
+        gruppi[c].t1.style.fill = txt;
+        gruppi[c].t1.style.stroke = 'none';
         gruppi[c].p.setAttribute('aria-label', `Circoscrizione ${c}: ${ind.nome} ${ind.f(ind.val(c))}`);
       });
       $('mappa-nota').textContent = ind.nota;
@@ -572,9 +646,11 @@
     const gP = document.createElementNS(NS, 'g'); gP.setAttribute('id', 'progetti-g'); gP.setAttribute('hidden', ''); svg.append(gP);
     const nodi = {};   // id progetto -> elementi svg
     const swit = el('button', { type: 'button', role: 'switch', 'aria-checked': 'false', class: 'interruttore' }, [el('span', { class: 'pallino-sw' }), 'Mostra i singoli progetti']);
-    sg.after(swit);
+    /* interruttore dei progetti, ritorno alla città e filtri del territorio: una riga sola sopra la mappa */
+    const controlli = $('controlli-mappa');
+    controlli.prepend(swit);
     const tutta = el('button', { type: 'button', class: 'interruttore torna', hidden: true, text: 'Tutta la città' });
-    swit.after(tutta);
+    controlli.insertBefore(tutta, controlli.children[1]);
     tutta.addEventListener('click', () => deseleziona());
 
     /* livello dei progetti: on/off, classi sul disegno, legenda e visibilità per circoscrizione */
@@ -595,7 +671,6 @@
         const vis = !solo || x === sel;
         gruppi[x].p.style.display = vis ? '' : 'none';
         gruppi[x].t1.style.display = vis ? '' : 'none';
-        gruppi[x].t2.style.display = vis ? '' : 'none';
       });
       if (!PR) return;
       PR.progetti.forEach(pr => {
@@ -751,6 +826,30 @@
     /* i due menù a scala: ognuno scende al suo livello, e la mappa segue */
     selQEl.addEventListener('change', e => scegliQuartiere(e.target.value));
     selUEl.addEventListener('change', e => scegliUpl(e.target.value));
+
+    /* ---- quattro cifre di sintesi, nello spazio sotto la scheda (non si sommano: fonti e periodi diversi) ---- */
+    const soldi = (n) => n >= 1e9 ? it(n / 1e9, 2) + ' mld €' : mln(n, 0);
+    const appaltiTot = A['2025'].importo_base_gara_eur_senza_anomali + A['2026'].importo_base_gara_eur_senza_anomali;
+    const cifra = (cls, nome, valori, nota, href) => el('a', { class: 'cifra-card ' + cls, href },
+      [el('p', { class: 'cifra-card-nome', text: nome }),
+       ...valori.map(v => el('p', { class: 'cifra-card-val' }, [v[0], v[1] ? el('span', { class: 'unita', text: ' ' + v[1] }) : null])),
+       el('p', { class: 'cifra-card-nota', text: nota })]);
+    $('cifre-apertura').replaceChildren(
+      el('div', { class: 'cifre-elenco' }, [
+        cifra('opere', 'Opere programmate 2026-2028', [[soldi(tot.importo_triennio_eur)]],
+          `${it(tot.interventi)} interventi, il ${pct(100 * nonLoc.importo_triennio_eur / tot.importo_triennio_eur)} senza circoscrizione`, '#opere'),
+        cifra('bilancio', 'Bilancio previsto 2026', [[soldi(D.bil.totale_spese_competenza['2026'])]],
+          'competenza: previsione, non spesa', '#bilancio'),
+        cifra('appalti', 'Appalti avviati 2025-2026', [[soldi(appaltiTot)]],
+          `${it(A['2025'].cig + A['2026'].cig)} CIG a base di gara`, '#appalti'),
+        cifra('fondi', 'PNRR e fondi di coesione', [
+          [mln(pn.totale.importo_finanziato_eur, 1), 'PNRR'],
+          [mln(co.totale.finanziamento_pubblico_netto_eur, 1), 'coesione']],
+          `${pn.totale.progetti} progetti PNRR e ${co.totale.progetti} di coesione: fonti diverse, non si sommano`, '#progetti'),
+      ]),
+      el('p', { class: 'cifre-nota' }, ['Quattro cifre di fonti e periodi diversi: non si sommano e ognuna porta alla sua sezione. Cosa misurano e cosa no: ',
+        el('a', { href: 'metodo.html', text: 'metodo e licenze' }), '.']),
+    );
 
     colora(); allinea(); scheda();
     document.addEventListener('tema-cambia', colora);

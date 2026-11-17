@@ -278,6 +278,56 @@ out = {
 }
 json.dump(out, open(OUT, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 
+# ---------- conteggi per territorio ----------
+# Servono ai popup della mappa: quante voci, quante con PNRR o coesione, quante linee di
+# finanziamento dichiarate e quanti CIG ricadono in una circoscrizione, in un quartiere, in una UPL.
+# Sono conteggi, non importi: un importo non si divide tra più territori, una voce sì (si conta in ognuno).
+ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
+def vuoto():
+    return {'voci': 0, 'opere': 0, 'pnrr': 0, 'coesione': 0, 'straordinari': 0, 'appalti': 0,
+            'finanziamenti': 0, 'con_cup': 0}
+def somma(voce, p):
+    voce['voci'] += 1
+    if 'opere' in p['fonti']:
+        voce['opere'] += 1
+    if 'pnrr' in p['fonti']:
+        voce['pnrr'] += 1
+    if 'coesione' in p['fonti']:
+        voce['coesione'] += 1
+    if 'pnrr' in p['fonti'] or 'coesione' in p['fonti']:
+        voce['straordinari'] += 1
+    voce['appalti'] += len(p.get('appalti') or [])
+    voce['finanziamenti'] += len(p.get('finanziamenti') or [])
+    if p.get('cup'):
+        voce['con_cup'] += 1
+
+conteggi = {'circoscrizioni': {c: vuoto() for c in ROM}, 'quartieri': {}, 'upl': {}}
+for p in tutti:
+    if len(p['circoscrizioni']) == 1:
+        somma(conteggi['circoscrizioni'][p['circoscrizioni'][0]], p)
+    for q in p['quartieri']:
+        somma(conteggi['quartieri'].setdefault(q, vuoto()), p)
+    for u in p['upl']:
+        somma(conteggi['upl'].setdefault(u, vuoto()), p)
+conteggi['quartieri'] = dict(sorted(conteggi['quartieri'].items()))
+conteggi['upl'] = dict(sorted(conteggi['upl'].items()))
+
+cnt_out = dict({
+    'fonte': 'Conteggi calcolati su data/progetti.json: una voce per progetto, con la circoscrizione, il quartiere e la UPL che il Programma triennale dichiara.',
+    'verificato': VERIFICATO,
+    'misura': 'Quante voci, quante con PNRR o coesione, quante linee di finanziamento dichiarate e quanti CIG ricadono in ogni circoscrizione, quartiere e UPL.',
+    'non_misura': [
+        'Non è una spesa: le voci sono stanziamenti, finanziamenti e basi di gara, misure diverse che non si sommano.',
+        'Gli importi non si dividono per territorio, i conteggi sì: una voce che tocca due quartieri si conta in entrambi.',
+        'Nella circoscrizione finiscono solo le voci con una sola circoscrizione, come nel resto del sito.',
+    ],
+}, **conteggi)
+json.dump({'fonte': cnt_out['fonte'], 'verificato': VERIFICATO, 'misura': cnt_out['misura'],
+           'non_misura': cnt_out['non_misura'], 'circoscrizioni': conteggi['circoscrizioni'],
+           'quartieri': conteggi['quartieri'], 'upl': conteggi['upl']},
+          open(os.path.join(BASE, 'data/snapshot/conteggi_territorio.json'), 'w', encoding='utf-8'),
+          ensure_ascii=False, separators=(',', ':'))
+
 cig_out = {
     'fonte': {
         'nome': 'ANAC, open data CIG (2025 e aggiornamenti mensili 2026), stazione appaltante Comune di Palermo (CF 80016350821)',
@@ -301,4 +351,6 @@ print('voci', len(tutti), '| opere', len(opere), '| pnrr propri', out['conteggi'
       '| coesione propri', out['conteggi']['coesione_voci_proprie'], '| cig', len(cig_rows))
 print('collegati: pnrr->opere', out['conteggi']['pnrr_collegati_a_opere'], 'coesione->opere', out['conteggi']['coesione_collegati_a_opere'],
       'cig->opere', out['conteggi']['cig_collegati_a_opere'], '| coesione senza CUP', coesione_senza_cup)
-print('scritti', os.path.getsize(OUT) // 1024, 'KB e', os.path.getsize(OUT_CIG) // 1024, 'KB')
+print('scritti', os.path.getsize(OUT) // 1024, 'KB e', os.path.getsize(OUT_CIG) // 1024, 'KB;',
+      'conteggi territorio', os.path.getsize(os.path.join(BASE, 'data/snapshot/conteggi_territorio.json')) // 1024, 'KB')
+print('conteggi per circoscrizione', {c: v['voci'] for c, v in conteggi['circoscrizioni'].items()})

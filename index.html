@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261117n">
+<link rel="stylesheet" href="css/style.css?v=20261117t">
 <script src="js/tema.js?v=20261116y"></script>
 
 </head>
@@ -65,17 +65,21 @@
 
   <div class="mappa-blocco">
     <div class="selettore" role="radiogroup" aria-label="Cosa mostrare sulla mappa" id="selettore"></div>
-    <div class="filtri-territorio" id="filtri-territorio" role="group" aria-label="Scendi dal quartiere alla UPL">
-      <label>Quartiere
-        <select id="sel-quartiere">
-          <option value="">Tutti i quartieri</option>
-        </select>
-      </label>
-      <label>UPL
-        <select id="sel-upl">
-          <option value="">Tutte le UPL</option>
-        </select>
-      </label>
+    <div class="controlli-mappa" id="controlli-mappa">
+      <div class="filtri-territorio" id="filtri-territorio" role="group" aria-label="Scendi dal quartiere alla UPL">
+        <label class="pillola-filtro" id="pillola-quartiere">
+          <span class="pillola-filtro-eti">Quartiere</span>
+          <select id="sel-quartiere">
+            <option value="">Tutti i quartieri</option>
+          </select>
+        </label>
+        <label class="pillola-filtro" id="pillola-upl">
+          <span class="pillola-filtro-eti">UPL</span>
+          <select id="sel-upl">
+            <option value="">Tutte le UPL</option>
+          </select>
+        </label>
+      </div>
     </div>
     <figure class="mappa-fig">
       <svg id="mappa-svg" role="group" aria-label="Mappa delle 8 circoscrizioni di Palermo, dei 25 quartieri e delle 55 UPL" focusable="false"></svg>
@@ -85,6 +89,8 @@
   </div>
 
   <aside class="scheda" id="scheda" aria-live="polite" aria-label="Scheda della circoscrizione selezionata"></aside>
+
+  <aside class="cifre-apertura" id="cifre-apertura" aria-label="I soldi del Comune in quattro cifre" hidden></aside>
 </section>
 
 <section class="sezione" id="opere" aria-labelledby="t-opere">
@@ -149,6 +155,6 @@
 </footer>
 
 <script src="js/su.js?v=20261116y"></script>
-<script src="js/app.js?v=20261117n"></script>
+<script src="js/app.js?v=20261117t"></script>
 </body>
 </html>
