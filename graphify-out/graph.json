@@ -26,6 +26,94 @@
       "norm_label": "avvia()"
     },
     {
+      "label": "circoscrizione.js",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "js_circoscrizione",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "circoscrizione.js"
+    },
+    {
+      "label": "conTip()",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L59",
+      "_origin": "ast",
+      "id": "js_circoscrizione_contip",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "contip()"
+    },
+    {
+      "label": "errore()",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L104",
+      "_origin": "ast",
+      "id": "js_circoscrizione_errore",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "errore()"
+    },
+    {
+      "label": "avvia()",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L111",
+      "_origin": "ast",
+      "id": "js_circoscrizione_avvia",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "avvia()"
+    },
+    {
+      "label": "figura()",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L523",
+      "_origin": "ast",
+      "id": "js_circoscrizione_figura",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "figura()"
+    },
+    {
+      "label": "dettagli()",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L536",
+      "_origin": "ast",
+      "id": "js_circoscrizione_dettagli",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "dettagli()"
+    },
+    {
+      "label": "barre()",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L547",
+      "_origin": "ast",
+      "id": "js_circoscrizione_barre",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "barre()"
+    },
+    {
+      "label": "impilate()",
+      "file_type": "code",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L576",
+      "_origin": "ast",
+      "id": "js_circoscrizione_impilate",
+      "community": 21,
+      "community_name": "circoscrizione.js",
+      "norm_label": "impilate()"
+    },
+    {
       "label": "consenso.js",
       "file_type": "code",
       "source_file": "js/consenso.js",
@@ -596,6 +684,39 @@
       "community": 0,
       "community_name": "build_indice_progetti.py",
       "norm_label": "le stesse classi dello snapshot pnrr_comune.json (per_stato)."
+    },
+    {
+      "label": "build_pagine_circoscrizioni.py",
+      "file_type": "code",
+      "source_file": "scripts/build_pagine_circoscrizioni.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_build_pagine_circoscrizioni",
+      "community": 22,
+      "community_name": "build_pagine_circoscrizioni.py",
+      "norm_label": "build_pagine_circoscrizioni.py"
+    },
+    {
+      "label": "scrivi()",
+      "file_type": "code",
+      "source_file": "scripts/build_pagine_circoscrizioni.py",
+      "source_location": "L161",
+      "_origin": "ast",
+      "id": "scripts_build_pagine_circoscrizioni_scrivi",
+      "community": 22,
+      "community_name": "build_pagine_circoscrizioni.py",
+      "norm_label": "scrivi()"
+    },
+    {
+      "label": "Genera le otto pagine di circoscrizione (circoscrizione/1\u20268/index.html). Uso:\u2026",
+      "file_type": "rationale",
+      "source_file": "scripts/build_pagine_circoscrizioni.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "scripts_build_pagine_circoscrizioni_rationale_1",
+      "community": 22,
+      "community_name": "build_pagine_circoscrizioni.py",
+      "norm_label": "genera le otto pagine di circoscrizione (circoscrizione/1...8/index.html). uso:..."
     },
     {
       "label": "build_progetti.py",
@@ -1416,6 +1537,167 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L111",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione",
+      "target": "js_circoscrizione_avvia",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L547",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione",
+      "target": "js_circoscrizione_barre",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L59",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione",
+      "target": "js_circoscrizione_contip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L536",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione",
+      "target": "js_circoscrizione_dettagli",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L104",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione",
+      "target": "js_circoscrizione_errore",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L523",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione",
+      "target": "js_circoscrizione_figura",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L576",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione",
+      "target": "js_circoscrizione_impilate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L565",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione_barre",
+      "target": "js_circoscrizione_contip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L585",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione_impilate",
+      "target": "js_circoscrizione_contip",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L332",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione_avvia",
+      "target": "js_circoscrizione_barre",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L416",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione_avvia",
+      "target": "js_circoscrizione_dettagli",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L332",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione_avvia",
+      "target": "js_circoscrizione_figura",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L382",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione_avvia",
+      "target": "js_circoscrizione_impilate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "js/circoscrizione.js",
+      "source_location": "L531",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "js_circoscrizione_figura",
+      "target": "js_circoscrizione_dettagli",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "js/consenso.js",
       "source_location": "L83",
       "weight": 1.0,
@@ -2219,6 +2501,28 @@
       "_origin": "ast",
       "source": "scripts_build_indice_progetti_rationale_112",
       "target": "scripts_build_indice_progetti_classe_stato",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/build_pagine_circoscrizioni.py",
+      "source_location": "L161",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_build_pagine_circoscrizioni",
+      "target": "scripts_build_pagine_circoscrizioni_scrivi",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scripts/build_pagine_circoscrizioni.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "scripts_build_pagine_circoscrizioni_rationale_1",
+      "target": "scripts_build_pagine_circoscrizioni",
       "confidence_score": 1.0
     },
     {
@@ -3039,5 +3343,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "5cb8ef087c806006bff1001ed0850a8f0030aa2d"
+  "built_at_commit": "e7e58c2a344862d9752ff2ac7e6405dd817f7224"
 }

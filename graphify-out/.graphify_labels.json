@@ -19,5 +19,7 @@
   "17": "controlla_indice_progetti.py",
   "18": "app.js",
   "19": "estrai_cig_palermo.py",
-  "20": "snapshot_bilancio.py"
+  "20": "snapshot_bilancio.py",
+  "21": "circoscrizione.js",
+  "22": "build_pagine_circoscrizioni.py"
 }

@@ -1,16 +1,16 @@
 # Graph Report - palermo_in_chiaro  (2026-11-17)
 
 ## Corpus Check
-- 38 files · ~138,205 words
+- 40 files · ~150,219 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 127 nodes · 145 edges · 21 communities (14 shown, 7 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.65)
+- 138 nodes · 161 edges · 23 communities (15 shown, 8 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.65)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5cb8ef08`
+- Built from commit: `e7e58c2a`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -33,18 +33,20 @@
 - controlla_indice_progetti.py
 - estrai_cig_palermo.py
 - snapshot_bilancio.py
+- circoscrizione.js
+- build_pagine_circoscrizioni.py
 
 ## God Nodes (most connected - your core abstractions)
 1. `disegna()` - 8 edges
 2. `avvia()` - 6 edges
 3. `quota()` - 6 edges
 4. `Licenze` - 6 edges
-5. `scegli()` - 5 edges
-6. `baricentro()` - 4 edges
-7. `converti()` - 4 edges
-8. `ok()` - 4 edges
-9. `get()` - 4 edges
-10. `blocco()` - 4 edges
+5. `avvia()` - 5 edges
+6. `scegli()` - 5 edges
+7. `baricentro()` - 4 edges
+8. `converti()` - 4 edges
+9. `ok()` - 4 edges
+10. `get()` - 4 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `geo()` --calls--> `ok()`  [INFERRED]
@@ -55,7 +57,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (21 total, 7 thin omitted)
+## Communities (23 total, 8 thin omitted)
 
 ### Community 0 - "build_indice_progetti.py"
 Cohesion: 0.14
@@ -101,10 +103,14 @@ Nodes (3): Come, Cosa non si fa, Segnalare un errore nei dati
 Cohesion: 0.83
 Nodes (3): applica(), etichetta(), pulsante()
 
+### Community 21 - "circoscrizione.js"
+Cohesion: 0.50
+Nodes (6): avvia(), barre(), conTip(), dettagli(), figura(), impilate()
+
 ## Knowledge Gaps
 - **8 isolated node(s):** `Come`, `Cosa non si fa`, `Dati`, `Cosa ne segue`, `Codice` (+3 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
