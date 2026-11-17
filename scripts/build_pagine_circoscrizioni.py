@@ -17,7 +17,7 @@ from string import Template
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 SITO = 'https://palermohub.github.io/palermo_in_chiaro'
-V_CSS = '20261118i'
+V_CSS = '20261118l'
 V_APP = '20261118c'
 
 GEO = json.load(open(os.path.join(BASE, 'data/geo/circoscrizioni.json'), encoding='utf-8'))['circoscrizioni']
@@ -68,18 +68,7 @@ PAGINA = Template('''<!doctype html>
 <header class="testata">
   <div class="testata-in">
     <a class="marchio" href="../../" aria-label="Palermo in chiaro, inizio pagina">Palermo in chiaro</a>
-    <span class="beta" title="I dati sono in revisione: prima di citare un numero controlla la fonte">Versione beta</span>
-    <nav aria-label="Sezioni">
-      <a href="../../">Home</a>
-      <a href="../../index.html#opere">Opere</a>
-      <a href="../../index.html#bilancio">Bilancio</a>
-      <a href="../../index.html#appalti">Appalti</a>
-      <a href="../../index.html#progetti">PNRR e coesione</a>
-      <a href="../../progetti.html">Elenco progetti</a>
-      <a href="../../statistiche.html">Statistiche</a>
-      <a href="../../fonti.html">Fonti</a>
-      <a href="../../metodo.html">Metodo e licenze</a>
-    </nav>
+$nav
   </div>
 </header>
 
@@ -151,11 +140,62 @@ PAGINA = Template('''<!doctype html>
   </div>
 </footer>
 
+<script src="../../js/menu.js?v=20261118f"></script>
 <script src="../../js/su.js?v=20261116y"></script>
 <script src="../../js/circoscrizione.js?v=$vapp"></script>
 </body>
 </html>
 ''')
+
+
+def nav(rom):
+    """Il menù della testata, uguale a quello delle altre pagine: una tendina per ogni
+       pagina con sezioni, le ancore dentro la voce principale. Qui la voce della
+       circoscrizione è quella corrente."""
+    righe = []
+    for i, r in enumerate(ROM, 1):
+        corrente = ' aria-current="page"' if r == rom else ''
+        righe.append(f'          <li><a href="../{i}/"{corrente}>Circoscrizione {r}</a></li>')
+    elenco = '\n'.join(righe)
+    return (
+        '    <nav aria-label="Sezioni">\n'
+        '      <details class="tendina">\n'
+        '        <summary>Home</summary>\n'
+        '        <ul>\n'
+        '          <li><a href="../../index.html#mappa">La mappa della città</a></li>\n'
+        '          <li><a href="../../index.html#opere">Opere</a></li>\n'
+        '          <li><a href="../../index.html#bilancio">Bilancio</a></li>\n'
+        '          <li><a href="../../index.html#appalti">Appalti</a></li>\n'
+        '          <li><a href="../../index.html#progetti">PNRR e coesione</a></li>\n'
+        '        </ul>\n'
+        '      </details>\n'
+        '      <details class="tendina">\n'
+        '        <summary>Circoscrizioni</summary>\n'
+        '        <ul>\n'
+        f'{elenco}\n'
+        '        </ul>\n'
+        '      </details>\n'
+        '      <a href="../../progetti.html">Elenco progetti</a>\n'
+        '      <details class="tendina">\n'
+        '        <summary>Statistiche</summary>\n'
+        '        <ul>\n'
+        '          <li><a href="../../statistiche.html#generali">Palermo al censimento 2021</a></li>\n'
+        '          <li><a href="../../statistiche.html#per-circoscrizione">Il profilo di una circoscrizione</a></li>\n'
+        '          <li><a href="../../statistiche.html#argomenti">Argomento per argomento</a></li>\n'
+        '        </ul>\n'
+        '      </details>\n'
+        '      <a href="../../fonti.html">Fonti</a>\n'
+        '      <details class="tendina">\n'
+        '        <summary>Metodo e licenze</summary>\n'
+        '        <ul>\n'
+        '          <li><a href="../../metodo.html#numeri">Come nascono i numeri</a></li>\n'
+        '          <li><a href="../../metodo.html#limiti">Cosa non misura</a></li>\n'
+        '          <li><a href="../../metodo.html#fonti">Fonti e licenze</a></li>\n'
+        '          <li><a href="../../metodo.html#errori">Segnala un errore</a></li>\n'
+        '        </ul>\n'
+        '      </details>\n'
+        '    </nav>\n'
+    )
 
 
 def scrivi():
@@ -167,7 +207,7 @@ def scrivi():
             ', con il confronto con le altre sette. Ogni numero porta la fonte e quello che non misura.'
         )
         url = f'{SITO}/circoscrizione/{i}/'
-        html = PAGINA.substitute(rom=rom, descrizione=descrizione, url=url, sito=SITO, vcss=V_CSS, vapp=V_APP)
+        html = PAGINA.substitute(rom=rom, descrizione=descrizione, url=url, sito=SITO, vcss=V_CSS, vapp=V_APP, nav=nav(rom))
         cartella = os.path.join(BASE, 'circoscrizione', str(i))
         os.makedirs(cartella, exist_ok=True)
         with open(os.path.join(cartella, 'index.html'), 'w', encoding='utf-8') as f:

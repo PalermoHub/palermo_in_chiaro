@@ -1,8 +1,10 @@
-/* Palermo in chiaro · il menù della testata segna anche la sezione che si sta leggendo.
-   Le voci che puntano a un'ancora della stessa pagina prendono aria-current="location"
-   quando la loro sezione arriva sotto la testata; la voce della pagina resta
-   aria-current="page". Nessuna libreria, nessuna osservazione continua: si ricalcola
-   a ogni fotogramma di scorrimento e quando cambia la dimensione della finestra. */
+/* Palermo in chiaro · il menù della testata.
+   Fa tre cose, senza librerie:
+   1. apre una tendina alla volta e la chiude con Esc, con un clic fuori o su una voce;
+   2. segna con aria-current="page" la voce della pagina che si sta guardando, e se sta
+      dentro una tendina la segna anche chiusa (data-corrente sul <details>);
+   3. segna con aria-current="location" la voce che punta alla sezione che si sta leggendo:
+      in testata solo le voci dirette, e le sezioni elencate in «In questa pagina». */
 (() => {
   'use strict';
   const nav = document.querySelector('.testata nav');
@@ -16,61 +18,106 @@
     misura();
     if (window.ResizeObserver) new ResizeObserver(misura).observe(testata);
   }
+
+  /* ---------- 1. tendine ---------- */
+  const tendine = [...nav.querySelectorAll('details.tendina')];
+  const aggiornaAperta = () => nav.classList.toggle('aperta', tendine.some((t) => t.open));
+  tendine.forEach((t) => {
+    t.addEventListener('toggle', () => {
+      if (t.open) tendine.forEach((o) => { if (o !== t) o.open = false; });
+      aggiornaAperta();
+    });
+    t.addEventListener('click', (e) => { if (e.target.closest('a')) t.open = false; });
+    /* la voce della pagina sta dentro la tendina: la tendina resta segnata anche chiusa */
+    if (t.querySelector('[aria-current="page"]')) t.setAttribute('data-corrente', '');
+  });
+  document.addEventListener('pointerdown', (e) => {
+    if (nav.contains(e.target)) return;
+    tendine.forEach((t) => { t.open = false; });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    tendine.forEach((t) => { t.open = false; });
+    nav.querySelectorAll('details.tendina > summary').forEach((s) => {
+      if (s.closest('details').contains(document.activeElement)) s.focus();
+    });
+  });
+
+  /* ---------- 2. e 3. la voce della pagina e la sezione che si legge ---------- */
   const normalizza = (p) => p.replace(/\/index\.html$/, '/');
   const qui = normalizza(location.pathname);
-
-  /* solo le ancore della pagina che si sta guardando: quelle verso altre pagine
-     (per esempio ../../index.html#opere da una circoscrizione) restano fuori */
   const voci = [];
-  nav.querySelectorAll('a[href]').forEach((a) => {
+
+  const osserva = (a) => {
     const href = a.getAttribute('href') || '';
     const k = href.indexOf('#');
     if (k < 0 || href.slice(k + 1) === '') return;
     let u;
-    try { u = new URL(href, location.href); } catch (e) { return; }
+    try { u = new URL(href, location.href); } catch (err) { return; }
     if (normalizza(u.pathname) !== qui) return;
     const sezione = document.getElementById(decodeURIComponent(href.slice(k + 1)));
     if (!sezione) return;
     voci.push({ link: a, sezione });
-  });
-  if (!voci.length) return;
-
-  const segna = (attiva) => {
-    /* mentre si legge una sezione resta una sola voce sottolineata: quella della pagina
-       perde il segno grafico ma tiene l'attributo, che dice ancora dove si è */
-    if (attiva) nav.setAttribute('data-sezione', ''); else nav.removeAttribute('data-sezione');
-    voci.forEach((v) => {
-      const corrente = v === attiva;
-      if (corrente) v.link.setAttribute('aria-current', 'location');
-      else if (v.link.getAttribute('aria-current') === 'location') v.link.removeAttribute('aria-current');
-    });
   };
-
-  const soglia = () => 24 + (testata && getComputedStyle(testata).position === 'sticky' ? testata.offsetHeight : 0);
-
-  let attesa = false;
-  const calcola = () => {
-    attesa = false;
-    const linea = soglia();
-    let attiva = null;
-    voci.forEach((v) => {
-      /* l'ultima sezione il cui inizio è passato sopra la linea; a fondo pagina
-         vince comunque l'ultima, altrimenti un'ultima sezione bassa non si accende mai */
-      const top = v.sezione.getBoundingClientRect().top;
-      if (top - linea <= 0) attiva = v;
+  nav.querySelectorAll("a[href]").forEach((a) => osserva(a));
+  document.querySelectorAll('.nav-pagina a[href]').forEach((a) => osserva(a));
+  if (!nav.querySelector('[aria-current="page"]')) {
+    /* nessuna voce segnata a mano: si guarda se una voce porta a questa pagina intera
+       (le voci con un'ancora sono sezioni, non la pagina) */
+    nav.querySelectorAll('a[href]:not([href*="#"])').forEach((a) => {
+      if (normalizza(new URL(a.getAttribute('href'), location.href).pathname) === qui) {
+        a.setAttribute('aria-current', 'page');
+        const t = a.closest('.tendina');
+        if (t) t.setAttribute('data-corrente', '');
+      }
     });
-    const fondo = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
-    if (fondo) attiva = voci[voci.length - 1];
-    segna(attiva);
-  };
-  const chiedi = () => { if (!attesa) { attesa = true; requestAnimationFrame(calcola); } };
+  }
 
-  addEventListener('scroll', chiedi, { passive: true });
-  addEventListener('resize', chiedi);
-  addEventListener('load', chiedi);
-  addEventListener('hashchange', chiedi);
-  /* i grafici si disegnano dopo: quando la pagina cambia altezza l'ancora non è
-     più dove era, e senza uno scorrimento nessun evento lo direbbe */
-  if (window.ResizeObserver) new ResizeObserver(chiedi).observe(document.body);
-  calcola();
+  if (voci.length) {
+    const segna = (attiva) => {
+      /* mentre si legge una sezione resta una sola voce sottolineata: quella della pagina
+         perde il segno grafico ma tiene l'attributo, che dice ancora dove si è */
+      if (attiva) nav.setAttribute('data-sezione', ''); else nav.removeAttribute('data-sezione');
+      tendine.forEach((t) => t.removeAttribute('data-sezione'));
+      if (attiva) {
+        const dentro = attiva.link.closest('.tendina');
+        if (dentro) dentro.setAttribute('data-sezione', '');
+      }
+      voci.forEach((v) => {
+        if (v === attiva) v.link.setAttribute('aria-current', 'location');
+        else if (v.link.getAttribute('aria-current') === 'location') v.link.removeAttribute('aria-current');
+      });
+    };
+
+    /* la sezione conta quando il suo inizio è arrivato sotto la testata; i 40 px di
+       tolleranza servono perché dopo un salto a #… l'ancora può fermarsi poco più giù */
+    const soglia = () => 24 + (testata && getComputedStyle(testata).position === 'sticky' ? testata.offsetHeight : 0) + 40;
+
+    let attesa = false;
+    const calcola = () => {
+      attesa = false;
+      const linea = soglia();
+      let attiva = null;
+      voci.forEach((v) => {
+        /* l'ultima sezione il cui inizio è passato sopra la linea; a fondo pagina
+           vince comunque l'ultima, altrimenti un'ultima sezione bassa non si accende mai */
+        if (v.sezione.getBoundingClientRect().top - linea <= 0) attiva = v;
+      });
+      const fondo = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+      if (fondo) attiva = voci[voci.length - 1];
+      /* in cima alla pagina non c'è ancora una sezione da segnare: vale la voce della pagina */
+      if (window.scrollY <= 2 && !fondo) attiva = null;
+      segna(attiva);
+    };
+    const chiedi = () => { if (!attesa) { attesa = true; requestAnimationFrame(calcola); } };
+
+    addEventListener('scroll', chiedi, { passive: true });
+    addEventListener('resize', chiedi);
+    addEventListener('load', chiedi);
+    addEventListener('hashchange', chiedi);
+    /* i grafici si disegnano dopo: quando la pagina cambia altezza l'ancora non è
+       più dove era, e senza uno scorrimento nessun evento lo direbbe */
+    if (window.ResizeObserver) new ResizeObserver(chiedi).observe(document.body);
+    calcola();
+  }
 })();

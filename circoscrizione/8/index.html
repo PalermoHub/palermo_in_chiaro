@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../css/style.css?v=20261118i">
+<link rel="stylesheet" href="../../css/style.css?v=20261118l">
 <script src="../../js/tema.js?v=20261116y"></script>
 <script type="application/ld+json">
 {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
@@ -44,18 +44,51 @@
 <header class="testata">
   <div class="testata-in">
     <a class="marchio" href="../../" aria-label="Palermo in chiaro, inizio pagina">Palermo in chiaro</a>
-    <span class="beta" title="I dati sono in revisione: prima di citare un numero controlla la fonte">Versione beta</span>
     <nav aria-label="Sezioni">
-      <a href="../../">Home</a>
-      <a href="../../index.html#opere">Opere</a>
-      <a href="../../index.html#bilancio">Bilancio</a>
-      <a href="../../index.html#appalti">Appalti</a>
-      <a href="../../index.html#progetti">PNRR e coesione</a>
+      <details class="tendina">
+        <summary>Home</summary>
+        <ul>
+          <li><a href="../../index.html#mappa">La mappa della città</a></li>
+          <li><a href="../../index.html#opere">Opere</a></li>
+          <li><a href="../../index.html#bilancio">Bilancio</a></li>
+          <li><a href="../../index.html#appalti">Appalti</a></li>
+          <li><a href="../../index.html#progetti">PNRR e coesione</a></li>
+        </ul>
+      </details>
+      <details class="tendina">
+        <summary>Circoscrizioni</summary>
+        <ul>
+          <li><a href="../1/">Circoscrizione I</a></li>
+          <li><a href="../2/">Circoscrizione II</a></li>
+          <li><a href="../3/">Circoscrizione III</a></li>
+          <li><a href="../4/">Circoscrizione IV</a></li>
+          <li><a href="../5/">Circoscrizione V</a></li>
+          <li><a href="../6/">Circoscrizione VI</a></li>
+          <li><a href="../7/">Circoscrizione VII</a></li>
+          <li><a href="../8/" aria-current="page">Circoscrizione VIII</a></li>
+        </ul>
+      </details>
       <a href="../../progetti.html">Elenco progetti</a>
-      <a href="../../statistiche.html">Statistiche</a>
+      <details class="tendina">
+        <summary>Statistiche</summary>
+        <ul>
+          <li><a href="../../statistiche.html#generali">Palermo al censimento 2021</a></li>
+          <li><a href="../../statistiche.html#per-circoscrizione">Il profilo di una circoscrizione</a></li>
+          <li><a href="../../statistiche.html#argomenti">Argomento per argomento</a></li>
+        </ul>
+      </details>
       <a href="../../fonti.html">Fonti</a>
-      <a href="../../metodo.html">Metodo e licenze</a>
+      <details class="tendina">
+        <summary>Metodo e licenze</summary>
+        <ul>
+          <li><a href="../../metodo.html#numeri">Come nascono i numeri</a></li>
+          <li><a href="../../metodo.html#limiti">Cosa non misura</a></li>
+          <li><a href="../../metodo.html#fonti">Fonti e licenze</a></li>
+          <li><a href="../../metodo.html#errori">Segnala un errore</a></li>
+        </ul>
+      </details>
     </nav>
+
   </div>
 </header>
 
@@ -127,7 +160,8 @@
   </div>
 </footer>
 
+<script src="../../js/menu.js?v=20261118f"></script>
 <script src="../../js/su.js?v=20261116y"></script>
-<script src="../../js/circoscrizione.js?v=20261118b"></script>
+<script src="../../js/circoscrizione.js?v=20261118c"></script>
 </body>
 </html>

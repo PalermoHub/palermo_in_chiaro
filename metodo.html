@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261118i">
+<link rel="stylesheet" href="css/style.css?v=20261118l">
 <script src="js/tema.js?v=20261116y"></script>
 
 <style>
@@ -46,16 +46,49 @@
 <header class="testata">
   <div class="testata-in">
     <a class="marchio" href="./">Palermo in chiaro</a>
-    <span class="beta">Versione beta</span>
     <nav aria-label="Sezioni">
-      <a href="./">Home</a>
-      <a href="progetti.html">Elenco progetti</a>
-      <a href="statistiche.html">Statistiche</a>
-      <a href="fonti.html">Fonti</a>
-      <a href="metodo.html" aria-current="page">Metodo e licenze</a>
-      <a href="#numeri">Come nascono i numeri</a>
-      <a href="#limiti">I limiti</a>
-      <a href="#errori">Segnala un errore</a>
+      <details class="tendina">
+        <summary>Home</summary>
+        <ul>
+          <li><a href="./#mappa">La mappa della città</a></li>
+          <li><a href="./#opere">Opere</a></li>
+          <li><a href="./#bilancio">Bilancio</a></li>
+          <li><a href="./#appalti">Appalti</a></li>
+          <li><a href="./#progetti">PNRR e coesione</a></li>
+        </ul>
+      </details>
+      <details class="tendina">
+        <summary>Circoscrizioni</summary>
+        <ul>
+          <li><a href="./circoscrizione/1/">Circoscrizione I</a></li>
+          <li><a href="./circoscrizione/2/">Circoscrizione II</a></li>
+          <li><a href="./circoscrizione/3/">Circoscrizione III</a></li>
+          <li><a href="./circoscrizione/4/">Circoscrizione IV</a></li>
+          <li><a href="./circoscrizione/5/">Circoscrizione V</a></li>
+          <li><a href="./circoscrizione/6/">Circoscrizione VI</a></li>
+          <li><a href="./circoscrizione/7/">Circoscrizione VII</a></li>
+          <li><a href="./circoscrizione/8/">Circoscrizione VIII</a></li>
+        </ul>
+      </details>
+      <a href="./progetti.html">Elenco progetti</a>
+      <details class="tendina">
+        <summary>Statistiche</summary>
+        <ul>
+          <li><a href="statistiche.html#generali">Palermo al censimento 2021</a></li>
+          <li><a href="statistiche.html#per-circoscrizione">Il profilo di una circoscrizione</a></li>
+          <li><a href="statistiche.html#argomenti">Argomento per argomento</a></li>
+        </ul>
+      </details>
+      <a href="./fonti.html">Fonti</a>
+      <details class="tendina">
+        <summary aria-current="page">Metodo e licenze</summary>
+        <ul>
+          <li><a href="#numeri">Come nascono i numeri</a></li>
+          <li><a href="#limiti">Cosa non misura</a></li>
+          <li><a href="#fonti">Fonti e licenze</a></li>
+          <li><a href="#errori">Segnala un errore</a></li>
+        </ul>
+      </details>
     </nav>
   </div>
 </header>
@@ -63,6 +96,7 @@
 <main id="contenuto" class="pagina">
   <h1>Metodo e licenze</h1>
   <p>Palermo in chiaro mette in fila dati pubblici sul Comune e sulle sue 8 circoscrizioni. Ogni numero riporta la fonte, il periodo, la data in cui l'ho letta e quello che non misura. Il sito è indipendente: non è un sito del Comune di Palermo.</p>
+
 
   <h2 id="numeri">Come nascono i numeri</h2>
   <ul>
@@ -119,7 +153,7 @@
   </div>
 </footer>
 
-<script src="js/menu.js?v=20261118a"></script>
+<script src="js/menu.js?v=20261118f"></script>
 <script src="js/su.js?v=20261116y"></script>
 </body>
 </html>
