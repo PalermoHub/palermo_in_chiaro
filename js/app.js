@@ -368,7 +368,7 @@
         s.replaceChildren(el('div', { class: 'vuota' }, [
           el('h2', { text: 'Palermo' }),
           el('p', { text: `${it(D.prof.totale_palermo.residenti)} residenti al censimento 2021, in 8 circoscrizioni.` }),
-          el('p', { text: 'Scegli una circoscrizione sulla mappa per vedere residenti, famiglie e opere programmate.' }),
+          el('p', { text: 'Clicca una circoscrizione sulla mappa: si apre la sua scheda con residenti, famiglie e opere programmate.' }),
           el('p', { class: 'nota', text: 'Il Comune non ha un bilancio per circoscrizione: le somme di bilancio, appalti, PNRR e coesione sono per tutto il Comune.' }),
           ...progettiSullaMappa(),
         ]));
