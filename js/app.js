@@ -251,7 +251,8 @@
       const quota = it(100 * base.reduce((s, p) => s + p.importo_triennio_eur, 0) / tot.importo_triennio_eur, 0);
       return [el('h3', { text: `Progetti con posizione (${base.length})` }), out,
         el('p', { class: 'nota', text: `I primi 12 per importo: sono ${base.length} interventi con una posizione, il ${quota}% dell'importo del Programma. Gli altri ${PR.senza_posizione} (reti, linee e interventi diffusi) non sono sulla mappa.` }),
-        el('p', { class: 'nota' }, [el('a', { href: 'progetti.html', text: 'Tutti i progetti e i finanziamenti, in elenco' }), ' (compresi quelli senza posizione).'])];
+        el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: 'progetti.html', text: 'Tutti i progetti e i finanziamenti' })]),
+        el('p', { class: 'nota', text: 'Compresi quelli senza posizione.' })];
     }
 
     /* sezione opere */
@@ -377,7 +378,9 @@
     $('appalti-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, D.app.non_misura.map(t => el('li', { text: t }))));
 
     /* PNRR e coesione */
-    $('progetti-lede').replaceChildren('Progetti del Comune finanziati dal PNRR e dalla politica di coesione europea e nazionale. Le due fonti non hanno la circoscrizione e non si sommano. Ogni progetto ha una scheda: ', el('a', { href: 'progetti.html?fonte=pnrr', text: 'elenco dei progetti PNRR' }), ' e ', el('a', { href: 'progetti.html?fonte=coesione', text: 'elenco dei progetti di coesione' }), '.');
+    $('progetti-lede').replaceChildren('Progetti del Comune finanziati dal PNRR e dalla politica di coesione europea e nazionale. Le due fonti non hanno la circoscrizione e non si sommano. Ogni progetto ha una scheda nell\'elenco, filtrato per fonte:', el('span', { class: 'badge-riga' }, [
+      el('a', { class: 'badge-link', href: 'progetti.html?fonte=pnrr', text: 'Elenco dei progetti PNRR' }),
+      el('a', { class: 'badge-link', href: 'progetti.html?fonte=coesione', text: 'Elenco dei progetti di coesione' })]));
     const bloccoSt = (titolo, grande, nota, righe, limiti) => {
       const mx = Math.max(...righe.map(r => r.n));
       return el('div', {}, [el('h3', { text: titolo }), el('div', { class: 'grande', text: grande }), el('p', { class: 'nota', text: nota }),
