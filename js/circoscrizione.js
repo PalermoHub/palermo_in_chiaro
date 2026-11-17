@@ -7,6 +7,7 @@
 (() => {
   'use strict';
   const ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+  const NS = 'http://www.w3.org/2000/svg';
   const BASE = document.documentElement.dataset.base || './';
   const $ = (id) => document.getElementById(id);
 
@@ -77,6 +78,8 @@
     pnrr: 'data/snapshot/pnrr_comune.json',
     coe: 'data/snapshot/coesione_comune.json',
     prog: 'data/progetti.json',
+    proggeo: 'data/geo/progetti.json',
+    quartieri: 'data/geo/quartieri.json',
   };
 
   const CIRCO = (() => {
@@ -147,7 +150,7 @@
           el('b', { text: mln(O.importo_triennio_eur, 0) }),
           ` di opere programmate nel triennio 2026-2028 in ${it(O.interventi)} interventi, il ${pct(quotaImporto)} dell'importo che ha una circoscrizione.`]),
         el('p', { class: 'badge-riga' }, [
-          el('a', { class: 'badge-link', href: U('index.html?circ=' + CIRCO + '#mappa'), text: 'Vedi la circoscrizione sulla mappa' }),
+          el('a', { class: 'badge-link', href: '#mappa-circ', text: 'Vai alla mappa dei progetti' }),
           el('a', { class: 'badge-link', href: U('progetti.html?circ=' + CIRCO), text: `Tutti i ${it(CN.voci)} progetti in elenco` }),
           el('a', { class: 'badge-link', href: U('statistiche.html?circ=' + CIRCO + '#per-circoscrizione'), text: 'Il profilo sociale su Statistiche' })]),
         el('p', { class: 'circ-frecce' }, [
@@ -186,26 +189,123 @@
         el('a', { href: U('fonti.html'), text: 'Le fonti, con periodo e licenza' }), '.']));
     }
 
-    /* ---------- il profilo: gli stessi numeri della scheda che si apre sulla mappa della home ---------- */
-    const profilo = $('profilo');
-    if (profilo) {
-      const num = [
-        ['Residenti', it(P.residenti), `censimento 2021 · città ${it(T.residenti)}`],
-        ['Densità', `${it(P.densita_ab_kmq)} ab/km²`, `${it(P.superficie_kmq, 2)} km² di superficie`],
-        ['Over 65', pct(P.quota_65_piu_pct), `città ${pct(T.quota_65_piu_pct)}`],
-        ['Indice di vecchiaia', it(P.indice_vecchiaia, 0), `over 65 ogni 100 under 15 · città ${it(T.indice_vecchiaia, 0)}`],
-        ['Stranieri', pct(P.quota_stranieri_pct), `${it(P.stranieri)} residenti · città ${pct(T.quota_stranieri_pct)}`],
-        ['Famiglie', it(P.famiglie), `${it(P.residenti / P.famiglie, 2)} persone per famiglia`],
-        ['Abitazioni vuote o non di residenti', pct(P.quota_abitazioni_vuote_pct), `${it(P.abitazioni_vuote_o_non_residenti)} su ${it(P.abitazioni_totali)}`],
-        ['Laureati (9 anni e più)', pct(P.quota_laureati_9_piu_pct), `${it(P.laureati_9_piu)} su ${it(P.popolazione_9_piu)} · città ${pct(T.quota_laureati_9_piu_pct)}`],
-      ];
-      profilo.replaceChildren(
-        el('div', { class: 'scheda-circ-numeri' }, num.map(([k, v, n]) => el('div', { class: 'scheda-circ-num' }, [
-          el('span', { class: 'k', text: k }), el('span', { class: 'v', text: v }), el('span', { class: 'n', text: n })]))),
-        el('p', { class: 'cifra-fonte' }, [
-          'Censimento ISTAT 2021, sezioni di censimento sommate per circoscrizione. Gli stessi indicatori, con i grafici e il confronto con la città, sono nel capitolo «Il profilo di una circoscrizione» di ',
-          el('a', { href: U('statistiche.html?circ=' + CIRCO + '#per-circoscrizione'), text: 'Statistiche' }), '.']));
+    /* ---------- la mappa della sola circoscrizione, con i suoi progetti ---------- */
+    function disegnaMappa() {
+      const svg = $('mappa-svg');
+      if (!svg) return;
+      const g = D.geo.circoscrizioni[CIRCO];
+      const mk = (tag, attr) => {
+        const e = document.createElementNS(NS, tag);
+        for (const k in attr) e.setAttribute(k, attr[k]);
+        return e;
+      };
+      const p = mk('path', { d: g.d, class: 'circ' });
+      const gQ = mk('g', { id: 'quartieri-g' });
+      const QG = (D.quartieri && D.quartieri.quartieri) || {};
+      quartieri.forEach((n) => {
+        const q = QG[n];
+        if (!q) return;
+        gQ.append(mk('path', { d: q.d, class: 'quartiere' }));
+      });
+      const progetti = ((D.proggeo && D.proggeo.progetti) || []).filter((pr) => (pr.circoscrizioni || []).includes(CIRCO));
+      const apri = (id) => { location.href = U('progetto.html?id=' + encodeURIComponent('op-' + id)); };
+      const gPol = mk('g', { class: 'pol' }), gLin = mk('g', { class: 'lin' }), gPt = mk('g', { class: 'pt' }), gHit = mk('g', { class: 'hit' });
+      const titolo = (e, testo) => {
+        const t = document.createElementNS(NS, 'title');
+        t.textContent = testo;
+        e.append(t);
+        return e;
+      };
+      progetti.forEach((pr) => {
+        (pr.poligoni || []).forEach((x) => {
+          const e = titolo(mk('path', { d: x.d, class: 'g-pol' + (x.assegnazione === 'per_vicinanza' ? ' vicinanza' : '') }), pr.descrizione);
+          e.addEventListener('click', () => apri(pr.id));
+          gPol.append(e);
+        });
+        (pr.linee || []).forEach((x) => {
+          const e = titolo(mk('path', { d: x.d, class: 'g-lin' }), pr.descrizione);
+          e.addEventListener('click', () => apri(pr.id));
+          gLin.append(e);
+          const hit = mk('path', { d: x.d, class: 'g-lin-hit' });
+          hit.addEventListener('click', () => apri(pr.id));
+          gHit.append(hit);
+        });
+        (pr.punti || []).forEach((q) => {
+          const approx = q[2] === 'toponimo' || q[2] === 'da_poligono';
+          const e = titolo(mk('circle', { cx: q[0], cy: q[1], class: 'g-pt' + (approx ? ' approx' : ''), 'data-r': approx ? 7.4 : 4.6 }), pr.descrizione);
+          e.addEventListener('click', () => apri(pr.id));
+          gPt.append(e);
+        });
+      });
+      const gP = mk('g', { id: 'progetti-g' });
+      gP.append(gPol, gLin, gPt, gHit);
+      svg.replaceChildren(p, gQ, gP);
+      /* l'inquadratura è quella del poligono: le posizioni dei progetti sono nello stesso sistema */
+      const bb = p.getBBox();
+      const m = Math.max(3, Math.max(bb.width, bb.height) * 0.045);
+      const vb = [bb.x - m, bb.y - m, bb.width + 2 * m, bb.height + 2 * m];
+      svg.setAttribute('viewBox', vb.join(' '));
+      /* --k tiene uguali sullo schermo spessori e pallini, qualunque sia l'ingrandimento del poligono */
+      const k = vb[2] / 1000;
+      svg.style.setProperty('--k', k.toFixed(4));
+      gPt.querySelectorAll('.g-pt').forEach((e) => e.setAttribute('r', ((+e.dataset.r) * k).toFixed(2)));
+      const nota = $('mappa-nota');
+      if (nota) nota.textContent = `Posizioni elaborate da OpenDataSicilia dalle tavole del Programma triennale, non coordinate ufficiali del Comune. ${it(progetti.length)} voci con una posizione disegnate nella Circoscrizione ${CIRCO}.`;
+      const leg = $('legenda-mappa');
+      if (leg) leg.replaceChildren(el('span', { class: 'leg-prog' }, [
+        el('i', { class: 'k pieno' }), ' posizione letta o dall\'etichetta  ',
+        el('i', { class: 'k anello' }), ' approssimata (circa 300 m)  ',
+        el('i', { class: 'k linea' }), ' linee e aree']));
     }
+
+    /* ---------- la scheda di sintesi accanto alla mappa ---------- */
+    function schedaCirc() {
+      const host = $('scheda-circ');
+      if (!host) return;
+      const dl = (voci) => el('dl', {}, voci.map(([k, v]) => el('div', { class: 'riga' }, [
+        el('dt', { text: k }), el('dd', { text: v })])));
+      const posImpO = 1 + ROM.filter((x) => OP(x).importo_triennio_eur > O.importo_triennio_eur).length;
+      const posPcO = 1 + ROM.filter((x) => OP(x).importo_triennio_per_residente_eur > O.importo_triennio_per_residente_eur).length;
+      const anni = ['2026', '2027', '2028'].map((a) => [a, O['importo_' + a + '_eur']]);
+      const tot = O.importo_triennio_eur || 1;
+      const anniBox = el('div', {}, [
+        el('div', { class: 'anno-barra', 'aria-hidden': 'true' }, anni.map(([a, v]) => el('span', { class: 'anno-seg a' + a, style: `width:${100 * v / tot}%` }))),
+        el('div', { class: 'anno-legenda' }, anni.map(([a, v]) => el('div', {}, [
+          el('i', { class: 'a' + a }), el('span', { text: a }), el('span', { class: 'quota', text: mln(v, 0) }), el('b', { text: it(100 * v / tot) + '%' })]))),
+      ]);
+      const setts = (O.principali_settori || []).slice(0, 3);
+      const maxS = setts.length ? setts[0].importo_eur : 1;
+      const sett = el('div', { class: 'barre', role: 'list' }, setts.map((x) => el('div', { class: 'barra', role: 'listitem' }, [
+        el('div', { class: 'nome' }, [x.settore.replace(/^\d+\.\d+ - /, ''), el('small', { text: `${x.interventi} interventi` })]),
+        el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${100 * x.importo_eur / maxS}%` })]),
+        el('div', { class: 'val', text: mln(x.importo_eur, 0) })])));
+      host.replaceChildren(
+        el('h2', { text: `Circoscrizione ${CIRCO}` }),
+        el('div', { class: 'quartieri-riga', role: 'group', 'aria-label': `Quartieri della Circoscrizione ${CIRCO}` },
+          quartieri.map((n) => el('a', {
+            class: 'quartiere-scendi', href: U('progetti.html?quartiere=' + encodeURIComponent(n)),
+            text: n, title: `Apri i progetti del quartiere ${n}` }))),
+        el('p', { class: 'badge-riga' }, [
+          el('a', { class: 'badge-link', href: '#soldi', text: 'Le opere nel dettaglio' }),
+          el('a', { class: 'badge-link', href: '#progetti', text: 'I progetti' })]),
+        dl([
+          ['Residenti', it(P.residenti)], ['Densità', it(P.densita_ab_kmq) + ' ab/km²'],
+          ['Over 65', pct(P.quota_65_piu_pct)], ['Indice di vecchiaia', it(P.indice_vecchiaia, 0)],
+          ['Stranieri', pct(P.quota_stranieri_pct)], ['Famiglie', it(P.famiglie)],
+          ['Abitazioni vuote o non di residenti', pct(P.quota_abitazioni_vuote_pct)],
+          ['Laureati (9 anni e più)', pct(P.quota_laureati_9_piu_pct)]]),
+        el('h3', { text: 'Opere programmate 2026-2028' }),
+        dl([
+          ['Interventi', it(O.interventi)], ['Importo 2026-2028', mln(O.importo_triennio_eur)],
+          ['Per residente', eur(O.importo_triennio_per_residente_eur)], ['Interventi con CUP', `${O.con_cup} su ${O.interventi}`],
+          ['Posto per importo', `${posImpO}º su 8`], ['Posto per abitante', `${posPcO}º su 8`]]),
+        el('h4', { text: 'In che anni cadono' }), anniBox,
+        el('h4', { text: 'I primi tre settori' }), sett,
+        el('p', { class: 'nota', text: 'Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso. Le posizioni dei progetti sulla mappa le ha elaborate OpenDataSicilia dalle tavole del Programma triennale.' }));
+    }
+
+    disegnaMappa();
+    schedaCirc();
 
     /* ---------- grafici ---------- */
     const G = $('grafici-soldi');

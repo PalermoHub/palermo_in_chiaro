@@ -92,8 +92,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 :root { --testata: 56px; }
 .apertura {
   max-width: 1560px; margin: 0 auto; padding: 16px var(--gutter) clamp(32px, 5vw, 72px);
-  display: grid; grid-template-columns: minmax(0, 8fr) minmax(320px, 4.4fr); grid-template-rows: auto auto 1fr; gap: 0 clamp(24px, 4vw, 56px);
-  grid-template-areas: "mappa testo" "mappa scheda" "mappa cifre"; align-items: start;
+  display: grid; grid-template-columns: minmax(0, 8fr) minmax(320px, 4.4fr); grid-template-rows: auto 1fr; gap: 0 clamp(24px, 4vw, 56px);
+  grid-template-areas: "mappa testo" "mappa cifre"; align-items: start;
 }
 .apertura-testo { grid-area: testo; max-width: 40rem; margin: 8px 0 22px; }
 .apertura h1 { font-size: clamp(1.7rem, 2.5vw, 2.5rem); font-weight: 700; }
@@ -219,7 +219,7 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .leg-prog .leg-nota { flex-basis: 100%; color: var(--inchiostro); font-weight: 600; }
 
 /* scheda */
-.scheda { grid-area: scheda; background: var(--sfondo-scheda); border-top: 3px solid var(--maiolica); padding: 18px 20px 22px; align-self: start; min-width: 0; }
+.scheda { background: var(--sfondo-scheda); border-top: 3px solid var(--maiolica); padding: 18px 20px 22px; align-self: start; min-width: 0; }
 .scheda h2 { font-size: 1.7rem; }
 .scheda .quartieri { color: var(--muto); font-size: 0.9rem; margin: 2px 0 14px; }
 .scheda .quartieri-riga { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 14px; }
@@ -228,6 +228,7 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
   border: 1px solid var(--linea); border-radius: 99px; padding: 2px 10px; cursor: pointer;
 }
 .quartiere-scendi:hover, .upl-scendi:hover, .livello-su:hover { border-color: var(--maiolica); background: var(--maiolica-chiara); }
+a.quartiere-scendi { text-decoration: none; }
 .scheda .livelli { margin: 2px 0 10px; }
 .scheda .upl-riga { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; }
 .scheda dl { margin: 0; }
@@ -390,7 +391,7 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 
 @media (max-width: 600px) { #mappa-svg { --lab: 1.3; } }
 @media (max-width: 900px) {
-  .apertura { grid-template-columns: 1fr; grid-template-rows: none; grid-template-areas: "testo" "mappa" "scheda" "cifre"; }
+  .apertura { grid-template-columns: 1fr; grid-template-rows: none; grid-template-areas: "testo" "mappa" "cifre"; }
   .cifre-elenco { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mappa-blocco { position: static; height: auto; }
   .mappa-fig { flex: none; min-height: 0; }
@@ -766,6 +767,21 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 .circ-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; padding: 5px 12px; border: 1px solid var(--linea); border-radius: 99px; font-family: var(--font-titoli); font-weight: 600; font-size: 0.95rem; color: var(--inchiostro); text-decoration: none; }
 .circ-nav a:hover { border-color: var(--maiolica); background: var(--maiolica-chiara); }
 .circ-nav a[aria-current="page"] { background: var(--inchiostro); border-color: var(--inchiostro); color: var(--carta); }
+/* mappa della circoscrizione e scheda di sintesi: il blocco che prima stava nella home */
+.circ-dashboard { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.95fr); gap: 0 clamp(20px, 3vw, 44px); align-items: start; margin: 6px 0 28px; }
+.circ-mappa { margin: 0; min-width: 0; position: sticky; top: calc(var(--testata) + 8px); scroll-margin-top: calc(var(--testata) + 12px); }
+.circ-mappa #mappa-svg { width: 100%; height: clamp(300px, 55vh, 640px); min-height: 0; max-height: none; aspect-ratio: auto; display: block; }
+.circ-mappa #mappa-svg .circ { fill: var(--carta-2); stroke: var(--linea); cursor: default; }
+.circ-mappa #quartieri-g .quartiere { stroke: var(--linea); pointer-events: none; cursor: default; }
+.circ-mappa figcaption { margin-top: 6px; font-size: 0.84rem; color: var(--muto); max-width: 52rem; }
+.circ-mappa .legenda { margin-top: 8px; }
+.circ-dashboard .scheda { margin-top: 0; }
+@media (max-width: 900px) {
+  .circ-dashboard { grid-template-columns: 1fr; }
+  .circ-mappa { position: static; }
+  .circ-mappa #mappa-svg { height: clamp(260px, 48vh, 460px); }
+  .circ-dashboard .scheda { margin-top: 18px; }
+}
 .circoscrizione .riga-barra.link { color: var(--inchiostro); text-decoration: none; }
 .circoscrizione .riga-barra.link:hover { background: var(--maiolica-chiara); }
 .circoscrizione .riga-barra.link:hover .nome b { text-decoration: underline; text-underline-offset: 3px; }

@@ -368,7 +368,7 @@
         el('h3', { text: `${it(s.eta.totale.reduce((a, b) => a + b, 0))} residenti, ${pct(quotaCitta)} della città` }),
         el('p', { class: 'scheda-circ-nota' }, [
           `${it(s.superficie_kmq, 2)} km², ${it(p.densita_ab_kmq)} abitanti per km². `,
-          el('a', { href: 'index.html?circ=' + circ + '#mappa', text: 'Apri la mappa della circoscrizione' }),
+          el('a', { href: `circoscrizione/${IDX[circ]}/#mappa-circ`, text: 'Apri la mappa della circoscrizione' }),
           el('span', { class: 'sep', text: '·' }),
           el('a', { href: `progetti.html?circ=${circ}`, text: 'I progetti che ricadono qui' }),
           el('span', { class: 'sep', text: '·' }),

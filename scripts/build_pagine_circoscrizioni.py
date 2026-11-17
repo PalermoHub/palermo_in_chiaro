@@ -3,7 +3,7 @@
 Uso: python3 -I scripts/build_pagine_circoscrizioni.py
 
 Le pagine sono involucri statici: titolo, descrizione, breadcrumb e testata sono nel
-file, i grafici li disegna js/circoscrizione.js leggendo gli snapshot. Sono scritte da
+file, la mappa e i grafici li disegna js/circoscrizione.js leggendo gli snapshot. Sono scritte da
 qui perché testata e piede restino uguali in tutte e otto (e a quelli del resto del
 sito): se cambia il menu, si cambia in questo script e si rigenerano, non a mano.
 
@@ -17,8 +17,8 @@ from string import Template
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 SITO = 'https://palermohub.github.io/palermo_in_chiaro'
-V_CSS = '20261117x'
-V_APP = '20261117b'
+V_CSS = '20261118a'
+V_APP = '20261118a'
 
 GEO = json.load(open(os.path.join(BASE, 'data/geo/circoscrizioni.json'), encoding='utf-8'))['circoscrizioni']
 
@@ -89,6 +89,15 @@ PAGINA = Template('''<!doctype html>
   <header class="pagina-testa circ-testa" id="circ-testa"></header>
   <nav class="circ-nav" id="circ-nav" aria-label="Le 8 circoscrizioni"></nav>
 
+  <div class="circ-dashboard">
+    <figure class="circ-mappa" id="mappa-circ">
+      <svg id="mappa-svg" role="group" aria-label="Mappa della Circoscrizione $rom con i progetti che hanno una posizione" focusable="false"></svg>
+      <figcaption id="mappa-nota"></figcaption>
+      <div class="legenda" id="legenda-mappa" aria-hidden="true"></div>
+    </figure>
+    <aside class="scheda" id="scheda-circ" aria-label="Sintesi della Circoscrizione $rom" aria-live="polite"></aside>
+  </div>
+
   <div class="cifre" id="cifre"></div>
 
   <section class="capitolo" id="soldi" aria-labelledby="t-soldi">
@@ -100,18 +109,9 @@ PAGINA = Template('''<!doctype html>
     <div class="grafici" id="grafici-soldi"></div>
   </section>
 
-  <section class="capitolo" id="persone" aria-labelledby="t-persone">
-    <div class="capitolo-testa">
-      <p class="occhiello">2 · Le persone</p>
-      <h2 id="t-persone">Il profilo della circoscrizione</h2>
-      <p class="lede">Residenti, famiglie e abitazioni del censimento ISTAT 2021, con il confronto con Palermo: sono una fotografia del 2021, non una stima dell'anno in corso.</p>
-    </div>
-    <div class="scheda-circ" id="profilo"></div>
-  </section>
-
   <section class="capitolo" id="territorio" aria-labelledby="t-territorio">
     <div class="capitolo-testa">
-      <p class="occhiello">3 · Il territorio</p>
+      <p class="occhiello">2 · Il territorio</p>
       <h2 id="t-territorio">Quartieri e UPL</h2>
       <p class="lede">La circoscrizione raggruppa i quartieri, e i quartieri le UPL (unità di pianificazione locale). Qui si vede dove ricadono i progetti, livello per livello: è la geografia dichiarata nel Programma triennale, non un calcolo.</p>
     </div>
@@ -120,7 +120,7 @@ PAGINA = Template('''<!doctype html>
 
   <section class="capitolo" id="progetti" aria-labelledby="t-progetti">
     <div class="capitolo-testa">
-      <p class="occhiello">4 · I progetti</p>
+      <p class="occhiello">3 · I progetti</p>
       <h2 id="t-progetti">Le voci che ricadono qui</h2>
       <p class="lede" id="progetti-lede">Opere, PNRR e coesione collegati per CUP o CUI. Un progetto può comparire in più fonti: gli importi restano separati e non si sommano.</p>
     </div>
@@ -129,7 +129,7 @@ PAGINA = Template('''<!doctype html>
 
   <section class="capitolo" id="comune" aria-labelledby="t-comune">
     <div class="capitolo-testa">
-      <p class="occhiello">5 · Il resto del Comune</p>
+      <p class="occhiello">4 · Il resto del Comune</p>
       <h2 id="t-comune">Quello che il Comune non divide per circoscrizione</h2>
       <p class="lede">Bilancio, appalti, PNRR e fondi di coesione sono del Comune nel suo insieme: le fonti non hanno una ripartizione per circoscrizione e il sito non la stima. Le cifre qui sotto servono a dare la scala, non a dire quanto tocca a questa circoscrizione.</p>
     </div>

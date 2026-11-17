@@ -65,8 +65,8 @@
       const p = document.createElementNS(NS, 'path');
       p.setAttribute('d', g.d); p.setAttribute('class', 'circ'); p.setAttribute('tabindex', '0'); p.setAttribute('role', 'button');
       p.setAttribute('aria-pressed', 'false'); p.setAttribute('aria-label', `Circoscrizione ${c}`);
-      p.addEventListener('click', (ev) => { const id = progettoSotto(ev); if (id) apriProgetto(id); else scegli(c, true); });
-      p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegli(c, true); } });
+      p.addEventListener('click', (ev) => { const id = progettoSotto(ev); if (id) apriProgetto(id); else location.href = paginaCirc(c); });
+      p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = paginaCirc(c); } });
       agganciaTip(p, () => [`Circoscrizione ${c}`, righeCirc(c)]);
       svg.append(p);
       gruppi[c] = { p };
@@ -361,6 +361,7 @@
     function riga(k, v) { return el('div', { class: 'riga' }, [el('dt', { text: k }), el('dd', { text: v })]); }
     function scheda() {
       const s = $('scheda');
+      if (!s) return;   /* la scheda di sintesi sta nella pagina della circoscrizione */
       if (selProj) { s.replaceChildren(...schedaProgetto(selProj)); return; }
       if (selQ || selU) { schedaTerritorio(); return; }
       if (!sel) {
@@ -545,7 +546,7 @@
     const elenco = (params) => 'progetti.html?' + Object.entries(params).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&');
     const paginaCirc = (c) => `circoscrizione/${ROM.indexOf(c) + 1}/`;
     const ob = $('opere-barre');
-    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c }, paginaCirc(c), () => mostraCircoscrizione(c), 'Apri la scheda della circoscrizione')));
+    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c }, paginaCirc(c), null, 'Apri la scheda della circoscrizione')));
     const pc = D.opere.piu_circoscrizioni;
     ob.append(barra('piu', 'Più circoscrizioni', `${pc.interventi} interventi, non divisi`, { n: pc.importo_triennio_eur, max: maxO, testo: mln(pc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__multi' })));
     ob.append(barra('senza', 'Senza circoscrizione', `${nonLoc.interventi} interventi`, { n: nonLoc.importo_triennio_eur, max: maxO, testo: mln(nonLoc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__nessuna' })));
@@ -565,11 +566,11 @@
     const pcRank = ROM.map(c => ({ c, v: O(c).importo_triennio_per_residente_eur })).sort((a, b) => b.v - a.v);
     const maxPc = Math.max(pcRank[0].v, mediaPc);
     const pcRighe = el('div', { class: 'pc-righe' }, pcRank.map(x => {
-      const b = el('button', { type: 'button', class: 'pc-riga', title: `Circoscrizione ${x.c}: ${it(x.v)} € per abitante. Mostra la circoscrizione sulla mappa.` }, [
+      const b = el('button', { type: 'button', class: 'pc-riga', title: `Circoscrizione ${x.c}: ${it(x.v)} € per abitante. Apri la scheda della circoscrizione.` }, [
         el('span', { class: 'pc-nome', text: x.c }),
         el('span', { class: 'pc-pista' }, [el('span', { class: 'pc-riempi', style: `width:${100 * x.v / maxPc}%` })]),
         el('span', { class: 'pc-val', text: it(x.v) + ' €' })]);
-      b.addEventListener('click', () => mostraCircoscrizione(x.c));
+      b.addEventListener('click', () => { location.href = paginaCirc(x.c); });
       return b;
     }));
     pcRighe.append(el('div', { class: 'pc-media' }, [
@@ -905,24 +906,7 @@
       if (selProj && nodi[selProj]) { const n = nodi[selProj]; [...n.pol, ...n.lin, ...n.pt].forEach(e => { e.classList.add('sel'); e.parentNode.append(e); }); }
     }
     function apriProgetto(id) {
-      selProj = id; evidenziaProgetto();
-      const pr = PR.progetti.find(x => x.id === id);
-      if (pr) {
-        if (pr.circoscrizioni.length === 1 && sel !== pr.circoscrizioni[0]) sel = pr.circoscrizioni[0];
-        /* il progetto aperto sta in un altro quartiere o in un'altra UPL: si allinea il filtro, non lo si forza */
-        if (selQ && !(pr.quartieri || []).includes(selQ)) { selQ = null; selU = null; }
-        if (selU && !(pr.upl || []).includes(selU)) selU = null;
-      }
-      tutta.hidden = !(sel || selQ || selU);
-      allinea();
-      aggiornaVisibilitaProgetti();
-      zoomA();
-      scheda();
-      /* la scheda cambia contenuto: se è fuori vista (schermo stretto o pagina scorsa) la si porta dentro */
-      const piano = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
-      const r = $('scheda').getBoundingClientRect();
-      if (matchMedia('(max-width: 900px)').matches) $('scheda').scrollIntoView({ block: 'start', behavior: piano });
-      else if (r.top < 0 || r.bottom > innerHeight) $('scheda').scrollIntoView({ block: 'nearest', behavior: piano });
+      location.href = 'progetto.html?id=' + encodeURIComponent('op-' + id);
     }
     function legendaProgetti() {
       const l = $('legenda'); l.querySelector('.leg-prog')?.remove();
@@ -959,9 +943,13 @@
         el('p', { class: 'nota', text: 'Posizione ' + (precs.length ? precs.join('; ') : 'dalla geometria') + '. È una posizione elaborata da OpenDataSicilia dalle tavole PDF del Programma, non una coordinata ufficiale del Comune. Importo programmato, non speso.' })];
     }
 
-    /* i due menù a scala: ognuno scende al suo livello, e la mappa segue */
-    selQEl.addEventListener('change', e => scegliQuartiere(e.target.value));
-    selUEl.addEventListener('change', e => scegliUpl(e.target.value));
+    /* i due menù portano all'elenco filtrato: la discesa territorio per territorio si fa lì */
+    selQEl.addEventListener('change', e => {
+      if (e.target.value) location.href = 'progetti.html?quartiere=' + encodeURIComponent(e.target.value);
+    });
+    selUEl.addEventListener('change', e => {
+      if (e.target.value) location.href = 'progetti.html?upl=' + encodeURIComponent(e.target.value);
+    });
 
     /* ---- quattro cifre di sintesi, nello spazio sotto la scheda (non si sommano: fonti e periodi diversi) ---- */
     const soldi = (n) => n >= 1e9 ? it(n / 1e9, 2) + ' mld €' : mln(n, 0);
@@ -989,14 +977,11 @@
 
     colora(); allinea(); scheda();
     document.addEventListener('tema-cambia', colora);
-    /* arrivo dall'elenco o da una scheda: territorio già scelto nell'indirizzo */
+    /* gli indirizzi della vecchia home con un territorio scelto portano alla pagina che lo contiene */
     const params = new URLSearchParams(location.search);
     const circDaUrl = params.get('circ'), qDaUrl = params.get('quartiere'), uDaUrl = params.get('upl');
-    if (uDaUrl) scegliUpl(uDaUrl);
-    else if (qDaUrl) scegliQuartiere(qDaUrl);
-    else if (ROM.includes(circDaUrl)) scegli(circDaUrl, false);
-    if (location.hash && (uDaUrl || qDaUrl || ROM.includes(circDaUrl))) {
-      document.querySelector('.mappa-blocco').scrollIntoView({ block: 'start' });
-    }
+    if (uDaUrl) location.replace('progetti.html?upl=' + encodeURIComponent(uDaUrl));
+    else if (qDaUrl) location.replace('progetti.html?quartiere=' + encodeURIComponent(qDaUrl));
+    else if (ROM.includes(circDaUrl)) location.replace(paginaCirc(circDaUrl));
   }
 })();
