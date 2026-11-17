@@ -14,6 +14,21 @@
 
   const BASE = (document.documentElement.dataset.base || './').replace(/\/?$/, '/');
   const U = (p) => (/^(?:[a-z]+:|\/|#)/i.test(p) ? p : BASE + p);
+
+  /* Da dove si sta cercando: la scheda del progetto lo usa per il percorso. */
+  function contesto() {
+    const p = location.pathname;
+    const m = p.match(/\/circoscrizione\/([1-8])\/?$/);
+    if (m) return 'circoscrizione/' + m[1] + '/';
+    if (/\/progetti\.html$/.test(p)) return 'progetti';
+    if (/\/statistiche\.html$/.test(p)) return 'statistiche';
+    if (/\/fonti\.html$/.test(p)) return 'fonti';
+    if (/\/metodo\.html$/.test(p)) return 'metodo';
+    if (/\/privacy\.html$/.test(p)) return 'privacy';
+    if (/\/progetto\.html$/.test(p)) return new URLSearchParams(location.search).get('da');
+    return 'home';
+  }
+
   const MIN = 3;
   const MAX = 9;
   const PESO = { pagina: 320, circoscrizione: 260, quartiere: 220, upl: 180, argomento: 260, sezione: 300, progetto: 40 };
@@ -313,8 +328,10 @@
 
   function disegna(voci, gettoni) {
     risultati = voci;
+    const da = contesto();
     lista.replaceChildren(...voci.map((v, i) => {
-      const a = el('a', { href: U(v.u), tabindex: '-1' }, [
+      const href = v.t === 'progetto' && da ? v.u + '&da=' + encodeURIComponent(da) : v.u;
+      const a = el('a', { href: U(href), tabindex: '-1' }, [
         el('span', { class: 'cerca-tipo', text: TIPI[v.t] || v.t }),
         el('span', { class: 'cerca-nome' }, evidenzia(v.nome || v.n || '', gettoni)),
         v.d ? el('span', { class: 'cerca-dove' }, evidenzia(v.d, gettoni)) : null,

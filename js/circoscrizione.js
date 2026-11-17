@@ -205,7 +205,7 @@
         gQ.append(mk('path', { d: q.d, class: 'quartiere' }));
       });
       const progetti = ((D.proggeo && D.proggeo.progetti) || []).filter((pr) => (pr.circoscrizioni || []).includes(CIRCO));
-      const apri = (id) => { location.href = U('progetto.html?id=' + encodeURIComponent('op-' + id)); };
+      const apri = (id) => { location.href = U('progetto.html?da=circoscrizione/' + NUM(CIRCO) + '/&id=' + encodeURIComponent('op-' + id)); };
       const gPol = mk('g', { class: 'pol' }), gLin = mk('g', { class: 'lin' }), gPt = mk('g', { class: 'pt' }), gHit = mk('g', { class: 'hit' });
       const titolo = (e, testo) => {
         const t = document.createElementNS(NS, 'title');
@@ -504,7 +504,7 @@
       const top = base.slice(0, 12);
       const lista = el('div', { class: 'elenco-prog' }, top.map((p) => {
         const imp = importoMax(p);
-        return el('a', { class: 'voce-prog', href: U('progetto.html?id=' + encodeURIComponent(p.id)), title: 'Apri la scheda del progetto: ' + p.titolo }, [
+        return el('a', { class: 'voce-prog', href: U('progetto.html?da=circoscrizione/' + NUM(CIRCO) + '/&id=' + encodeURIComponent(p.id)), title: 'Apri la scheda del progetto: ' + p.titolo }, [
           el('span', {}, [
             el('span', { class: 'tit', text: p.titolo.length > 120 ? p.titolo.slice(0, 118) + '…' : p.titolo }),
             el('span', { class: 'fonti-riga mini' }, (p.fonti || []).map((f) => el('span', { class: 'badge ' + f, text: ETICH[f] || f })))]),

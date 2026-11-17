@@ -112,7 +112,7 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .briciole-testata a:hover { color: var(--inchiostro); text-decoration: underline; }
 .briciole-testata [aria-current="page"] { color: var(--inchiostro); font-weight: 600; }
 .briciole-testata [aria-current="location"] { color: var(--cupola); font-weight: 600; }
-.briciole-testata [data-briciola-corrente] { display: inline-block; max-width: min(46ch, 50vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
+.briciole-testata [data-briciola-corrente] { display: inline-block; max-width: min(120ch, 72vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
 .briciole-testata [data-briciola-sezione] { display: inline-block; max-width: min(34ch, 38vw); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; }
 
 /* voci del menù con la tendina */
@@ -522,6 +522,7 @@ a.quartiere-scendi { text-decoration: none; }
   .briciole-testata ol { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .briciole-testata ol::-webkit-scrollbar { display: none; }
   .briciole-testata li { flex: none; }
+  .briciole-testata [data-briciola-corrente] { max-width: none; }
 }
 
 /* con una circoscrizione scelta l'elenco lascia una colonna a destra alla mappa,

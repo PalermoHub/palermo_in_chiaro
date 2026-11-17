@@ -15,6 +15,7 @@
     for (const c of [].concat(kids).flat(Infinity)) if (c != null && c !== false) e.append(c);
     return e;
   };
+  const ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
   const ETICHETTE = { opere: 'Opere pubbliche', pnrr: 'PNRR', coesione: 'Fondi di coesione', appalti: 'Appalti' };
   const ESTERNO = { target: '_blank', rel: 'noopener' };
 
@@ -54,14 +55,44 @@
     );
   }
 
+  /* Il percorso tiene conto della provenienza, non solo della destinazione:
+     un progetto aperto dalla Circoscrizione V torna a Circoscrizioni › V,
+     uno aperto dalla home a Home, uno dall'elenco all'elenco. La provenienza
+     arriva nel parametro «da» dei collegamenti (anche in una nuova scheda). */
+  function aggiornaBriciole(titolo) {
+    const ol = document.querySelector('.briciole-testata ol');
+    if (!ol) return;
+    const da = new URLSearchParams(location.search).get('da') || 'progetti';
+    const voci = [{ nome: 'Palermo in chiaro', href: './' }];
+    const circ = /^circoscrizione\/([1-8])\/?$/.exec(da);
+    const pagine = {
+      home: ['Home', './'],
+      progetti: ['Elenco progetti', 'progetti.html'],
+      statistiche: ['Statistiche', 'statistiche.html'],
+      fonti: ['Fonti', 'fonti.html'],
+      metodo: ['Metodo e licenze', 'metodo.html'],
+      privacy: ['Privacy e cookie', 'privacy.html'],
+    };
+    if (circ) {
+      const n = Number(circ[1]);
+      voci.push({ nome: 'Circoscrizioni', href: 'index.html#mappa' });
+      voci.push({ nome: 'Circoscrizione ' + ROM[n - 1], href: 'circoscrizione/' + n + '/' });
+    } else {
+      const voce = pagine[da] || pagine.progetti;
+      voci.push({ nome: voce[0], href: voce[1] });
+    }
+    voci.push({ nome: titolo, corrente: true });
+    ol.replaceChildren(...voci.map((v) => el('li', {}, [
+      v.corrente
+        ? el('span', { 'data-briciola-corrente': true, 'aria-current': 'page', title: v.nome, text: v.nome })
+        : el('a', { href: v.href, text: v.nome }),
+    ])));
+  }
+
   function mostra(p, D) {
     const fonti = p.fonti.map(f => el('span', { class: 'badge ' + f, text: ETICHETTE[f] || f }));
     document.title = p.titolo.slice(0, 70) + ' · Palermo in chiaro';
-    const briciola = document.querySelector('[data-briciola-corrente]');
-    if (briciola) {
-      briciola.textContent = p.titolo;
-      briciola.title = p.titolo;
-    }
+    aggiornaBriciole(p.titolo);
     const testa = el('header', { class: 'pagina-testa' }, [
       el('h1', { text: p.titolo }),
       el('div', { class: 'fonti-riga', style: 'margin-top:10px' }, fonti),

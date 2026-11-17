@@ -86,7 +86,7 @@
   }
 
   function voce(p) {
-    const href = 'progetto.html?id=' + encodeURIComponent(p.id);
+    const href = 'progetto.html?da=progetti&id=' + encodeURIComponent(p.id);
     const dove = [];
     if (p.circoscrizioni.length) dove.push(el('span', { text: 'Circoscrizione ' + p.circoscrizioni.join(', ') }));
     else dove.push(el('span', { text: p.localizzato ? 'Posizione senza circoscrizione' : 'Senza circoscrizione' }));
@@ -465,7 +465,7 @@
       el('td', { text: x.oggetto || 'non disponibile' }),
       el('td', { text: x.anno_pubblicazione || '' }),
       el('td', { class: 'num', text: eur(x.importo_base_gara_eur) }),
-      el('td', {}, [x.progetto_id ? el('a', { href: 'progetto.html?id=' + encodeURIComponent(x.progetto_id), text: 'Scheda progetto' }) : el('span', { class: 'est', text: 'non collegato' })]),
+      el('td', {}, [x.progetto_id ? el('a', { href: 'progetto.html?da=progetti&id=' + encodeURIComponent(x.progetto_id), text: 'Scheda progetto' }) : el('span', { class: 'est', text: 'non collegato' })]),
     ])));
     $('altri-cig').hidden = r.length <= limiteCig;
   }

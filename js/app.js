@@ -451,7 +451,7 @@
         const vis = r.slice(0, 12);
         out.replaceChildren(...(vis.length ? vis.map(p => {
           const imp = importoMax(p);
-          return el('a', { href: 'progetto.html?id=' + encodeURIComponent(p.id), role: 'listitem', class: 'voce-prog', title: 'Apri la scheda del progetto: ' + p.titolo }, [
+          return el('a', { href: 'progetto.html?da=home&id=' + encodeURIComponent(p.id), role: 'listitem', class: 'voce-prog', title: 'Apri la scheda del progetto: ' + p.titolo }, [
             el('span', {}, [el('span', { class: 'tit', text: p.titolo.length > 96 ? p.titolo.slice(0, 94) + '…' : p.titolo }),
               el('span', { class: 'fonti-riga mini' }, p.fonti.map(f => el('span', { class: 'badge ' + f, text: ETICH[f] || f })))]),
             el('b', { text: imp > 0 ? mln(imp, 1) : 'importo non disponibile' })]);
@@ -509,7 +509,7 @@
       const base = PR.progetti.slice().sort((a, b) => b.importo_triennio_eur - a.importo_triennio_eur);
       const out = el('div', { class: 'elenco-prog', role: 'list' });
       base.slice(0, 12).forEach(pr => {
-        out.append(el('a', { href: 'progetto.html?id=' + encodeURIComponent('op-' + pr.id), role: 'listitem', class: 'voce-prog', title: 'Apri la scheda del progetto: ' + pr.descrizione }, [
+        out.append(el('a', { href: 'progetto.html?da=home&id=' + encodeURIComponent('op-' + pr.id), role: 'listitem', class: 'voce-prog', title: 'Apri la scheda del progetto: ' + pr.descrizione }, [
           el('span', {}, [el('span', { class: 'tit', text: pr.descrizione.length > 96 ? pr.descrizione.slice(0, 94) + '…' : pr.descrizione })]),
           el('b', { text: mln(pr.importo_triennio_eur, 1) })]));
       });
@@ -553,7 +553,7 @@
     const big = nonLoc.principali_interventi[0];
     $('opere-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, [
       el('li', {}, ['L\'intervento più grande senza circoscrizione vale ' + mln(big.importo_triennio_eur, 0) + ': ',
-        el('a', { href: 'progetto.html?id=' + encodeURIComponent(big.id), text: big.descrizione.replace(/\s+/g, ' ') }), '.']),
+        el('a', { href: 'progetto.html?da=home&id=' + encodeURIComponent(big.id), text: big.descrizione.replace(/\s+/g, ' ') }), '.']),
       ...D.opere.non_misura.filter(t => !t.startsWith('Circa il')).map(t => el('li', { text: t })),
     ]));
 
@@ -588,7 +588,7 @@
       el('ul', { class: 'senza-righe' }, topSenza.map(x => {
         const d = x.descrizione.replace(/\s+/g, ' ');
         return el('li', {}, [
-          el('a', { href: 'progetto.html?id=' + encodeURIComponent(x.id), title: 'Apri la scheda del progetto: ' + d, text: d.length > 92 ? d.slice(0, 90) + '…' : d }),
+          el('a', { href: 'progetto.html?da=home&id=' + encodeURIComponent(x.id), title: 'Apri la scheda del progetto: ' + d, text: d.length > 92 ? d.slice(0, 90) + '…' : d }),
           el('b', { text: mln(x.importo_triennio_eur, 0) })]);
       })),
       nota(`I primi 5 per importo dei ${nonLoc.interventi} interventi senza circoscrizione (${mln(nonLoc.importo_triennio_eur, 0)}): reti, linee e lavori diffusi che il Programma non assegna a una circoscrizione. Il primo vale da solo il ${it(100 * topSenza[0].importo_triennio_eur / tot.importo_triennio_eur, 0)}% del triennio.`),
@@ -979,7 +979,7 @@
       if (selProj && nodi[selProj]) { const n = nodi[selProj]; [...n.pol, ...n.lin, ...n.pt].forEach(e => { e.classList.add('sel'); e.parentNode.append(e); }); }
     }
     function apriProgetto(id) {
-      location.href = 'progetto.html?id=' + encodeURIComponent('op-' + id);
+      location.href = 'progetto.html?da=home&id=' + encodeURIComponent('op-' + id);
     }
     function legendaProgetti() {
       const l = $('legenda'); l.querySelector('.leg-prog')?.remove();
@@ -1009,7 +1009,7 @@
       if (p.pnrr) extra.push(el('p', { class: 'nota' }, ['Compare anche nel PNRR del Comune' + (p.pnrr.stato ? ` (${p.pnrr.stato.toLowerCase()})` : '') + ': ', el('span', { class: 'badge ufficiale', text: 'Fonte ufficiale' }), ' ', el('a', { href: p.pnrr.url, text: 'scheda sul sito del Comune', target: '_blank', rel: 'noopener' }), `, ${mln(p.pnrr.importo_finanziato_eur, 2)} finanziati. Gli importi di fonti diverse non si sommano.`]));
       if (p.coesione) extra.push(el('p', { class: 'nota', text: 'Compare anche tra i progetti di coesione: ' + p.coesione.join('; ') + '.' }));
       if (p.cig) extra.push(el('p', { class: 'nota', text: `Appalti ANAC collegati tramite il codice dell'intervento: ${p.cig.length} CIG (${p.cig.slice(0, 3).join(', ')}${p.cig.length > 3 ? '…' : ''}).` }));
-      extra.push(el('p', { class: 'nota' }, [el('a', { href: 'progetto.html?id=' + encodeURIComponent('op-' + p.id), text: 'Scheda completa del progetto' }), ' con importi per fonte, finanziamenti e collegamenti.']));
+      extra.push(el('p', { class: 'nota' }, [el('a', { href: 'progetto.html?da=home&id=' + encodeURIComponent('op-' + p.id), text: 'Scheda completa del progetto' }), ' con importi per fonte, finanziamenti e collegamenti.']));
       return [indietro, el('h2', { class: 'titolo-prog', text: p.descrizione.length > 140 ? p.descrizione.slice(0, 138) + '…' : p.descrizione }),
         el('div', { class: 'fonti-riga', style: 'margin: 4px 0 12px' }, fonti.map(f => el('span', { class: 'badge ' + f, text: ETICH[f] || f }))),
         dl, ...extra,

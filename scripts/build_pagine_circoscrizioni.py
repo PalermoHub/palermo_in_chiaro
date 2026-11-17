@@ -17,8 +17,8 @@ from string import Template
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 SITO = 'https://palermohub.github.io/palermo_in_chiaro'
-V_CSS = '20261120a'
-V_APP = '20261120a'
+V_CSS = '20261121b'
+V_APP = '20261121a'
 
 GEO = json.load(open(os.path.join(BASE, 'data/geo/circoscrizioni.json'), encoding='utf-8'))['circoscrizioni']
 
@@ -153,7 +153,7 @@ $nav
 </footer>
 
 <script src="../../js/menu.js?v=20261120a"></script>
-<script src="../../js/cerca.js?v=20261120a"></script>
+<script src="../../js/cerca.js?v=20261121a"></script>
 <script src="../../js/crediti.js?v=20261119a"></script>
 <script src="../../js/su.js?v=20261116y"></script>
 <script src="../../js/circoscrizione.js?v=$vapp"></script>
