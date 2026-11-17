@@ -186,6 +186,27 @@
         el('a', { href: U('fonti.html'), text: 'Le fonti, con periodo e licenza' }), '.']));
     }
 
+    /* ---------- il profilo: gli stessi numeri della scheda che si apre sulla mappa della home ---------- */
+    const profilo = $('profilo');
+    if (profilo) {
+      const num = [
+        ['Residenti', it(P.residenti), `censimento 2021 · città ${it(T.residenti)}`],
+        ['Densità', `${it(P.densita_ab_kmq)} ab/km²`, `${it(P.superficie_kmq, 2)} km² di superficie`],
+        ['Over 65', pct(P.quota_65_piu_pct), `città ${pct(T.quota_65_piu_pct)}`],
+        ['Indice di vecchiaia', it(P.indice_vecchiaia, 0), `over 65 ogni 100 under 15 · città ${it(T.indice_vecchiaia, 0)}`],
+        ['Stranieri', pct(P.quota_stranieri_pct), `${it(P.stranieri)} residenti · città ${pct(T.quota_stranieri_pct)}`],
+        ['Famiglie', it(P.famiglie), `${it(P.residenti / P.famiglie, 2)} persone per famiglia`],
+        ['Abitazioni vuote o non di residenti', pct(P.quota_abitazioni_vuote_pct), `${it(P.abitazioni_vuote_o_non_residenti)} su ${it(P.abitazioni_totali)}`],
+        ['Laureati (9 anni e più)', pct(P.quota_laureati_9_piu_pct), `${it(P.laureati_9_piu)} su ${it(P.popolazione_9_piu)} · città ${pct(T.quota_laureati_9_piu_pct)}`],
+      ];
+      profilo.replaceChildren(
+        el('div', { class: 'scheda-circ-numeri' }, num.map(([k, v, n]) => el('div', { class: 'scheda-circ-num' }, [
+          el('span', { class: 'k', text: k }), el('span', { class: 'v', text: v }), el('span', { class: 'n', text: n })]))),
+        el('p', { class: 'cifra-fonte' }, [
+          'Censimento ISTAT 2021, sezioni di censimento sommate per circoscrizione. Gli stessi indicatori, con i grafici e il confronto con la città, sono nel capitolo «Il profilo di una circoscrizione» di ',
+          el('a', { href: U('statistiche.html?circ=' + CIRCO + '#per-circoscrizione'), text: 'Statistiche' }), '.']));
+    }
+
     /* ---------- grafici ---------- */
     const G = $('grafici-soldi');
     const GT = $('grafici-territorio');

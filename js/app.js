@@ -406,12 +406,12 @@
         /* i quartieri sono il livello sotto: ci si scende con un clic */
         el('div', { class: 'quartieri-riga', role: 'group', 'aria-label': `Quartieri della Circoscrizione ${sel}` },
           q.map(n => { const b = el('button', { type: 'button', class: 'quartiere-scendi', text: n, title: `Scendi al quartiere ${n}` }); b.addEventListener('click', () => scegliQuartiere(n)); return b; })),
+        el('p', { class: 'badge-riga' }, [el('a', { class: 'badge-link', href: paginaCirc(sel), text: `La scheda completa della Circoscrizione ${sel}` })]),
         dl,
         el('h3', { text: 'Opere programmate 2026-2028' }), dlo,
         el('h4', { text: 'In che anni cadono' }), anniBox,
         el('h4', { text: 'I primi tre settori' }), sett,
-        el('p', { class: 'badge-riga' }, [el('a', { class: 'badge-link', href: paginaCirc(sel), text: `La scheda della Circoscrizione ${sel}` })]),
-        el('p', { class: 'nota', text: 'Nella scheda completa: tutte le opere per anno e settore, il confronto con le altre circoscrizioni, quartieri e UPL, i progetti. Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso.' }),
+        el('p', { class: 'nota', text: 'La scheda completa ha tutte le opere per anno e settore, il confronto con le altre circoscrizioni, quartieri e UPL, i progetti e il profilo della circoscrizione. Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso.' }),
         ...progettiDelTerritorio().filter(Boolean)
       );
     }
