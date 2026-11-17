@@ -504,7 +504,7 @@
         rendi(corpo) {
           figura(corpo, {
             titolo: 'Le piramidi delle 8 circoscrizioni',
-            nota: 'Stessa scala per tutte e otto, così le forme si possono confrontare: alcune hanno la base larga, altre la punta pesante. Maschi a sinistra, femmine a destra. Restano fuori le classi «75 e più», aperte e non confrontabili con quelle di cinque anni. Censimento 2021.',
+            nota: 'Stessa scala per tutte e otto, così le forme si possono confrontare: alcune hanno la base larga, altre la punta pesante. Maschi a sinistra, femmine a destra, dai 70-74 anni in alto ai 0-4 in basso. Passa il mouse o tocca una fascia per i valori; un clic su una piramide apre la scheda di quella circoscrizione. Restano fuori le classi «75 e più», aperte e non confrontabili con quelle di cinque anni. Censimento 2021.',
             larga: true,
             tabella: tabellaEtaMulti(ROM, S_, 'eta'),
           }).corpo.append(grigliaPiramidi());
@@ -963,17 +963,24 @@
       }
     }
 
-    function miniPiramide(host, { maschi, femmine }) {
+    function miniPiramide(host, { classi, maschi, femmine, nome }) {
       const W = 200, H = 116, cx = W / 2, half = 88, rowH = 6.4, top = 6;
       const mx = Math.max(...maschi, ...femmine) || 1;
-      const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, class: 'mini-piramide', role: 'img' });
-      svg.setAttribute('aria-label', 'Piramide dell\'età: maschi a sinistra, femmine a destra');
+      const svg = S('svg', { viewBox: `0 0 ${W} ${H}`, class: 'mini-piramide', 'aria-hidden': 'true' });
       svg.append(S('line', { x1: cx, x2: cx, y1: top, y2: top + maschi.length * rowH, class: 'griglia' }));
-      maschi.forEach((v, i) => {
-        const y = top + (maschi.length - 1 - i) * rowH;
-        const w = half * v / mx;
-        svg.append(S('rect', { x: cx - 2 - w, y, width: Math.max(w, 0.6), height: rowH - 2.2, class: 'barra-m', rx: 0.5 }));
-        svg.append(S('rect', { x: cx + 2, y, width: Math.max(half * femmine[i] / mx, 0.6), height: rowH - 2.2, class: 'barra-f', rx: 0.5 }));
+      classi.forEach((classe, i) => {
+        const y = top + (classi.length - 1 - i) * rowH;
+        const m = maschi[i], f = femmine[i];
+        const fila = S('g', { class: 'fila' });
+        fila.append(S('rect', { x: cx - 2 - half * m / mx, y, width: Math.max(half * m / mx, 0.6), height: rowH - 2.2, class: 'barra-m', rx: 0.5 }));
+        fila.append(S('rect', { x: cx + 2, y, width: Math.max(half * f / mx, 0.6), height: rowH - 2.2, class: 'barra-f', rx: 0.5 }));
+        fila.append(S('rect', { x: cx - half - 2, y: y - 0.6, width: 2 * half + 4, height: rowH - 1, class: 'hit', fill: 'transparent' }));
+        conTip(fila, `Circ. ${nome} · età ${classe}`, [
+          ['Maschi', it(m)],
+          ['Femmine', it(f)],
+          ['Totale', it(m + f)],
+        ]);
+        svg.append(fila);
       });
       host.append(svg);
     }
@@ -999,7 +1006,7 @@
       host.append(tela);
     }
 
-    /* ================= tabelle ================= */    /* ================= tabelle ================= */
+    /* ================= tabelle ================= */
 
     function tabellaEta(nome, e) {
       return {
@@ -1041,10 +1048,19 @@
     function grigliaPiramidi() {
       const g = el('div', { class: 'mini-piramidi' });
       ROM.forEach((c) => {
-        const box = el('div', { class: 'mini-piramide-box' }, [
+        const box = el('button', {
+          type: 'button', class: 'mini-piramide-box',
+          'aria-label': `Circoscrizione ${c}: ${it(S_(c).eta.totale.reduce((a, b) => a + b, 0))} residenti. Apri il profilo della circoscrizione`,
+        }, [
           el('p', { class: 'mini-piramide-nome' }, [el('b', { text: 'Circ. ' + c }), el('span', { text: it(S_(c).eta.totale.reduce((a, b) => a + b, 0)) })]),
         ]);
-        miniPiramide(box, taglia(S_(c).eta));
+        miniPiramide(box, { classi: CLASSI_5, ...taglia(S_(c).eta), nome: c });
+        box.addEventListener('click', () => {
+          nascondiTip();
+          selezionaCirc(c);
+          const profilo = document.getElementById('per-circoscrizione');
+          profilo.scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        });
         g.append(box);
       });
       return g;

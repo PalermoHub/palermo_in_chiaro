@@ -550,7 +550,10 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 .piramide .ghost { fill: var(--linea); opacity: 0.45; }
 
 .mini-piramidi { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px clamp(14px, 2vw, 24px); }
-.mini-piramide-box { border-top: 1px solid var(--linea); padding-top: 6px; }
+.mini-piramide-box { display: block; width: 100%; text-align: left; font: inherit; color: inherit; background: none; border: 0; border-top: 1px solid var(--linea); padding: 6px 0 2px; cursor: pointer; }
+.mini-piramide-box:hover { background: color-mix(in srgb, var(--maiolica-chiara) 45%, transparent); }
+.mini-piramide-box:focus-visible { outline: 2px solid var(--cupola); outline-offset: 2px; }
+.mini-piramide .fila:hover rect.barra-m, .mini-piramide .fila:hover rect.barra-f { opacity: 0.78; }
 .mini-piramide-nome { display: flex; justify-content: space-between; gap: 8px; margin: 0 0 4px; font-size: 0.8rem; }
 .mini-piramide-nome span { color: var(--muto); font-variant-numeric: tabular-nums; }
 .mini-piramide .griglia { stroke: var(--linea); stroke-width: 0.6; }
