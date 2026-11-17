@@ -292,10 +292,11 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .barra.senza .nome { font-weight: 600; }
 .barra[aria-current="true"] { background: var(--maiolica-chiara); }
 
-.limiti { max-width: 62rem; margin-top: 22px; background: var(--carta-2); padding: 14px 18px 12px; border-radius: 3px; }
+.limiti { max-width: none; margin-top: 22px; background: var(--carta-2); padding: 14px 18px 12px; border-radius: 3px; }
 .limiti h3 { font-size: 1.02rem; margin-bottom: 6px; color: var(--cupola); }
-.limiti ul { margin: 0; padding-left: 1.1em; }
-.limiti li { margin: 3px 0; font-size: 0.94rem; }
+/* l'elenco si apre in colonne finché la riga resta leggibile: niente righe lunghe e niente spazio vuoto a destra */
+.limiti ul { margin: 0; padding-left: 1.1em; columns: 24rem; column-gap: clamp(20px, 4vw, 56px); }
+.limiti li { margin: 3px 0; font-size: 0.94rem; break-inside: avoid; }
 
 /* sezione opere: le barre restano a sinistra, a destra tre letture degli stessi dati */
 .opere-corpo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 30px clamp(24px, 4vw, 56px); align-items: start; }
@@ -366,15 +367,20 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .anno-seg.a2027 { background: var(--maiolica); }
 .anno-seg.a2028 { background: var(--ocra); }
 
-.coppie { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 clamp(20px, 4vw, 56px); max-width: 62rem; }
+.coppie { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 clamp(20px, 4vw, 56px); }
 .coppia { padding: 6px 0 14px; }
 .coppia h3 { font-size: 1.15rem; margin-bottom: 6px; }
 .coppia .grande { font-family: var(--font-titoli); font-size: 2.1rem; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; }
 .coppia .nota { color: var(--muto); font-size: 0.88rem; margin: 2px 0 8px; }
-.due-colonne { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px clamp(20px, 4vw, 56px); max-width: 62rem; }
+.due-colonne { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px clamp(20px, 4vw, 56px); }
 .due-colonne h3 { font-size: 1.15rem; margin: 0 0 4px; }
 .due-colonne .grande { font-family: var(--font-titoli); font-size: 2.1rem; font-weight: 700; line-height: 1.05; font-variant-numeric: tabular-nums; }
 .due-colonne .nota { color: var(--muto); font-size: 0.88rem; margin: 2px 0 10px; }
+
+/* sezione 4 della circoscrizione: quattro blocchi su tutta la larghezza, mai tre più uno */
+.circoscrizione #non-attribuito .due-colonne { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (min-width: 1500px) { .circoscrizione #non-attribuito .due-colonne { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .circoscrizione #non-attribuito .due-colonne { grid-template-columns: 1fr; } }
 
 .fonti { list-style: none; padding: 0; margin: 0; max-width: 62rem; }
 .fonti li { padding: 10px 0; border-bottom: 1px solid var(--linea); font-size: 0.95rem; }
