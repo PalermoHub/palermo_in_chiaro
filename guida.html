@@ -66,6 +66,50 @@
   .parole dd { margin: 2px 0 0; color: var(--inchiostro); }
   .pagina kbd { font: inherit; font-size: 0.82em; border: 1px solid var(--linea); border-radius: 4px; padding: 1px 5px; background: var(--carta-2); }
   @media (max-width: 640px) { .pagina h2 { margin-top: 38px; } }
+
+  /* galleria degli screenshot (js/galleria.js): una finestra sola, con le frecce */
+  body.galleria-aperta { overflow: hidden; }
+  .galleria {
+    width: 100vw; max-width: none; height: 100dvh; max-height: none;
+    margin: 0; padding: 0; border: 0; border-radius: 0;
+    background: #0b141c; color: #eef3f4; color-scheme: dark;
+  }
+  .galleria::backdrop { background: #0b141c; }
+  .galleria:not([open]) { display: none; }
+  .galleria-in {
+    height: 100%; display: flex; flex-direction: column; gap: 8px;
+    padding: 10px clamp(10px, 3vw, 22px) max(14px, env(safe-area-inset-bottom));
+  }
+  .galleria-testa { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; }
+  .galleria-contatore { margin: 0; font-size: 0.82rem; letter-spacing: 0.04em; color: #a9bcc4; }
+  .galleria-chiudi {
+    font: inherit; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px;
+    border-radius: 999px; border: 1px solid rgba(238, 243, 244, 0.35);
+    background: transparent; color: inherit;
+  }
+  .galleria-chiudi:hover { background: rgba(238, 243, 244, 0.12); }
+  .galleria-chiudi kbd { font: inherit; font-size: 0.72rem; border: 1px solid rgba(238, 243, 244, 0.35); border-radius: 4px; padding: 0 5px; }
+  .galleria-palco { position: relative; flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; }
+  .galleria-img { max-width: 100%; max-height: 100%; width: auto; height: auto; border-radius: 8px; background: #fff; box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5); }
+  .galleria-freccia {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    display: grid; place-items: center; width: 44px; height: 44px;
+    border-radius: 50%; border: 1px solid rgba(238, 243, 244, 0.35);
+    background: rgba(11, 20, 28, 0.72); color: inherit; cursor: pointer;
+  }
+  .galleria-freccia:hover { background: rgba(238, 243, 244, 0.18); }
+  .galleria-prev { left: 0; }
+  .galleria-next { right: 0; }
+  .galleria-figura { margin: 0; }
+  .galleria-piede { margin: 0 auto; max-width: 62ch; text-align: center; font-size: 0.88rem; line-height: 1.45; color: #c3d0d6; }
+  .galleria a:focus-visible, .galleria button:focus-visible { outline: 2px solid #7ed2d8; outline-offset: 2px; }
+  .galleria.senza-modale { position: fixed; inset: 0; z-index: 50; display: block; }
+  @media (min-width: 701px) { .galleria-palco { padding: 0 54px; } }
+  @media (max-width: 700px) {
+    .galleria-freccia { width: 40px; height: 40px; background: rgba(11, 20, 28, 0.55); }
+    .galleria-tasto { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -98,7 +142,6 @@
         </ul>
       </details>
       <a href="./progetti.html">Elenco progetti</a>
-      <a href="./guida.html" aria-current="page">Guida</a>
       <details class="tendina">
         <summary>Statistiche</summary>
         <ul>
@@ -117,6 +160,7 @@
           <li><a href="metodo.html#errori">Segnala un errore</a></li>
         </ul>
       </details>
+      <a href="./guida.html" aria-current="page">Guida</a>
     </nav>
     <button type="button" class="cerca-apri" aria-haspopup="dialog" aria-controls="cerca-finestra" aria-expanded="false" title="Cerca in tutto il sito (premi /)">
       <svg class="cerca-ico" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12.6 12.6 17 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
@@ -135,7 +179,7 @@
 
 <main id="contenuto" class="pagina">
   <h1>Guida: cosa è, come si legge, come si cerca</h1>
-  <p class="lede">Palermo in chiaro mette in mappa e in elenco i dati pubblici del Comune di Palermo: le opere programmate, il bilancio, gli appalti, i fondi del PNRR e della coesione, i residenti del censimento. Questa guida spiega passo per passo cosa trovi, come si leggono i numeri e come si cerca un progetto o un finanziamento. Non serve sapere nulla di dati o di informatica.</p>
+  <p class="lede">Palermo in chiaro mette in mappa e in elenco i dati pubblici del Comune di Palermo: le opere programmate, il bilancio, gli appalti, i fondi del PNRR e della coesione, i residenti del censimento. Questa guida spiega passo per passo cosa trovi, come si leggono i numeri e come si cerca un progetto o un finanziamento. Non serve sapere nulla di dati o di informatica. Gli screenshot della guida si aprono uno alla volta: clicca un'immagine per vederla grande e usa le frecce per passare alla successiva.</p>
 
   <div class="in-breve">
     <p><b>In tre righe.</b> Il sito non produce dati nuovi: mette insieme quelli che il Comune, l'ISTAT, l'ANAC e OpenCoesione pubblicano già, e li rende leggibili.</p>
@@ -207,7 +251,7 @@
 
   <h2 id="mappa">La mappa della città</h2>
   <figure class="guida-figura">
-    <a class="guida-figura-link" href="img/guida/mappa-citta.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+    <a class="guida-figura-link" href="img/guida/mappa-citta.webp" target="_blank" rel="noopener" title="Apri lo screenshot nella galleria">
       <img src="img/guida/mappa-citta.webp" width="1200" height="859" loading="lazy" decoding="async" alt="La home di Palermo in chiaro: a sinistra la mappa delle otto circoscrizioni con i numeri romani, sopra le sei misure da mostrare, i due menù Quartiere e UPL e l'interruttore per mostrare i singoli progetti; a destra la scheda di Palermo con i residenti e quattro riquadri: opere programmate, bilancio previsto, appalti avviati, PNRR e fondi di coesione.">
     </a>
     <figcaption>La pagina iniziale: a sinistra la mappa, a destra la scheda con la sintesi della città e le quattro cifre principali.</figcaption>
@@ -221,7 +265,7 @@
 
   <h2 id="circoscrizione">La pagina di una circoscrizione</h2>
   <figure class="guida-figura">
-    <a class="guida-figura-link" href="img/guida/circoscrizione.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+    <a class="guida-figura-link" href="img/guida/circoscrizione.webp" target="_blank" rel="noopener" title="Apri lo screenshot nella galleria">
       <img src="img/guida/circoscrizione.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La pagina della Circoscrizione VII: il titolo con i quartieri, i residenti, l'importo delle opere programmate, i pulsanti verso la mappa dei progetti, l'elenco e il profilo, poi una mappa con i punti dei progetti e a destra la scheda con residenti, densità, over 65, indice di vecchiaia, stranieri.">
     </a>
     <figcaption>La pagina della Circoscrizione VII: in alto la sintesi, sotto la mappa dei progetti e la scheda con i numeri del territorio.</figcaption>
@@ -240,7 +284,7 @@
 
   <h3>1. L'elenco dei progetti e i suoi filtri</h3>
   <figure class="guida-figura">
-    <a class="guida-figura-link" href="img/guida/elenco-progetti.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+    <a class="guida-figura-link" href="img/guida/elenco-progetti.webp" target="_blank" rel="noopener" title="Apri lo screenshot nella galleria">
       <img src="img/guida/elenco-progetti.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La pagina Elenco progetti: il riquadro «Cosa non fa questo elenco», i filtri di ricerca per titolo, CUP o CUI, fonte, circoscrizione, quartiere, UPL, ordinamento e la casella «Solo progetti presenti in più fonti», poi le prime voci con importi e fonti.">
     </a>
     <figcaption>L'elenco dei progetti: la casella di ricerca, i cinque filtri e la casella «Solo progetti presenti in più fonti».</figcaption>
@@ -257,7 +301,7 @@
 
   <h3>2. La scheda di un progetto</h3>
   <figure class="guida-figura">
-    <a class="guida-figura-link" href="img/guida/scheda-progetto.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+    <a class="guida-figura-link" href="img/guida/scheda-progetto.webp" target="_blank" rel="noopener" title="Apri lo screenshot nella galleria">
       <img src="img/guida/scheda-progetto.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La scheda del progetto delle nuove linee tramviarie: il titolo, le etichette Opere pubbliche e PNRR, CUP e CUI, a sinistra gli importi anno per anno e la fonte di finanziamento, a destra identificativi, circoscrizione, quartiere, UPL, posizione e fonti collegate.">
     </a>
     <figcaption>La scheda di un progetto: a sinistra gli importi e i finanziamenti, a destra gli identificativi e il territorio, in fondo i collegamenti alle fonti.</figcaption>
@@ -273,7 +317,7 @@
 
   <h3>3. La ricerca globale</h3>
   <figure class="guida-figura">
-    <a class="guida-figura-link" href="img/guida/cerca.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+    <a class="guida-figura-link" href="img/guida/cerca.webp" target="_blank" rel="noopener" title="Apri lo screenshot nella galleria">
       <img src="img/guida/cerca.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La finestra di ricerca aperta sulla home con la parola «oreto» scritta: i suggerimenti sono il quartiere Oreto-Stazione, due UPL e cinque progetti, con le lettere cercate evidenziate in ocra e il collegamento «Cerca oreto in tutti i progetti».">
     </a>
     <figcaption>La ricerca globale con «oreto»: pagina, quartiere, UPL e progetti, con le lettere cercate evidenziate.</figcaption>
@@ -285,7 +329,7 @@
 
   <h2 id="statistiche">I grafici delle statistiche</h2>
   <figure class="guida-figura">
-    <a class="guida-figura-link" href="img/guida/statistiche.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+    <a class="guida-figura-link" href="img/guida/statistiche.webp" target="_blank" rel="noopener" title="Apri lo screenshot nella galleria">
       <img src="img/guida/statistiche.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La pagina Statistiche: il titolo, tre pulsanti per i capitoli, il riquadro «Come leggere questi grafici» e l'inizio del capitolo «Palermo al censimento 2021» con le prime cifre: residenti, famiglie, stranieri.">
     </a>
     <figcaption>Statistiche: tre capitoli (la città, una circoscrizione, un argomento) e, per ogni grafico, fonte, anno e cosa non misura.</figcaption>
@@ -303,7 +347,7 @@
 
   <h2 id="telefono">Sul telefono e col tema scuro</h2>
   <figure class="guida-figura telefono">
-    <a class="guida-figura-link" href="img/guida/telefono.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+    <a class="guida-figura-link" href="img/guida/telefono.webp" target="_blank" rel="noopener" title="Apri lo screenshot nella galleria">
       <img src="img/guida/telefono.webp" width="720" height="1558" loading="lazy" decoding="async" alt="La home di Palermo in chiaro su uno schermo da telefono: il marchio, i pulsanti Cerca e tema, il menù che scorre in orizzontale, il titolo, le sei misure e la mappa sotto.">
     </a>
     <figcaption>La stessa pagina su un telefono: il menù si sposta di lato, la mappa va sotto il testo.</figcaption>
@@ -337,5 +381,6 @@
 <script src="js/cerca.js?v=20261121a"></script>
 <script src="js/crediti.js?v=20261119a"></script>
 <script src="js/su.js?v=20261116y"></script>
+<script src="js/galleria.js?v=20261122a"></script>
 </body>
 </html>
