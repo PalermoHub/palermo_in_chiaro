@@ -1050,6 +1050,13 @@
 
     colora(); allinea(); scheda();
     document.addEventListener('tema-cambia', colora);
+    /* chi arriva da un'altra pagina su #appalti (o #opere, #bilancio, #progetti) apre
+       l'indirizzo prima che i grafici siano disegnati: la sezione è ancora in alto,
+       l'ancora cade dove non c'è nulla. Ora che la pagina è completa si torna lì. */
+    if (location.hash.length > 1) {
+      const ancora = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (ancora) ancora.scrollIntoView({ block: 'start' });
+    }
     /* gli indirizzi della vecchia home con un territorio scelto portano alla pagina che lo contiene */
     const params = new URLSearchParams(location.search);
     const circDaUrl = params.get('circ'), qDaUrl = params.get('quartiere'), uDaUrl = params.get('upl');
