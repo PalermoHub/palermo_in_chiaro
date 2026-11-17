@@ -17,7 +17,7 @@ from string import Template
 BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
 SITO = 'https://palermohub.github.io/palermo_in_chiaro'
-V_CSS = '20261118l'
+V_CSS = '20261119a'
 V_APP = '20261118c'
 
 GEO = json.load(open(os.path.join(BASE, 'data/geo/circoscrizioni.json'), encoding='utf-8'))['circoscrizioni']
@@ -135,12 +135,13 @@ $nav
     <a class="credito-logo" href="https://opendatasicilia.it/" target="_blank" rel="noopener"><img src="../../img/opendatasicilia.png" alt="OpenDataSicilia" width="46" height="53"></a>
     <div class="credito-testo">
       <p><b>Palermo in chiaro</b> è un progetto di <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a>. Le posizioni dei progetti sulla mappa le ha elaborate OpenDataSicilia dalle tavole del Programma triennale: non sono coordinate ufficiali del Comune.</p>
-      <p class="credito-legale">© 2026 <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a> · Dati <a href="https://creativecommons.org/licenses/by/4.0/deed.it" target="_blank" rel="noopener">CC BY 4.0</a> · Codice <a href="https://github.com/PalermoHub/palermo_in_chiaro/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> · <a href="../../privacy.html">Privacy e cookie</a></p>
+      <p class="credito-legale">© 2026 <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a> · Dati <a href="https://creativecommons.org/licenses/by/4.0/deed.it" target="_blank" rel="noopener">CC BY 4.0</a> · Codice <a href="https://github.com/PalermoHub/palermo_in_chiaro/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> · <a href="../../privacy.html">Privacy e cookie</a> · <a href="#crediti" data-crediti>Credits</a></p>
     </div>
   </div>
 </footer>
 
 <script src="../../js/menu.js?v=20261118f"></script>
+<script src="../../js/crediti.js?v=20261119a"></script>
 <script src="../../js/su.js?v=20261116y"></script>
 <script src="../../js/circoscrizione.js?v=$vapp"></script>
 </body>

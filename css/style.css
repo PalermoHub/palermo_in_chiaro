@@ -638,6 +638,39 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
    sopra la riga legale: il piede lascia lo spazio per il pulsante */
 @media (max-width: 900px) { .credito-in { padding-bottom: 74px; } }
 
+/* finestra «Credits» del piede (la costruisce js/crediti.js, in fondo al body).
+   <dialog> modale: il browser la centra, la mette sopra tutto e riporta il fuoco
+   sul collegamento del piede quando si chiude. */
+.crediti {
+  width: min(34rem, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  margin: auto; padding: 0; border: 1px solid var(--linea); border-radius: 10px;
+  background: var(--sfondo-scheda); color: var(--inchiostro);
+  box-shadow: 0 18px 48px rgba(15, 34, 51, 0.28);
+}
+.crediti::backdrop { background: rgba(15, 34, 51, 0.42); }
+.crediti-in { padding: 20px clamp(16px, 4vw, 26px) 18px; }
+.crediti-titolo { font-family: var(--font-titoli); font-size: 1.15rem; font-weight: 700; margin: 0 0 4px; }
+.crediti h3 {
+  font-family: var(--font-titoli); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--muto); margin: 16px 0 4px;
+}
+.crediti p { margin: 0; font-size: 0.9rem; line-height: 1.55; }
+.crediti a { color: var(--maiolica-scura); text-underline-offset: 2px; }
+.crediti a:hover { color: var(--inchiostro); }
+.crediti-azioni { margin: 18px 0 0; display: flex; justify-content: flex-end; }
+.crediti-chiudi {
+  font: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+  padding: 7px 16px; border-radius: 999px; border: 1px solid var(--inchiostro);
+  background: var(--inchiostro); color: var(--carta);
+}
+.crediti-chiudi:hover { background: var(--maiolica-scura); border-color: var(--maiolica-scura); }
+/* ripiego per i browser senza <dialog> modale: la finestra resta fissa al centro */
+.crediti.crediti-senza-modale {
+  display: block; position: fixed; inset: auto; top: 50%; left: 50%;
+  transform: translate(-50%, -50%); z-index: 40; overflow: auto;
+}
+
 /* banner del consenso alle statistiche (lo inserisce js/consenso.js, in fondo al body) */
 .consenso {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
