@@ -29,6 +29,13 @@
 
   const id = new URLSearchParams(location.search).get('id');
 
+  /* Quartiere e UPL come li dichiara la fonte: ogni nome porta all'elenco filtrato,
+     così dal progetto si scende al territorio senza tornare alla mappa. */
+  const nomiTerritorio = (lista, chiave, cosa) => el('span', {}, lista.flatMap((n, i) => [
+    i ? ', ' : null,
+    el('a', { href: 'progetti.html?' + chiave + '=' + encodeURIComponent(n), title: `Elenco dei progetti ${cosa} ${n}`, text: n }),
+  ]));
+
   fetch('data/progetti.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('dati'); return r.json(); })
     .then(D => {
       const p = id ? D.progetti.find(x => x.id === id) : null;
@@ -136,19 +143,24 @@
         el('li', { text: 'Gli importi delle diverse fonti non si sommano: stanziamento, finanziamento PNRR, fondo di coesione e base di gara misurano cose diverse.' }),
         el('li', { text: p.pnrr ? 'L\'importo PNRR e la spesa rendicontata sono quelli dichiarati dal Comune, non verificati da un terzo.' : 'PNRR e coesione non riportano la circoscrizione: il progetto resta comunale.' }),
         el('li', { text: 'Il collegamento tra fonti avviene solo per CUP o CUI identico; dove il codice manca, possono esistere altri collegamenti non dimostrabili con i dati aperti.' }),
+        p.quartieri.length ? el('li', { text: 'Quartiere e UPL sono il livello sotto la circoscrizione: dicono dove cade l\'intervento, non come sono ripartite le somme. Gli importi non sono divisi per quartiere né per UPL.' }) : null,
         el('li', { text: 'Un valore insolito è un segnale da approfondire, non la prova di uno spreco o di un illecito.' }),
       ]),
     ]);
 
     /* ---- colonna destra ---- */
+    const haTerritorio = p.quartieri.length || p.upl.length;
     const ident = el('dl', {}, [
       riga('Identificativo', p.id),
       riga('CUP', p.cup || 'non presente'),
       riga('CUI', p.cui ? el('span', {}, [p.cui, ' ', el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cui), class: 'cerca-cod', text: 'cerca' })]) : 'non presente'),
-      riga('Circoscrizioni', p.circoscrizioni.length ? p.circoscrizioni.join(', ') : 'non indicata'),
+      riga('Circoscrizioni', p.circoscrizioni.length ? p.circoscrizioni.join(', ') : (p.opere ? 'non indicata nel Programma' : 'non disponibile')),
+      riga('Quartiere', p.quartieri.length ? nomiTerritorio(p.quartieri, 'quartiere', 'nel quartiere') : (p.opere ? 'non indicato nel Programma' : 'non disponibile')),
+      riga('UPL', p.upl.length ? nomiTerritorio(p.upl, 'upl', 'nella UPL') : (p.opere ? 'non indicata nel Programma' : 'non disponibile')),
       riga('Posizione', p.localizzato ? 'sulla mappa' : 'non geolocalizzato'),
       riga('Fonti', p.fonti.map(f => ETICHETTE[f] || f).join(', ')),
     ]);
+    const notaTerritorio = haTerritorio ? el('p', { class: 'nota', text: 'Quartiere e UPL sono quelli che il Programma triennale riporta per l\'intervento, non un calcolo sulla posizione: dove la fonte non li indica la scheda non li ricava.' }) : null;
 
     const collegamenti = [];
     const interni = [];
@@ -159,6 +171,26 @@
     if (p.cup && !p.link.opencup) collegamenti.push(el('li', { class: 'ufficiale' }, [el('span', { class: 'badge cerca', text: 'Ricerca' }), link('https://www.opencup.gov.it/portale/web/opencup/ricerca?cup=' + encodeURIComponent(p.cup), 'Cerca il CUP su OpenCUP'), el('span', { class: 'est', text: 'ricerca sul portale OpenCUP: nessuna scheda diretta nel Programma' })]));
     if (p.appalti && p.appalti.length) collegamenti.push(voceUfficiale('https://dati.anticorruzione.it/opendata/dataset/cig', 'Open data CIG (ANAC)', 'dati.anticorruzione.it', 'Dati ufficiali'));
     if (p.localizzato) interni.push(el('li', {}, [el('a', { href: './#mappa', text: 'Vedi la posizione sulla mappa' }), el('span', { class: 'est', text: 'attiva «Mostra i singoli progetti»' })]));
+    /* dal progetto al suo pezzo di città: il quartiere (e la UPL) diventano il filtro della mappa */
+    if (p.quartieri.length) {
+      const q0 = p.quartieri[0];
+      const par = new URLSearchParams();
+      if (p.circoscrizioni.length === 1) par.set('circ', p.circoscrizioni[0]);
+      par.set('quartiere', q0);
+      interni.push(el('li', {}, [
+        el('a', { href: './?' + par.toString() + '#mappa', text: 'Vedi il quartiere sulla mappa' }),
+        el('span', { class: 'est', text: p.quartieri.length > 1 ? `${q0} e gli altri ${p.quartieri.length - 1}` : 'poligono del quartiere e progetti che ci ricadono' })]));
+    }
+    if (p.upl.length) {
+      const u0 = p.upl[0];
+      const par = new URLSearchParams();
+      if (p.circoscrizioni.length === 1) par.set('circ', p.circoscrizioni[0]);
+      par.set('quartiere', p.quartieri[0] || '');
+      par.set('upl', u0);
+      interni.push(el('li', {}, [
+        el('a', { href: './?' + par.toString() + '#mappa', text: 'Vedi la UPL sulla mappa' }),
+        el('span', { class: 'est', text: 'unità di primo livello entro il quartiere' })]));
+    }
 
     /* una voce su due non ha in fonte né CUP né collegamenti: meglio dirlo che lasciare il vuoto */
     const vuoto = collegamenti.length === 0;
@@ -178,7 +210,7 @@
           limiti,
         ]),
         el('div', { class: 'colonna' }, [
-          riquadro('Identificativi e territorio', [ident, notaCui, el('p', { class: 'nota' }, [el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cup || p.cui || p.id), text: 'Cerca le voci collegate' })])]),
+          riquadro('Identificativi e territorio', [ident, notaTerritorio, notaCui, el('p', { class: 'nota' }, [el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cup || p.cui || p.id), text: 'Cerca le voci collegate' })])]),
           riquadro('Collegamenti', [notaCollegamenti, (collegamenti.length || interni.length) ? el('ul', { class: 'link' }, [...collegamenti, ...interni]) : null]),
           docs.length ? riquadro('Documenti PNRR', el('ul', { class: 'link' }, docs)) : null,
         ]),

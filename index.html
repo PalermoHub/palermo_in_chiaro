@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261117d">
+<link rel="stylesheet" href="css/style.css?v=20261117i">
 <script src="js/tema.js?v=20261116y"></script>
 
 </head>
@@ -65,8 +65,20 @@
 
   <div class="mappa-blocco">
     <div class="selettore" role="radiogroup" aria-label="Cosa mostrare sulla mappa" id="selettore"></div>
+    <div class="filtri-territorio" id="filtri-territorio" role="group" aria-label="Scendi dal quartiere alla UPL">
+      <label>Quartiere
+        <select id="sel-quartiere">
+          <option value="">Tutti i quartieri</option>
+        </select>
+      </label>
+      <label>UPL
+        <select id="sel-upl">
+          <option value="">Tutte le UPL</option>
+        </select>
+      </label>
+    </div>
     <figure class="mappa-fig">
-      <svg id="mappa-svg" role="group" aria-label="Mappa delle 8 circoscrizioni di Palermo" focusable="false"></svg>
+      <svg id="mappa-svg" role="group" aria-label="Mappa delle 8 circoscrizioni di Palermo, dei 25 quartieri e delle 55 UPL" focusable="false"></svg>
       <figcaption id="mappa-nota"></figcaption>
     </figure>
     <div class="legenda" id="legenda" aria-hidden="true"></div>
@@ -137,6 +149,6 @@
 </footer>
 
 <script src="js/su.js?v=20261116y"></script>
-<script src="js/app.js?v=20261117d"></script>
+<script src="js/app.js?v=20261117k"></script>
 </body>
 </html>

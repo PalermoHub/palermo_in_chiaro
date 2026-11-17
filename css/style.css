@@ -119,6 +119,15 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .interruttore[aria-checked="true"] .pallino-sw::after { transform: translateX(12px); }
 .interruttore[hidden] { display: none; }
 .interruttore.torna { background: transparent; }
+/* discesa dal quartiere alla UPL: due menù legati, il secondo dipende dal primo */
+.filtri-territorio { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-bottom: 8px; }
+.filtri-territorio label { display: flex; align-items: center; gap: 6px; font-size: 0.84rem; color: var(--muto); }
+.filtri-territorio select {
+  font: inherit; font-size: 0.88rem; color: var(--inchiostro); background: var(--carta);
+  border: 1px solid var(--linea); border-radius: 3px; padding: 3px 8px; min-height: 30px; max-width: 15rem;
+}
+.filtri-territorio select:hover:not(:disabled) { border-color: var(--maiolica); }
+.filtri-territorio select:disabled { color: var(--muto); opacity: 0.65; }
 /* circoscrizione scelta: il suo poligono resta leggibile, gli altri si attenuano */
 #mappa-svg.con-progetti.filtro-circ .circ { fill-opacity: 0.15; }
 #mappa-svg.con-progetti.filtro-circ .circ[aria-pressed="true"] { fill-opacity: 0.4; }
@@ -131,6 +140,17 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 #mappa-svg .circ:focus { outline: none; }
 #mappa-svg .circ:focus-visible { outline: 3px solid var(--cupola); outline-offset: -3px; }
 #mappa-svg .circ[aria-pressed="true"] { stroke: var(--cupola); stroke-width: calc(5px * var(--k, 1)); }
+/* quartieri e UPL: contorni sopra il colore della circoscrizione, così il coropleto resta leggibile */
+#quartieri-g .quartiere, #upl-g .upl { fill: none; pointer-events: all; cursor: pointer; }
+#quartieri-g .quartiere { stroke: var(--carta); stroke-width: calc(1.6px * var(--k, 1)); }
+#quartieri-g .quartiere:hover { stroke: var(--inchiostro); stroke-width: calc(2.6px * var(--k, 1)); }
+#quartieri-g .quartiere[aria-pressed="true"] { stroke: var(--cupola); stroke-width: calc(3.5px * var(--k, 1)); }
+#quartieri-g .quartiere:focus, #upl-g .upl:focus { outline: none; }
+#quartieri-g .quartiere:focus-visible, #upl-g .upl:focus-visible { outline: 3px solid var(--cupola); outline-offset: -3px; }
+#upl-g .upl { stroke: var(--muto); stroke-width: calc(1.2px * var(--k, 1)); stroke-dasharray: 5 4; }
+#upl-g .upl:hover { stroke-width: calc(2.4px * var(--k, 1)); stroke-dasharray: none; }
+#upl-g .upl[aria-pressed="true"] { stroke: var(--cupola); stroke-width: calc(3px * var(--k, 1)); stroke-dasharray: none; fill: color-mix(in srgb, var(--cupola) 10%, transparent); }
+#mappa-svg.livello-quartieri .circ { fill-opacity: 0.75; }
 #mappa-svg .etichetta { font-family: var(--font-titoli); font-weight: 700; font-size: calc(34px * var(--k, 1) * var(--lab, 1)); pointer-events: none; text-anchor: middle; paint-order: stroke; }
 #mappa-svg .valore { font-family: var(--font-testo); font-size: calc(24px * var(--k, 1) * var(--lab, 1)); pointer-events: none; text-anchor: middle; }
 .mappa-fig figcaption { font-size: 0.84rem; color: var(--muto); margin-top: 4px; max-width: 46rem; flex: none; }
@@ -165,6 +185,14 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .scheda { grid-area: scheda; background: var(--sfondo-scheda); border-top: 3px solid var(--maiolica); padding: 18px 20px 22px; align-self: start; min-width: 0; }
 .scheda h2 { font-size: 1.7rem; }
 .scheda .quartieri { color: var(--muto); font-size: 0.9rem; margin: 2px 0 14px; }
+.scheda .quartieri-riga { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 14px; }
+.quartiere-scendi, .upl-scendi, .livello-su {
+  font: inherit; font-size: 0.84rem; background: transparent; color: var(--maiolica-scura);
+  border: 1px solid var(--linea); border-radius: 99px; padding: 2px 10px; cursor: pointer;
+}
+.quartiere-scendi:hover, .upl-scendi:hover, .livello-su:hover { border-color: var(--maiolica); background: var(--maiolica-chiara); }
+.scheda .livelli { margin: 2px 0 10px; }
+.scheda .upl-riga { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 0; }
 .scheda dl { margin: 0; }
 .riga { display: flex; justify-content: space-between; gap: 14px; padding: 7px 0; border-bottom: 1px solid var(--linea); }
 .riga dt { color: var(--muto); }
@@ -270,6 +298,9 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .mini-mappa figcaption { font-size: 0.82rem; color: var(--muto); margin-top: 6px; text-align: right; }
 .mini-mappa figcaption a { color: var(--maiolica-scura); }
 .mini-mappa .circ { fill: var(--s0); fill-opacity: 0.9; stroke: var(--cupola); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.mini-mappa .quartiere { fill: none; stroke: var(--muto); stroke-width: 1; stroke-dasharray: 3 2; vector-effect: non-scaling-stroke; }
+.mini-mappa .quartiere.sel { stroke: var(--cupola); stroke-width: 2; stroke-dasharray: none; }
+.mini-mappa .upl { fill: color-mix(in srgb, var(--cupola) 14%, transparent); stroke: var(--cupola); stroke-width: 2; vector-effect: non-scaling-stroke; }
 .mini-mappa .pol { fill: var(--ocra); fill-opacity: 0.55; stroke: var(--ocra); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .mini-mappa .lin { fill: none; stroke: var(--inchiostro); stroke-width: 2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .mini-mappa .pt { fill: var(--maiolica-scura); stroke: var(--carta); stroke-width: 1; vector-effect: non-scaling-stroke; }

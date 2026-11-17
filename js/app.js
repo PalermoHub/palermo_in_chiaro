@@ -44,7 +44,7 @@
       { id: 'ope', nome: 'Opere programmate', val: c => O(c).importo_triennio_eur, f: n => mln(n, 0), nota: 'Importo 2026-2028 degli interventi con una sola circoscrizione. Non comprende il 47% dell\'importo, che non ha circoscrizione (vedi Opere).' },
       { id: 'opr', nome: 'Opere per residente', val: c => O(c).importo_triennio_per_residente_eur, f: n => it(n) + ' €', nota: 'Importo 2026-2028 diviso per i residenti 2021. Parziale: il 47% dell\'importo non ha circoscrizione.' },
     ];
-    let ind = IND[0], sel = null, selProj = null, layerOn = false, PR = null;
+    let ind = IND[0], sel = null, selQ = null, selU = null, selProj = null, layerOn = false, PR = null;
     let PROG = null, progStato = 'idle', qProg = '';   // elenco completo dei progetti, caricato alla prima circoscrizione scelta
     let progGeoStato = 'idle';                         // posizioni dei progetti per la mappa
 
@@ -80,6 +80,116 @@
       svg.append(t1, t2); gruppi[c].t1 = t1; gruppi[c].t2 = t2;
     });
 
+    /* ---- livelli sotto la circoscrizione: quartieri e UPL ----
+       I poligoni si disegnano solo quando il livello è scelto; la gerarchia invece è già nei confini,
+       così i due menù a discesa funzionano subito. */
+    const gQ = document.createElementNS(NS, 'g'); gQ.setAttribute('id', 'quartieri-g'); gQ.setAttribute('hidden', '');
+    const gU = document.createElementNS(NS, 'g'); gU.setAttribute('id', 'upl-g'); gU.setAttribute('hidden', '');
+    svg.append(gQ, gU);
+    let QG = null, UG = null, qStato = 'idle', uStato = 'idle';
+    const GQ = {}, GU = {};   // nome -> path
+    const selQEl = $('sel-quartiere'), selUEl = $('sel-upl');
+    const quartieriDi = (c) => c ? D.geo.circoscrizioni[c].quartieri.slice()
+      : [...new Set(Object.values(D.geo.circoscrizioni).flatMap(v => v.quartieri))].sort((a, b) => a.localeCompare(b, 'it'));
+    const uplDi = (q, c) => {
+      const out = new Set();
+      Object.entries(D.geo.circoscrizioni).forEach(([cc, v]) => {
+        if (c && cc !== c) return;
+        if (q) { (v.upl[q] || []).forEach(u => out.add(u)); return; }
+        Object.values(v.upl).forEach(l => l.forEach(u => out.add(u)));
+      });
+      return [...out].sort((a, b) => a.localeCompare(b, 'it'));
+    };
+    const quartiereDellaUpl = (u) => {
+      for (const v of Object.values(D.geo.circoscrizioni)) {
+        for (const [q, l] of Object.entries(v.upl)) if (l.includes(u)) return q;
+      }
+      return null;
+    };
+    /* i due menù si riempiono a scalare: la circoscrizione limita i quartieri, il quartiere limita le UPL */
+    function popolaQuartieri() {
+      const nomi = quartieriDi(sel);
+      selQEl.replaceChildren(el('option', { value: '', text: nomi.length ? 'Tutti i quartieri' : 'Quartieri' }),
+        ...nomi.map(n => el('option', { value: n, text: n })));
+      selQEl.value = selQ || '';
+      popolaUpl();
+    }
+    function popolaUpl() {
+      const nomi = uplDi(selQ, sel);
+      selUEl.replaceChildren(el('option', { value: '', text: nomi.length ? 'Tutte le UPL' : 'Nessuna UPL' }),
+        ...nomi.map(n => el('option', { value: n, text: n })));
+      selUEl.disabled = !nomi.length;
+      selUEl.value = selU || '';
+    }
+    /* menù, poligoni e classe della mappa allineati allo stato: un solo punto da chiamare dopo ogni scelta */
+    function allinea() {
+      ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === sel && !selQ)));
+      popolaQuartieri();
+      svg.classList.toggle('livello-quartieri', !!selQ);
+      /* con una circoscrizione scelta si vedono i suoi quartieri; con un quartiere, le sue UPL.
+         Così la discesa si fa anche cliccando i poligoni, non solo dai menù. */
+      gQ.toggleAttribute('hidden', !(layerOn && (selQ || sel) && QG));
+      gU.toggleAttribute('hidden', !(layerOn && selQ && UG));
+      Object.entries(GQ).forEach(([n, p]) => {
+        /* con una circoscrizione scelta restano i suoi quartieri: gli altri stanno fuori dalla mappa inquadrata */
+        p.style.display = !sel || (QG.quartieri[n].circ || []).includes(sel) ? '' : 'none';
+        p.setAttribute('aria-pressed', String(n === selQ && !selU));
+      });
+      Object.entries(GU).forEach(([n, p]) => {
+        p.setAttribute('aria-pressed', String(n === selU));
+        p.style.display = !selQ || UG.upl[n].quartiere === selQ ? '' : 'none';
+      });
+      legendaProgetti();
+    }
+    function disegnaQuartieri() {
+      Object.entries(QG.quartieri).forEach(([n, g]) => {
+        const p = document.createElementNS(NS, 'path');
+        p.setAttribute('d', g.d); p.setAttribute('class', 'quartiere'); p.setAttribute('tabindex', '0');
+        p.setAttribute('role', 'button'); p.setAttribute('aria-label', `Quartiere ${n}`);
+        p.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: `Quartiere ${n}` }));
+        p.addEventListener('click', (ev) => {
+          const id = progettoSotto(ev); if (id) { apriProgetto(id); return; }
+          if (n === selQ && !selU) scegli(sel, false); else scegliQuartiere(n);
+        });
+        p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegliQuartiere(n); } });
+        gQ.append(p); GQ[n] = p;
+      });
+    }
+    function disegnaUpl() {
+      Object.entries(UG.upl).forEach(([n, g]) => {
+        const p = document.createElementNS(NS, 'path');
+        p.setAttribute('d', g.d); p.setAttribute('class', 'upl'); p.setAttribute('tabindex', '0');
+        p.setAttribute('role', 'button'); p.setAttribute('aria-label', `UPL ${n}`);
+        p.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: `UPL ${n} — quartiere ${g.quartiere}` }));
+        p.addEventListener('click', (ev) => {
+          const id = progettoSotto(ev); if (id) { apriProgetto(id); return; }
+          if (n === selU) scegliQuartiere(selQ); else scegliUpl(n);
+        });
+        p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegliUpl(n); } });
+        gU.append(p); GU[n] = p;
+      });
+    }
+    /* i confini si scaricano la prima volta che il livello serve (109 e 141 KB) */
+    function caricaLivello(quale) {
+      if (quale === 'quartieri') {
+        if (qStato !== 'idle') return;
+        qStato = 'carica';
+        $('mappa-nota').textContent = 'Carico i confini dei quartieri…';
+        fetch('data/geo/quartieri.json', { cache: 'no-cache' })
+          .then(r => { if (!r.ok) throw new Error('quartieri'); return r.json(); })
+          .then(j => { QG = j; qStato = 'pronto'; disegnaQuartieri(); allinea(); zoomA(); scheda(); $('mappa-nota').textContent = ind.nota; })
+          .catch(() => { qStato = 'errore'; $('mappa-nota').textContent = 'I confini dei quartieri non si caricano.'; });
+      } else {
+        if (uStato !== 'idle') return;
+        uStato = 'carica';
+        $('mappa-nota').textContent = 'Carico i confini delle UPL…';
+        fetch('data/geo/upl.json', { cache: 'no-cache' })
+          .then(r => { if (!r.ok) throw new Error('upl'); return r.json(); })
+          .then(j => { UG = j; uStato = 'pronto'; disegnaUpl(); allinea(); zoomA(); scheda(); $('mappa-nota').textContent = ind.nota; })
+          .catch(() => { uStato = 'errore'; $('mappa-nota').textContent = 'I confini delle UPL non si caricano.'; });
+      }
+    }
+
     function mix(a, b, t) { return a.map((x, i) => Math.round(x + (b[i] - x) * t)); }
     function colora() {
       const cs = getComputedStyle(document.documentElement);
@@ -102,19 +212,54 @@
     /* scheda */
     function scegli(c, scorri) {
       /* un secondo clic sulla stessa circoscrizione riporta a tutta la città */
-      if (c === sel && !selProj && scorri) { deseleziona(); return; }
-      sel = c; selProj = null; qProg = ''; evidenziaProgetto();
-      ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === c)));
+      if (c === sel && !selQ && !selU && !selProj && scorri) { deseleziona(); return; }
+      sel = c; selQ = null; selU = null; selProj = null; qProg = ''; evidenziaProgetto();
       document.querySelectorAll('#opere-barre .barra').forEach(b => b.removeAttribute('aria-current'));
       const b = document.querySelector(`#opere-barre .barra[data-c="${c}"]`); if (b) b.setAttribute('aria-current', 'true');
       tutta.hidden = false;
+      caricaLivello('quartieri');   /* i quartieri diventano cliccabili dentro la circoscrizione */
       /* sulla mappa restano i progetti di questa circoscrizione, dentro il suo poligono */
-      if (!layerOn) accendiProgetti();
-      else { aggiornaVisibilitaProgetti(); zoomA(c); scheda(); }
+      if (!layerOn) { allinea(); accendiProgetti(); }
+      else { allinea(); aggiornaVisibilitaProgetti(); zoomA(); scheda(); }
       /* su schermo stretto la scheda sta sotto la mappa: senza questo resta fuori vista */
       if (scorri && matchMedia('(max-width: 900px)').matches) {
         $('scheda').scrollIntoView({ block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       }
+    }
+
+    /* scendere di un livello: il quartiere porta con sé la sua circoscrizione, la UPL il suo quartiere */
+    function scegliQuartiere(n) {
+      if (!n) { if (selQ) { selQ = null; selU = null; selProj = null; } }
+      else {
+        selQ = n; selU = null; selProj = null;
+        if (QG && QG.quartieri[n]) sel = QG.quartieri[n].circ[0];
+        else { const c = Object.entries(D.geo.circoscrizioni).find(([, v]) => v.quartieri.includes(n)); if (c) sel = c[0]; }
+      }
+      qProg = '';
+      if (selQ) { caricaLivello('quartieri'); caricaLivello('upl'); }
+      tutta.hidden = !(sel || selQ || selU);
+      document.querySelectorAll('#opere-barre .barra').forEach(x => x.removeAttribute('aria-current'));
+      const b = sel ? document.querySelector(`#opere-barre .barra[data-c="${sel}"]`) : null;
+      if (b) b.setAttribute('aria-current', 'true');
+      if (!layerOn) { allinea(); accendiProgetti(); }
+      else { allinea(); aggiornaVisibilitaProgetti(); zoomA(); scheda(); }
+    }
+    function scegliUpl(n) {
+      if (!n) { scegliQuartiere(selQ); return; }
+      const q = (UG && UG.upl[n] && UG.upl[n].quartiere) || quartiereDellaUpl(n);
+      selU = n; selProj = null; qProg = '';
+      if (q) {
+        selQ = q;
+        /* la circoscrizione si ricava dalla gerarchia: la geometria della UPL può non essere ancora arrivata */
+        const c = (UG && UG.upl[n] && UG.upl[n].circ)
+          || (Object.entries(D.geo.circoscrizioni).find(([, v]) => v.quartieri.includes(q)) || [])[0];
+        if (c) sel = c;
+      }
+      caricaLivello('upl');
+      if (selQ) caricaLivello('quartieri');
+      tutta.hidden = !(sel || selQ || selU);
+      if (!layerOn) { allinea(); accendiProgetti(); }
+      else { allinea(); aggiornaVisibilitaProgetti(); zoomA(); scheda(); }
     }
 
     /* dalle barre delle opere: circoscrizione sulla mappa e scheda, senza cambiare pagina */
@@ -124,11 +269,10 @@
     }
 
     function deseleziona() {
-      sel = null; selProj = null; qProg = ''; evidenziaProgetto();
-      ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', 'false'));
+      sel = null; selQ = null; selU = null; selProj = null; qProg = ''; evidenziaProgetto();
       document.querySelectorAll('#opere-barre .barra').forEach(b => b.removeAttribute('aria-current'));
       tutta.hidden = true;
-      zoomA(null, true); aggiornaVisibilitaProgetti(); legendaProgetti(); scheda();
+      allinea(); zoomA(true); aggiornaVisibilitaProgetti(); scheda();
     }
 
     /* i progetti della circoscrizione: data/progetti.json pesa, si carica solo quando serve */
@@ -137,13 +281,14 @@
       progStato = 'carica';
       fetch('data/progetti.json', { cache: 'no-cache' })
         .then(r => { if (!r.ok) throw new Error('progetti'); return r.json(); })
-        .then(j => { PROG = j; progStato = 'pronto'; if (sel) scheda(); })
-        .catch(() => { progStato = 'errore'; if (sel) scheda(); });
+        .then(j => { PROG = j; progStato = 'pronto'; if (sel || selQ || selU) scheda(); })
+        .catch(() => { progStato = 'errore'; if (sel || selQ || selU) scheda(); });
     }
     function riga(k, v) { return el('div', { class: 'riga' }, [el('dt', { text: k }), el('dd', { text: v })]); }
     function scheda() {
       const s = $('scheda');
       if (selProj) { s.replaceChildren(...schedaProgetto(selProj)); return; }
+      if (selQ || selU) { schedaTerritorio(); return; }
       if (!sel) {
         s.replaceChildren(el('div', { class: 'vuota' }, [
           el('h2', { text: 'Palermo' }),
@@ -167,11 +312,13 @@
       const sett = el('p', { class: 'nota', text: 'Settori principali: ' + o.principali_settori.slice(0, 3).map(x => `${x.settore.replace(/^\d+\.\d+ - /, '')} (${mln(x.importo_eur, 0)})`).join('; ') + '.' });
       s.replaceChildren(
         el('h2', { text: `Circoscrizione ${sel}` }),
-        el('p', { class: 'quartieri', text: q.join(', ') }),
+        /* i quartieri sono il livello sotto: ci si scende con un clic */
+        el('div', { class: 'quartieri-riga', role: 'group', 'aria-label': `Quartieri della Circoscrizione ${sel}` },
+          q.map(n => { const b = el('button', { type: 'button', class: 'quartiere-scendi', text: n, title: `Scendi al quartiere ${n}` }); b.addEventListener('click', () => scegliQuartiere(n)); return b; })),
         dl,
         el('h3', { text: 'Opere programmate 2026-2028' }), dlo, sett,
         el('p', { class: 'nota', text: 'Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso.' }),
-        ...progettiDellaCircoscrizione().filter(Boolean)
+        ...progettiDelTerritorio().filter(Boolean)
       );
     }
 
@@ -189,18 +336,22 @@
     }
     /* un intervento con più circoscrizioni non si divide: vale solo per il suo insieme */
     const inCirc = (p, c) => p.circoscrizioni.length === 1 && p.circoscrizioni[0] === c;
-    function progettiDellaCircoscrizione() {
-      if (!sel) return [];
+    /* il territorio scelto a scalare: circoscrizione, poi quartiere, poi UPL (ognuno stringe il precedente) */
+    const inTerritorio = (p) => (!sel || inCirc(p, sel)) && (!selQ || p.quartieri.includes(selQ)) && (!selU || p.upl.includes(selU));
+    const doveSono = () => selU ? `nella UPL ${selU}` : selQ ? `nel quartiere ${selQ}` : `in Circoscrizione ${sel}`;
+    const hrefElenco = () => elenco(Object.assign({}, sel ? { circ: sel } : {}, selQ ? { quartiere: selQ } : {}, selU ? { upl: selU } : {}));
+    function progettiDelTerritorio() {
+      if (!sel && !selQ && !selU) return [];
       const h = el('h3', { text: 'Progetti' });
       if (!PROG) {
         caricaProgetti();
         return [h,
-          el('p', { class: 'nota', text: progStato === 'errore' ? 'L\'elenco dei progetti non si carica.' : 'Caricamento dei progetti della circoscrizione…' }),
-          el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: elenco({ circ: sel }), text: 'Apri l\'elenco dei progetti della circoscrizione' })])];
+          el('p', { class: 'nota', text: progStato === 'errore' ? 'L\'elenco dei progetti non si carica.' : 'Caricamento dei progetti del territorio…' }),
+          el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: hrefElenco(), text: 'Apri l\'elenco dei progetti di questo territorio' })])];
       }
-      const base = PROG.progetti.filter(p => inCirc(p, sel))
+      const base = PROG.progetti.filter(inTerritorio)
         .sort((a, b) => (importoMax(b) - importoMax(a)) || a.titolo.localeCompare(b.titolo, 'it'));
-      const inp = el('input', { type: 'search', placeholder: 'Cerca fra i progetti (es. scuola, strada, via)', 'aria-label': `Cerca fra i progetti della Circoscrizione ${sel}` });
+      const inp = el('input', { type: 'search', placeholder: 'Cerca fra i progetti (es. scuola, strada, via)', 'aria-label': `Cerca fra i progetti ${doveSono()}` });
       inp.value = qProg;
       const out = el('div', { class: 'elenco-prog', role: 'list' });
       const conta = el('p', { class: 'nota' });
@@ -225,15 +376,44 @@
       mostra();
       const nOpere = base.filter(p => p.fonti.includes('opere')).length;
       const nAltre = base.length - nOpere;
-      const nGeo = layerOn && PR ? PR.progetti.filter(p => inCirc(p, sel)).length : null;
+      const nGeo = layerOn && PR ? PR.progetti.filter(inTerritorio).length : null;
       return [h,
-        el('p', { class: 'nota', text: `Le ${it(base.length)} voci che ricadono in Circoscrizione ${sel}: ${it(nOpere)} opere del Programma triennale` +
+        el('p', { class: 'nota', text: `Le ${it(base.length)} voci che ricadono ${doveSono()}: ${it(nOpere)} opere del Programma triennale` +
           (nAltre ? ` e ${it(nAltre)} tra PNRR e coesione collegate per CUP o CUI` : '') +
           `. L'importo è quello più alto fra le fonti del progetto: fonti diverse non si sommano.` }),
         inp, out, conta,
         nGeo == null ? null : el('p', { class: 'nota', text: `I progetti con una posizione sono già disegnati sulla mappa: scegliendone uno qui sotto lo si evidenzia, gli altri aprono la loro scheda.` }),
-        el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: elenco({ circ: sel }), text: `Vedi tutti i ${it(base.length)} progetti in elenco` })]),
-        el('p', { class: 'nota', text: 'L\'elenco ha filtri e collegamenti alle fonti. Gli interventi che toccano più circoscrizioni non si dividono: restano nell\'elenco sotto «Più circoscrizioni».' })];
+        el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: hrefElenco(), text: `Vedi tutti i ${it(base.length)} progetti in elenco` })]),
+        el('p', { class: 'nota', text: selU ? 'La UPL è la suddivisione statistica del quartiere: poche voci per volta, perché quasi nessun progetto è localizzato così in basso.' : 'L\'elenco ha filtri e collegamenti alle fonti. Gli interventi che toccano più circoscrizioni non si dividono: restano nell\'elenco sotto «Più circoscrizioni».' })];
+    }
+
+    /* quartiere o UPL: la scheda scende di un livello, con i progetti che ci ricadono */
+    function schedaTerritorio() {
+      const g = selQ && QG ? QG.quartieri[selQ] : null;
+      const u = selU && UG ? UG.upl[selU] : null;
+      const circ = (u && u.circ) || (g && g.circ[0]) || sel;
+      const parti = [];
+      if (selU) {
+        const su = el('button', { type: 'button', class: 'livello-su', text: `‹ Quartiere ${selQ}` });
+        su.addEventListener('click', () => scegliQuartiere(selQ));
+        parti.push(el('div', { class: 'livelli' }, [su]));
+      }
+      const upl = selQ && !selU ? uplDi(selQ, circ) : [];
+      const bloccoUpl = upl.length ? el('div', {}, [
+        el('h3', { text: `UPL del quartiere (${upl.length})` }),
+        el('div', { class: 'upl-riga' }, upl.map(n => {
+          const b = el('button', { type: 'button', class: 'upl-scendi', text: n, title: `Scendi alla UPL ${n}` });
+          b.addEventListener('click', () => scegliUpl(n));
+          return b;
+        })),
+      ]) : null;
+      $('scheda').replaceChildren(
+        el('h2', { text: selU ? `UPL ${selU}` : `Quartiere ${selQ}` }),
+        el('p', { class: 'quartieri', text: [selU ? `Quartiere ${selQ}` : null, circ ? `Circoscrizione ${circ}` : null].filter(Boolean).join(' · ') }),
+        ...[...parti, bloccoUpl].filter(Boolean),
+        el('p', { class: 'nota', text: 'Quartieri e UPL sono le unità statistiche dei confini ISTAT del censimento 2021. Residenti e altri indicatori sono pubblicati per circoscrizione: qui non si stimano cifre per quartiere.' }),
+        ...progettiDelTerritorio().filter(Boolean)
+      );
     }
 
     /* senza circoscrizione scelta la scheda è quella di Palermo: elenca gli interventi che stanno sulla mappa */
@@ -259,7 +439,8 @@
     $('opere-lede').replaceChildren(
       'Gli interventi del Programma triennale dei lavori pubblici valgono ', el('strong', { text: mln(tot.importo_triennio_eur, 0) }),
       `. Il ${it(100 * nonLoc.importo_triennio_eur / tot.importo_triennio_eur, 0)}% (${mln(nonLoc.importo_triennio_eur, 0)}, ${nonLoc.interventi} interventi) non ha una circoscrizione: sono reti e linee che attraversano la città.`,
-      ' Scegli una circoscrizione: la mappa la mostra con i progetti che hanno una posizione; il nome della circoscrizione apre l\'elenco completo.');
+      ' Scegli una circoscrizione: la mappa la mostra con i progetti che hanno una posizione; il nome della circoscrizione apre l\'elenco completo.',
+      ' I due menù sopra la mappa scendono al quartiere e alla UPL: il poligono si disegna e i progetti si stringono a quel livello.');
     const maxO = Math.max(...ROM.map(c => O(c).importo_triennio_eur), D.opere.piu_circoscrizioni.importo_triennio_eur, nonLoc.importo_triennio_eur);
     const barra = (cls, nome, sub, v, extra = {}, href = null, vai = null) => {
       const riga = el('div', Object.assign({ class: 'barra ' + cls + (href ? ' cliccabile' : ''), role: 'listitem' }, extra), [
@@ -413,6 +594,7 @@
       svg.classList.toggle('con-progetti', on);
       gP.toggleAttribute('hidden', !on);
       aggiornaVisibilitaProgetti();
+      allinea();
       legendaProgetti();
     }
     function aggiornaVisibilitaProgetti() {
@@ -428,13 +610,15 @@
       if (!PR) return;
       PR.progetti.forEach(pr => {
         const n = nodi[pr.id]; if (!n) return;
-        const mostra = !sel || pr.circoscrizioni.includes(sel);
+        const mostra = (!sel || pr.circoscrizioni.includes(sel))
+          && (!selQ || (pr.quartieri || []).includes(selQ))
+          && (!selU || (pr.upl || []).includes(selU));
         [...n.pol, ...n.lin, ...n.pt, ...n.hit].forEach(e => { e.style.display = mostra ? '' : 'none'; });
       });
     }
     /* accende il livello dei progetti: le posizioni si scaricano la prima volta che servono */
     function accendiProgetti() {
-      const finito = () => { statoProgetti(true); zoomA(sel); scheda(); };
+      const finito = () => { statoProgetti(true); zoomA(); scheda(); };
       if (PR) return finito();
       if (progGeoStato === 'carica') return;
       progGeoStato = 'carica';
@@ -501,10 +685,18 @@
     });
     let vb = [0, 0, W, H];
     function ridimensiona() { const k = vb[2] / 1000; gP.querySelectorAll('.g-pt').forEach(e => e.setAttribute('r', (+e.dataset.r * k).toFixed(2))); svg.style.setProperty('--k', k); }
-    function zoomA(c, tutta) {
+    /* l'inquadratura segue il livello più profondo scelto: UPL, poi quartiere, poi circoscrizione */
+    function poligonoScelto() {
+      if (selU && GU[selU]) return GU[selU];
+      if (selQ && GQ[selQ] && !GQ[selQ].style.display) return GQ[selQ];
+      if (sel && gruppi[sel]) return gruppi[sel].p;
+      return null;
+    }
+    function zoomA(tutta) {
       if (!layerOn && !tutta) return;
-      if (!c || tutta) vb = [0, 0, W, H];
-      else { const b = gruppi[c].p.getBBox(), m = 24; vb = [b.x - m, b.y - m, b.width + 2 * m, b.height + 2 * m]; }
+      const p = tutta ? null : poligonoScelto();
+      if (!p) vb = [0, 0, W, H];
+      else { const b = p.getBBox(), m = Math.max(5, Math.min(24, Math.max(b.width, b.height) * 0.07)); vb = [b.x - m, b.y - m, b.width + 2 * m, b.height + 2 * m]; }
       svg.setAttribute('viewBox', vb.join(' ')); svg.style.setProperty('--ar', `${vb[2].toFixed(1)} / ${vb[3].toFixed(1)}`); ridimensiona();
     }
     function evidenziaProgetto() {
@@ -514,22 +706,29 @@
     function apriProgetto(id) {
       selProj = id; evidenziaProgetto();
       const pr = PR.progetti.find(x => x.id === id);
-      if (pr && pr.circoscrizioni.length === 1 && sel !== pr.circoscrizioni[0]) {
-        sel = pr.circoscrizioni[0];
-        ROM.forEach(x => gruppi[x].p.setAttribute('aria-pressed', String(x === sel)));
+      if (pr) {
+        if (pr.circoscrizioni.length === 1 && sel !== pr.circoscrizioni[0]) sel = pr.circoscrizioni[0];
+        /* il progetto aperto sta in un altro quartiere o in un'altra UPL: si allinea il filtro, non lo si forza */
+        if (selQ && !(pr.quartieri || []).includes(selQ)) { selQ = null; selU = null; }
+        if (selU && !(pr.upl || []).includes(selU)) selU = null;
       }
-      tutta.hidden = !sel;
+      tutta.hidden = !(sel || selQ || selU);
+      allinea();
       aggiornaVisibilitaProgetti();
-      zoomA(sel);
+      zoomA();
       scheda();
-      if (matchMedia('(max-width: 900px)').matches) $('scheda').scrollIntoView({ block: 'start', behavior: 'smooth' });
+      /* la scheda cambia contenuto: se è fuori vista (schermo stretto o pagina scorsa) la si porta dentro */
+      const piano = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      const r = $('scheda').getBoundingClientRect();
+      if (matchMedia('(max-width: 900px)').matches) $('scheda').scrollIntoView({ block: 'start', behavior: piano });
+      else if (r.top < 0 || r.bottom > innerHeight) $('scheda').scrollIntoView({ block: 'nearest', behavior: piano });
     }
     function legendaProgetti() {
       const l = $('legenda'); l.querySelector('.leg-prog')?.remove();
       if (!layerOn) { l.querySelector('.leg-circ')?.remove(); return; }
       const voci = [el('i', { class: 'k pieno' }), ' posizione letta o dall\'etichetta  ', el('i', { class: 'k anello' }), ' approssimata (circa 300 m)  ', el('i', { class: 'k linea' }), ' linee e aree'];
-      const n = sel && PR ? PR.progetti.filter(p => p.circoscrizioni.includes(sel)).length : null;
-      if (n != null) voci.push(el('b', { class: 'leg-nota', text: `Circoscrizione ${sel}: ${it(n)} progetti disegnati` }));
+      const n = (sel || selQ) && PR ? PR.progetti.filter(inTerritorio).length : null;
+      if (n != null) voci.push(el('b', { class: 'leg-nota', text: `${selU ? 'UPL ' + selU : selQ ? 'Quartiere ' + selQ : 'Circoscrizione ' + sel}: ${it(n)} progetti disegnati` }));
       l.append(el('span', { class: 'leg-prog' }, voci));
     }
     function schedaProgetto(id) {
@@ -555,13 +754,20 @@
         el('p', { class: 'nota', text: 'Posizione ' + (precs.length ? precs.join('; ') : 'dalla geometria') + '. È una posizione elaborata da OpenDataSicilia dalle tavole PDF del Programma, non una coordinata ufficiale del Comune. Importo programmato, non speso.' })];
     }
 
-    colora(); scheda();
+    /* i due menù a scala: ognuno scende al suo livello, e la mappa segue */
+    selQEl.addEventListener('change', e => scegliQuartiere(e.target.value));
+    selUEl.addEventListener('change', e => scegliUpl(e.target.value));
+
+    colora(); allinea(); scheda();
     document.addEventListener('tema-cambia', colora);
-    /* arrivo da «Aprila sulla mappa» dell'elenco: circoscrizione già scelta */
-    const circDaUrl = new URLSearchParams(location.search).get('circ');
-    if (ROM.includes(circDaUrl)) {
-      scegli(circDaUrl, false);
-      if (location.hash) document.querySelector('.mappa-blocco').scrollIntoView({ block: 'start' });
+    /* arrivo dall'elenco o da una scheda: territorio già scelto nell'indirizzo */
+    const params = new URLSearchParams(location.search);
+    const circDaUrl = params.get('circ'), qDaUrl = params.get('quartiere'), uDaUrl = params.get('upl');
+    if (uDaUrl) scegliUpl(uDaUrl);
+    else if (qDaUrl) scegliQuartiere(qDaUrl);
+    else if (ROM.includes(circDaUrl)) scegli(circDaUrl, false);
+    if (location.hash && (uDaUrl || qDaUrl || ROM.includes(circDaUrl))) {
+      document.querySelector('.mappa-blocco').scrollIntoView({ block: 'start' });
     }
   }
 })();

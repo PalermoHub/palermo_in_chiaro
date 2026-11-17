@@ -28,7 +28,7 @@
   const ORDINE_PER_FONTE = { opere: 'opere', pnrr: 'pnrr', coesione: 'coesione' };
   const doveCirc = (c) => c === '__nessuna' ? 'senza circoscrizione indicata' : c === '__multi' ? 'che interessano più circoscrizioni' : 'in Circoscrizione ' + c;
 
-  const stato = { q: '', fonte: '', circ: '', stato: '', programma: '', ordine: 'opere', incroci: false, limite: 30 };
+  const stato = { q: '', fonte: '', circ: '', quartiere: '', upl: '', stato: '', programma: '', ordine: 'opere', incroci: false, limite: 30 };
   let D = null, CIG = null;
 
   Promise.all([fetch('data/progetti.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('progetti'); return r.json(); })])
@@ -64,6 +64,8 @@
       if (stato.circ === '__nessuna') { if (p.circoscrizioni.length) return false; }
       else if (stato.circ === '__multi') { if (p.circoscrizioni.length < 2) return false; }
       else if (stato.circ && !(p.circoscrizioni.length === 1 && p.circoscrizioni[0] === stato.circ)) return false;
+      if (stato.quartiere && !p.quartieri.includes(stato.quartiere)) return false;
+      if (stato.upl && !p.upl.includes(stato.upl)) return false;
       if (stato.stato) {
         const s = stato.stato.toLowerCase();
         const pnrrOk = p.pnrr && p.pnrr.classe_stato === s;
@@ -88,6 +90,8 @@
     const dove = [];
     if (p.circoscrizioni.length) dove.push(el('span', { text: 'Circoscrizione ' + p.circoscrizioni.join(', ') }));
     else dove.push(el('span', { text: p.localizzato ? 'Posizione senza circoscrizione' : 'Senza circoscrizione' }));
+    if (p.quartieri.length) dove.push(el('span', { text: 'Quartiere ' + p.quartieri.join(', ') }));
+    if (p.upl.length) dove.push(el('span', { text: 'UPL ' + p.upl.join(', ') }));
     if (p.cup) dove.push(el('span', { text: 'CUP ' + p.cup }));
     if (p.cui) dove.push(el('span', { text: 'CUI ' + p.cui }));
     const imp = importi(p).map(x => el('span', {}, [x.fonte + ': ', el('b', { text: eur(x.valore) })]));
@@ -128,12 +132,14 @@
   /* Che cosa sto guardando: titolo, conteggio, importo e filtri attivi */
   function ambito(r) {
     const n = r.length;
-    const attivo = !!(stato.fonte || stato.circ || stato.stato || stato.programma || stato.q || stato.incroci);
+    const attivo = !!(stato.fonte || stato.circ || stato.quartiere || stato.upl || stato.stato || stato.programma || stato.q || stato.incroci);
     const blocco = $('ambito');
     blocco.hidden = !attivo;
     const base = stato.fonte ? NOMI_FONTE[stato.fonte][n === 1 ? 0 : 1] : (n === 1 ? 'voce' : 'voci');
     const parti = [`${it(n)} ${base}`];
     if (stato.circ) parti.push(doveCirc(stato.circ));
+    if (stato.quartiere) parti.push('nel quartiere ' + stato.quartiere);
+    if (stato.upl) parti.push('nella UPL ' + stato.upl);
     if (stato.q) parti.push(`che contengono «${stato.q}»`);
     const titolo = parti.join(' ');
     document.title = (attivo ? titolo + ' · ' : '') + 'Elenco progetti · Palermo in chiaro';
@@ -157,9 +163,10 @@
     );
   }
 
-  /* ---- mini mappa della circoscrizione filtrata: poligono e progetti con posizione ---- */
+  /* ---- mini mappa del territorio filtrato: il poligono del livello scelto e i progetti con posizione ---- */
   const NS = 'http://www.w3.org/2000/svg';
-  let GEO = null, PRJ = null, geoStato = 'idle', miniCirc = null;
+  let GEO = null, PRJ = null, QG = null, UG = null;   // confini, posizioni, quartieri, UPL
+  let miniChiave = null, miniInCorso = false, miniRotto = {};
   let vaiAllaRiga = null;   // assegnato in avvia: dal punto sulla mappa alla voce dell'elenco
   let miniPunti = [];       // posizioni disegnate, per il clic caduto vicino a un pallino
   let miniClicPronto = false;
@@ -193,31 +200,52 @@
       if (e.dataset.r0) e.setAttribute('r', (+e.dataset.r0 * 1.9).toFixed(2));
     });
   }
-  function caricaGeo() {
-    if (geoStato !== 'idle') return;
-    geoStato = 'carica';
-    Promise.all([
-      fetch('data/geo/circoscrizioni.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('circoscrizioni'); return r.json(); }),
-      fetch('data/geo/progetti.json', { cache: 'no-cache' }).then(r => { if (!r.ok) throw new Error('progetti'); return r.json(); }),
-    ]).then(([g, p]) => { GEO = g; PRJ = p; geoStato = 'pronto'; disegnaMini(true); })
-      .catch(() => { geoStato = 'errore'; disegnaMini(true); });
+  /* un file che non serve sempre: si chiede la prima volta, e se non arriva non si richiede */
+  function chiedi(nome, url, assegna) {
+    return fetch(url, { cache: 'no-cache' })
+      .then(r => { if (!r.ok) throw new Error(url); return r.json(); })
+      .then(j => { assegna(j); })
+      .catch(() => { miniRotto[nome] = true; });
   }
   function disegnaMini(forza) {
-    const c = stato.circ, box = $('mini-mappa'), pagina = $('contenuto');
-    if (!ROM.includes(c) || geoStato === 'errore') {
-      box.hidden = true; pagina.classList.remove('con-mappa'); miniCirc = null; return;
+    const box = $('mini-mappa'), pagina = $('contenuto');
+    const cir = ROM.includes(stato.circ) ? stato.circ : '';
+    const ql = stato.quartiere || '', ul = stato.upl || '';
+    if (!cir && !ql) { box.hidden = true; pagina.classList.remove('con-mappa'); miniChiave = null; return; }
+    const chiave = [cir, ql, ul].join('|');
+    if (!forza && chiave === miniChiave) return;
+    const lavori = [];
+    if (!GEO && !miniRotto.circoscrizioni) lavori.push(chiedi('circoscrizioni', 'data/geo/circoscrizioni.json', j => { GEO = j; }));
+    if (!PRJ && !miniRotto.progetti) lavori.push(chiedi('progetti', 'data/geo/progetti.json', j => { PRJ = j; }));
+    if (ql && !QG && !miniRotto.quartieri) lavori.push(chiedi('quartieri', 'data/geo/quartieri.json', j => { QG = j; }));
+    if (ul && !UG && !miniRotto.upl) lavori.push(chiedi('upl', 'data/geo/upl.json', j => { UG = j; }));
+    if (lavori.length) {
+      if (!miniInCorso) {
+        miniInCorso = true;
+        Promise.all(lavori).then(() => { miniInCorso = false; disegnaMini(true); });
+      }
+      if (!GEO || (!PRJ && !miniRotto.progetti) || (ql && !QG && !miniRotto.quartieri) || (ul && !UG && !miniRotto.upl)) return;
     }
-    if (geoStato !== 'pronto') { caricaGeo(); return; }
-    if (!forza && miniCirc === c) return;
-    miniCirc = c; selezionato = null;
+    miniChiave = chiave; selezionato = null;
     box.hidden = false; pagina.classList.add('con-mappa');
     const mk = (t, a) => { const e = document.createElementNS(NS, t); for (const k in a) e.setAttribute(k, a[k]); return e; };
     /* il titolo compare al passaggio del mouse, come sulla mappa della home */
     const conTitolo = (e, testo) => { e.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: testo })); return e; };
-    const pol = mk('path', { d: GEO.circoscrizioni[c].d, class: 'circ' });
+    const qp = ql && QG ? QG.quartieri[ql] : null;
+    const up = ul && UG ? UG.upl[ul] : null;
+    const base = [];
+    let rif = null;   // il poligono più profondo, per l'inquadratura della mini mappa
+    if (cir) { rif = mk('path', { d: GEO.circoscrizioni[cir].d, class: 'circ' }); base.push(rif); }
+    if (qp) { rif = conTitolo(mk('path', { d: qp.d, class: 'quartiere' + (up ? '' : ' sel') }), 'Quartiere ' + ql); base.push(rif); }
+    if (up) { rif = conTitolo(mk('path', { d: up.d, class: 'upl' }), 'UPL ' + ul); base.push(rif); }
     const gPol = mk('g'), gLin = mk('g'), gPt = mk('g');
-    /* gli stessi progetti dell'elenco: quelli con una sola circoscrizione */
-    const prj = PRJ.progetti.filter(p => p.circoscrizioni.length === 1 && p.circoscrizioni[0] === c);
+    /* gli stessi progetti dell'elenco, ma solo per il territorio: fonte e ricerca non cambiano la mappa */
+    const prj = !PRJ ? [] : PRJ.progetti.filter(p => {
+      if (cir && !(p.circoscrizioni.length === 1 && p.circoscrizioni[0] === cir)) return false;
+      if (ql && !p.quartieri.includes(ql)) return false;
+      if (ul && !p.upl.includes(ul)) return false;
+      return true;
+    });
     const punti = [];
     prj.forEach(p => {
       /* l'id della posizione è quello dell'intervento, senza il prefisso «op-» delle voci dell'elenco */
@@ -232,11 +260,16 @@
       });
     });
     const svg = $('mini-svg');
-    svg.replaceChildren(pol, gPol, gLin, gPt);
-    const b = pol.getBBox(), m = 12;
-    const vb = [b.x - m, b.y - m, b.width + 2 * m, b.height + 2 * m];
+    svg.replaceChildren(...base, gPol, gLin, gPt);
+    let vb;
+    if (rif) {
+      /* il poligono del livello scelto, con un margine proporzionato */
+      const b = rif.getBBox(), m = Math.max(6, Math.min(14, Math.max(b.width, b.height) * 0.08));
+      vb = [b.x - m, b.y - m, b.width + 2 * m, b.height + 2 * m];
+    } else vb = [0, 0, GEO.viewBox[2], GEO.viewBox[3]];
     svg.setAttribute('viewBox', vb.join(' '));
-    svg.setAttribute('aria-label', `Mappa della Circoscrizione ${c}: il poligono e ${it(prj.length)} progetti con una posizione`);
+    const dove = [ql ? 'quartiere ' + ql : '', ul ? 'UPL ' + ul : '', cir ? 'Circoscrizione ' + cir : ''].filter(Boolean).join(', ');
+    svg.setAttribute('aria-label', `Mappa di ${dove}: il poligono e ${it(prj.length)} progetti con una posizione`);
     const k = vb[2] / 110;
     gPt.querySelectorAll('.pt').forEach(e => {
       const r0 = (+e.dataset.r * k).toFixed(2);
@@ -257,8 +290,9 @@
         if (best) vaiAllaRiga(best);
       });
     }
-    const url = './?circ=' + encodeURIComponent(c) + '#mappa';
-    $('mini-cap').replaceChildren(`Circoscrizione ${c}: ${it(prj.length)} progetti con una posizione. Clicca un punto per la sua riga. `,
+    const url = './?' + [cir ? 'circ=' + encodeURIComponent(cir) : '', ql ? 'quartiere=' + encodeURIComponent(ql) : '',
+      ul ? 'upl=' + encodeURIComponent(ul) : ''].filter(Boolean).join('&') + '#mappa';
+    $('mini-cap').replaceChildren(`${dove.charAt(0).toUpperCase() + dove.slice(1)}: ${it(prj.length)} progetti con una posizione. Clicca un punto per la sua riga. `,
       el('a', { href: url, text: 'Aprila sulla mappa' }), ' per vederli uno per uno.');
   }
 
@@ -274,11 +308,68 @@
     sel.append(el('option', { value: '__nessuna', text: 'Senza circoscrizione' }));
     sel.append(el('option', { value: '__multi', text: 'Più circoscrizioni' }));
 
+    /* ---- filtri a scalare: circoscrizione -> quartiere -> UPL ----
+       Ogni livello restringe quello sotto; scegliendo una UPL si sceglie anche il suo quartiere.
+       La gerarchia è quella dei confini (data/geo/circoscrizioni.json), 78 KB letti subito. */
+    let GERN = null;
+    const quartieriDi = (c) => {
+      if (!GERN) return [];
+      if (ROM.includes(c)) return GERN.circoscrizioni[c].quartieri.slice();
+      const q = new Set();
+      Object.values(GERN.circoscrizioni).forEach(v => v.quartieri.forEach(x => q.add(x)));
+      return [...q].sort((a, b) => a.localeCompare(b, 'it'));
+    };
+    const uplDi = (q, c) => {
+      if (!GERN) return [];
+      const u = new Set();
+      Object.entries(GERN.circoscrizioni).forEach(([cc, v]) => {
+        if (ROM.includes(c) && cc !== c) return;
+        if (q) { (v.upl[q] || []).forEach(x => u.add(x)); return; }
+        Object.values(v.upl).forEach(l => l.forEach(x => u.add(x)));
+      });
+      return [...u].sort((a, b) => a.localeCompare(b, 'it'));
+    };
+    const circDelQuartiere = (q) => {
+      if (!GERN || !q) return '';
+      return (Object.entries(GERN.circoscrizioni).find(([, v]) => v.quartieri.includes(q)) || [])[0] || '';
+    };
+    const quartiereDellaUpl = (x) => {
+      if (!GERN || !x) return '';
+      for (const v of Object.values(GERN.circoscrizioni)) {
+        for (const [q, l] of Object.entries(v.upl)) if (l.includes(x)) return q;
+      }
+      return '';
+    };
+    const senzaQuartieri = () => stato.circ === '__nessuna' || stato.circ === '__multi';
+    function popolaUpl() {
+      const s = $('upl'), elenco = uplDi(stato.quartiere, stato.circ);
+      s.replaceChildren(el('option', { value: '', text: elenco.length ? (stato.quartiere ? 'Tutte le UPL del quartiere' : 'Tutte le UPL') : 'Nessuna UPL' }),
+        ...elenco.map(x => el('option', { value: x, text: x })));
+      s.disabled = senzaQuartieri() || !elenco.length;
+      s.value = elenco.includes(stato.upl) ? stato.upl : '';
+      if (!s.value) stato.upl = '';
+    }
+    function popolaQuartieri() {
+      const s = $('quartiere'), elenco = senzaQuartieri() ? [] : quartieriDi(stato.circ);
+      s.replaceChildren(el('option', { value: '', text: senzaQuartieri() ? 'Quartiere non applicabile' : elenco.length ? 'Tutti i quartieri' : 'Quartieri' }),
+        ...elenco.map(q => el('option', { value: q, text: q })));
+      s.disabled = senzaQuartieri() || !GERN;
+      s.value = elenco.includes(stato.quartiere) ? stato.quartiere : '';
+      if (!s.value) stato.quartiere = '';
+      popolaUpl();
+    }
+    fetch('data/geo/circoscrizioni.json', { cache: 'no-cache' })
+      .then(r => { if (!r.ok) throw new Error('confini'); return r.json(); })
+      .then(j => { GERN = j; GEO = j; popolaQuartieri(); aggiorna(); })
+      .catch(() => { ['quartiere', 'upl'].forEach(id => { $(id).disabled = true; }); });
+
     const aggiorna = () => { stato.limite = 30; disegna(); chips(); sincronizzaUrl(); };
     const chips = () => {
       const voci = [];
       if (stato.fonte) voci.push(['Fonte: ' + (ETICHETTE[stato.fonte] || stato.fonte), () => { stato.fonte = ''; $('fonte').value = ''; }]);
-      if (stato.circ) voci.push([stato.circ === '__nessuna' ? 'Senza circoscrizione' : stato.circ === '__multi' ? 'Più circoscrizioni' : 'Circoscrizione ' + stato.circ, () => { stato.circ = ''; $('circ').value = ''; }]);
+      if (stato.circ) voci.push([stato.circ === '__nessuna' ? 'Senza circoscrizione' : stato.circ === '__multi' ? 'Più circoscrizioni' : 'Circoscrizione ' + stato.circ, () => { stato.circ = ''; $('circ').value = ''; popolaQuartieri(); }]);
+      if (stato.quartiere) voci.push(['Quartiere: ' + stato.quartiere, () => { stato.quartiere = ''; popolaQuartieri(); }]);
+      if (stato.upl) voci.push(['UPL: ' + stato.upl, () => { stato.upl = ''; popolaUpl(); }]);
       if (stato.q) voci.push(['Cerca: «' + stato.q + '»', () => { stato.q = ''; $('q').value = ''; }]);
       if (stato.incroci) voci.push(['Solo in più fonti', () => { stato.incroci = false; $('incroci').checked = false; }]);
       if (stato.stato) voci.push(['Stato: ' + stato.stato, () => { stato.stato = ''; }]);
@@ -292,6 +383,8 @@
       if (stato.q) p.set('q', stato.q);
       if (stato.fonte) p.set('fonte', stato.fonte);
       if (stato.circ) p.set('circ', stato.circ);
+      if (stato.quartiere) p.set('quartiere', stato.quartiere);
+      if (stato.upl) p.set('upl', stato.upl);
       if (stato.stato) p.set('stato', stato.stato);
       if (stato.programma) p.set('programma', stato.programma);
       if (stato.ordine !== 'opere') p.set('ordine', stato.ordine);
@@ -301,7 +394,14 @@
     };
     $('q').addEventListener('input', e => { stato.q = e.target.value; aggiorna(); });
     $('fonte').addEventListener('change', e => { stato.fonte = e.target.value; aggiorna(); });
-    $('circ').addEventListener('change', e => { stato.circ = e.target.value; aggiorna(); });
+    $('circ').addEventListener('change', e => { stato.circ = e.target.value; popolaQuartieri(); aggiorna(); });
+    $('quartiere').addEventListener('change', e => { stato.quartiere = e.target.value; popolaUpl(); aggiorna(); });
+    $('upl').addEventListener('change', e => {
+      stato.upl = e.target.value;
+      const q = quartiereDellaUpl(stato.upl);
+      if (stato.upl && q && q !== stato.quartiere) { stato.quartiere = q; popolaQuartieri(); }
+      aggiorna();
+    });
     $('ordine').addEventListener('change', e => { stato.ordine = e.target.value; aggiorna(); });
     $('incroci').addEventListener('change', e => { stato.incroci = e.target.checked; aggiorna(); });
     $('altri').addEventListener('click', () => { stato.limite += 30; disegna(); });
@@ -309,6 +409,8 @@
     const params = new URLSearchParams(location.search);
     if (params.get('fonte')) { $('fonte').value = params.get('fonte'); stato.fonte = params.get('fonte'); }
     if (params.get('circ')) { $('circ').value = params.get('circ'); stato.circ = params.get('circ'); }
+    if (params.get('quartiere')) stato.quartiere = params.get('quartiere');
+    if (params.get('upl')) stato.upl = params.get('upl');
     if (params.get('q')) { $('q').value = params.get('q'); stato.q = params.get('q'); }
     if (params.get('stato')) stato.stato = params.get('stato');
     if (params.get('programma')) stato.programma = params.get('programma');
