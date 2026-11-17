@@ -1,16 +1,16 @@
 # Graph Report - palermo_in_chiaro  (2026-11-17)
 
 ## Corpus Check
-- 45 files · ~182,324 words
+- 46 files · ~204,913 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 172 nodes · 219 edges · 27 communities (20 shown, 7 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 7 edges (avg confidence: 0.59)
+- 179 nodes · 231 edges · 28 communities (20 shown, 8 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 8 edges (avg confidence: 0.57)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `5216b557`
+- Built from commit: `5ebffa02`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -28,6 +28,7 @@
 - Segnalare un errore nei dati
 - tema.js
 - snapshot_profilo.py
+- progetto.js
 - su.js
 - Palermo in chiaro
 - controlla_indice_progetti.py
@@ -38,15 +39,16 @@
 - crediti.js
 - cerca.js
 - build_ricerca.py
+- galleria.js
 
 ## God Nodes (most connected - your core abstractions)
 1. `disegna()` - 8 edges
 2. `creaFinestra()` - 6 edges
 3. `cerca()` - 6 edges
-4. `avvia()` - 6 edges
-5. `quota()` - 6 edges
-6. `Licenze` - 6 edges
-7. `disegna()` - 5 edges
+4. `disegna()` - 6 edges
+5. `avvia()` - 6 edges
+6. `quota()` - 6 edges
+7. `Licenze` - 6 edges
 8. `avvia()` - 5 edges
 9. `scegli()` - 5 edges
 10. `appalti()` - 5 edges
@@ -60,7 +62,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (27 total, 7 thin omitted)
+## Communities (28 total, 8 thin omitted)
 
 ### Community 0 - "build_indice_progetti.py"
 Cohesion: 0.14
@@ -119,17 +121,21 @@ Cohesion: 0.70
 Nodes (4): apri(), chiudi(), collega(), costruisci()
 
 ### Community 25 - "cerca.js"
-Cohesion: 0.28
-Nodes (14): apri(), carica(), cerca(), chiudiFinestra(), creaFinestra(), disegna(), distanza(), evidenzia() (+6 more)
+Cohesion: 0.26
+Nodes (15): apri(), carica(), cerca(), chiudiFinestra(), contesto(), creaFinestra(), disegna(), distanza() (+7 more)
 
 ### Community 26 - "build_ricerca.py"
 Cohesion: 0.39
 Nodes (7): attributi(), leggi_pagina(), pulisci(), Indice unico della ricerca globale del sito (data/ricerca.json). Uso: python3…, Testo di un titolo HTML: via i tag, via gli spazi doppi., scrivi(), voce_progetto()
 
+### Community 27 - "galleria.js"
+Cohesion: 0.80
+Nodes (4): apri(), chiudiGalleria(), costruisci(), mostra()
+
 ## Knowledge Gaps
 - **8 isolated node(s):** `Come`, `Cosa non si fa`, `Dati`, `Cosa ne segue`, `Codice` (+3 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **8 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
