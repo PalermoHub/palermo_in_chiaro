@@ -1,7 +1,9 @@
-# Fonti scaricate (~1 GB), appunti e file di servizio: restano fuori dal repository
-# pubblicato. Le regole stanno anche nel README, sezione «Pubblicare».
+# Fonti scaricate (~1 GB), script di costruzione, grafo del codice, appunti e file di
+# servizio: restano in locale, non nel repository pubblicato (che serve il sito e basta).
 dati/
 docs/
+scripts/
+graphify-out/
 .remember/
 .impeccable/
 .playwright-mcp/
