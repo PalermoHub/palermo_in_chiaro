@@ -193,9 +193,11 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 
 /* sezioni */
 .sezione { max-width: 1560px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) var(--gutter); border-top: 1px solid var(--linea); }
-.sezione-testa { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 8px clamp(20px, 4vw, 56px); align-items: start; margin-bottom: 26px; }
+.sezione-testa { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 8px clamp(20px, 4vw, 56px); align-items: start; margin-bottom: 26px; }
 .sezione-testa h2 { font-size: clamp(1.6rem, 3.2vw, 2.3rem); }
 .lede { margin: 0; max-width: 40rem; font-size: 1.04rem; }
+/* un intervallo di anni non si spezza sul trattino: «2026-» a fine riga e «2028» sotto */
+.no-spezza { white-space: nowrap; }
 .lede strong { font-weight: 600; background: linear-gradient(transparent 62%, var(--ocra-chiara) 62%); }
 .anni { grid-column: 2; display: flex; gap: 6px; }
 .anni button { font: inherit; background: transparent; color: var(--inchiostro); border: 1px solid var(--linea); padding: 3px 14px; border-radius: 99px; cursor: pointer; }
@@ -285,7 +287,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 
 /* ---- pagine di elenco e scheda progetto ---- */
 .page { max-width: 1560px; margin: 0 auto; padding: clamp(24px, 4vw, 48px) var(--gutter) clamp(48px, 6vw, 96px); }
-.page header.pagina-testa { max-width: 54rem; margin-bottom: 22px; }
+/* niente tetto: il titolo di una scheda è lungo e in maiuscolo, con 54rem finiva su quattro righe lasciando vuota metà pagina */
+.page header.pagina-testa { margin-bottom: 22px; }
 .page h1 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); }
 .page .lede { margin-top: 12px; }
 .page h2 { font-size: clamp(1.3rem, 2.2vw, 1.7rem); margin: 39px 0 12px; }
