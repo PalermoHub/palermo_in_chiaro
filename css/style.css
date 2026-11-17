@@ -406,7 +406,7 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
 /* che cosa sto guardando: contesto della selezione arrivata da una riga */
 .ambito {
   border-left: 4px solid var(--maiolica); background: var(--sfondo-scheda);
-  padding: 12px 16px 14px; margin: 14px 0 4px;
+  max-width: 62rem; padding: 12px 16px 14px; margin: 14px 0 4px;
 }
 .ambito[hidden] { display: none; }
 .ambito-occhiello { font-size: 0.76rem; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muto); margin: 0 0 3px; }
