@@ -184,8 +184,7 @@
         ]),
       ]),
       el('p', { class: 'piede' }, [
-        'Dati generati da ', el('code', { text: 'scripts/build_indice_progetti.py' }),
-        '. Regole, fonti e licenze: ', el('a', { href: 'metodo.html', text: 'metodo e licenze' }), '.',
+        'Regole, fonti e licenze: ', el('a', { href: 'metodo.html', text: 'metodo e licenze' }), '.',
       ]),
     );
   }
