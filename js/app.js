@@ -379,19 +379,39 @@
         riga('Indice di vecchiaia', it(p.indice_vecchiaia, 0)), riga('Stranieri', pct(p.quota_stranieri_pct)), riga('Famiglie', it(p.famiglie)),
         riga('Abitazioni vuote o non di residenti', pct(p.quota_abitazioni_vuote_pct)), riga('Laureati (9 anni e più)', pct(p.quota_laureati_9_piu_pct)),
       ]);
+      const posImpO = 1 + ROM.filter(x => O(x).importo_triennio_eur > o.importo_triennio_eur).length;
+      const posPcO = 1 + ROM.filter(x => O(x).importo_triennio_per_residente_eur > o.importo_triennio_per_residente_eur).length;
       const dlo = el('dl', {}, [
         riga('Interventi', it(o.interventi)), riga('Importo 2026-2028', mln(o.importo_triennio_eur)),
         riga('Per residente', it(o.importo_triennio_per_residente_eur) + ' €'), riga('Interventi con CUP', `${o.con_cup} su ${o.interventi}`),
+        riga('Posto per importo', `${posImpO}º su 8`), riga('Posto per abitante', `${posPcO}º su 8`),
       ]);
-      const sett = el('p', { class: 'nota', text: 'Settori principali: ' + o.principali_settori.slice(0, 3).map(x => `${x.settore.replace(/^\d+\.\d+ - /, '')} (${mln(x.importo_eur, 0)})`).join('; ') + '.' });
+      /* la stessa barra per anni che sta nella colonna destra della sezione Opere */
+      const anniO = ['2026', '2027', '2028'].map(a => [a, o['importo_' + a + '_eur']]);
+      const totO = o.importo_triennio_eur || 1;
+      const anniBox = el('div', {}, [
+        el('div', { class: 'anno-barra', 'aria-hidden': 'true' }, anniO.map(([a, v]) => el('span', { class: 'anno-seg a' + a, style: `width:${100 * v / totO}%` }))),
+        el('div', { class: 'anno-legenda' }, anniO.map(([a, v]) => el('div', {}, [
+          el('i', { class: 'a' + a }), el('span', { text: a }), el('span', { class: 'quota', text: mln(v, 0) }), el('b', { text: it(100 * v / totO) + '%' })]))),
+      ]);
+      /* i primi tre settori come barre compatte: il resto sta nella scheda completa */
+      const setts = (o.principali_settori || []).slice(0, 3);
+      const maxS = setts.length ? setts[0].importo_eur : 1;
+      const sett = el('div', { class: 'barre', role: 'list' }, setts.map(x => el('div', { class: 'barra', role: 'listitem' }, [
+        el('div', { class: 'nome' }, [x.settore.replace(/^\d+\.\d+ - /, ''), el('small', { text: `${x.interventi} interventi` })]),
+        el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${100 * x.importo_eur / maxS}%` })]),
+        el('div', { class: 'val', text: mln(x.importo_eur, 0) })])));
       s.replaceChildren(
         el('h2', { text: `Circoscrizione ${sel}` }),
         /* i quartieri sono il livello sotto: ci si scende con un clic */
         el('div', { class: 'quartieri-riga', role: 'group', 'aria-label': `Quartieri della Circoscrizione ${sel}` },
           q.map(n => { const b = el('button', { type: 'button', class: 'quartiere-scendi', text: n, title: `Scendi al quartiere ${n}` }); b.addEventListener('click', () => scegliQuartiere(n)); return b; })),
         dl,
-        el('h3', { text: 'Opere programmate 2026-2028' }), dlo, sett,
-        el('p', { class: 'nota', text: 'Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso.' }),
+        el('h3', { text: 'Opere programmate 2026-2028' }), dlo,
+        el('h4', { text: 'In che anni cadono' }), anniBox,
+        el('h4', { text: 'I primi tre settori' }), sett,
+        el('p', { class: 'badge-riga' }, [el('a', { class: 'badge-link', href: paginaCirc(sel), text: `La scheda della Circoscrizione ${sel}` })]),
+        el('p', { class: 'nota', text: 'Nella scheda completa: tutte le opere per anno e settore, il confronto con le altre circoscrizioni, quartieri e UPL, i progetti. Residenti e profilo: censimento ISTAT 2021. Opere: la circoscrizione in cui ricadono, non una spesa decisa dalla circoscrizione né denaro già speso.' }),
         ...progettiDelTerritorio().filter(Boolean)
       );
     }
@@ -503,12 +523,12 @@
     $('opere-lede').replaceChildren(
       'Gli interventi del Programma triennale dei lavori pubblici valgono ', el('strong', { text: mln(tot.importo_triennio_eur, 0) }),
       `. Il ${it(100 * nonLoc.importo_triennio_eur / tot.importo_triennio_eur, 0)}% (${mln(nonLoc.importo_triennio_eur, 0)}, ${nonLoc.interventi} interventi) non ha una circoscrizione: sono reti e linee che attraversano la città.`,
-      ' Scegli una circoscrizione: la mappa la mostra con i progetti che hanno una posizione; il nome della circoscrizione apre l\'elenco completo.',
+      ' Scegli una circoscrizione: la mappa la mostra con i progetti che hanno una posizione; il nome della circoscrizione apre la sua scheda, con i grafici e l\'elenco completo.',
       ' I due menù sopra la mappa scendono al quartiere e alla UPL: il poligono si disegna e i progetti si stringono a quel livello.');
     const maxO = Math.max(...ROM.map(c => O(c).importo_triennio_eur), D.opere.piu_circoscrizioni.importo_triennio_eur, nonLoc.importo_triennio_eur);
-    const barra = (cls, nome, sub, v, extra = {}, href = null, vai = null) => {
+    const barra = (cls, nome, sub, v, extra = {}, href = null, vai = null, azione = 'Apri l\'elenco dei progetti') => {
       const riga = el('div', Object.assign({ class: 'barra ' + cls + (href ? ' cliccabile' : ''), role: 'listitem' }, extra), [
-        el('div', { class: 'nome' }, [href ? el('a', { href, text: nome, 'aria-label': `${nome}${sub ? ': ' + sub + ', ' : ': '}${v.testo}. Apri l'elenco dei progetti` }) : nome, sub ? el('small', { text: sub }) : null]),
+        el('div', { class: 'nome' }, [href ? el('a', { href, text: nome, 'aria-label': `${nome}${sub ? ': ' + sub + ', ' : ': '}${v.testo}. ${azione}` }) : nome, sub ? el('small', { text: sub }) : null]),
         el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${100 * v.n / v.max}%` })]),
         el('div', { class: 'val' }, [v.testo, href && !vai ? el('span', { class: 'freccia', 'aria-hidden': 'true', text: ' →' }) : null])]);
       if (href) {
@@ -517,14 +537,15 @@
           if (vai) vai(); else location.href = href;
         });
         riga.title = vai
-          ? `Mostra ${nome} sulla mappa, con i progetti che hanno una posizione. Il nome apre l'elenco.`
-          : `Apri l'elenco: ${sub ? sub + ', ' : ''}${v.testo}`;
+          ? `Mostra ${nome} sulla mappa, con i progetti che hanno una posizione. ${azione}.`
+          : `${azione}: ${sub ? sub + ', ' : ''}${v.testo}`;
       }
       return riga;
     };
     const elenco = (params) => 'progetti.html?' + Object.entries(params).map(([k, v]) => k + '=' + encodeURIComponent(v)).join('&');
+    const paginaCirc = (c) => `circoscrizione/${ROM.indexOf(c) + 1}/`;
     const ob = $('opere-barre');
-    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c }, elenco({ fonte: 'opere', circ: c }), () => mostraCircoscrizione(c))));
+    ROM.forEach(c => ob.append(barra('', `Circoscrizione ${c}`, `${O(c).interventi} interventi`, { n: O(c).importo_triennio_eur, max: maxO, testo: mln(O(c).importo_triennio_eur, 0) }, { 'data-c': c }, paginaCirc(c), () => mostraCircoscrizione(c), 'Apri la scheda della circoscrizione')));
     const pc = D.opere.piu_circoscrizioni;
     ob.append(barra('piu', 'Più circoscrizioni', `${pc.interventi} interventi, non divisi`, { n: pc.importo_triennio_eur, max: maxO, testo: mln(pc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__multi' })));
     ob.append(barra('senza', 'Senza circoscrizione', `${nonLoc.interventi} interventi`, { n: nonLoc.importo_triennio_eur, max: maxO, testo: mln(nonLoc.importo_triennio_eur, 0) }, {}, elenco({ fonte: 'opere', circ: '__nessuna' })));
@@ -609,14 +630,26 @@
         el('dl', {}, [
           riga('Competenza ' + anno, mln(mm['competenza_' + anno], 1)),
           riga('Cassa ' + anno, mln(mm['cassa_' + anno], 1)),
+          riga('Quota della spesa ' + anno, pct(100 * mm['competenza_' + anno] / D.bil.totale_spese_competenza[anno], 1)),
           riga('Programmi con una previsione', `${prog.length} di ${Object.keys(mm.programmi).length}`),
         ]),
+        el('h4', { text: 'Come cambia nel triennio' }),
+        (() => {
+          const maxM = Math.max(...anni.map(a => mm['competenza_' + a])) || 1;
+          return el('div', { class: 'barre', role: 'list', style: 'max-width: 40rem' }, anni.map(a => el('div', { class: 'barra' + (a === anno ? ' anno-scelto' : ''), role: 'listitem' }, [
+            el('div', { class: 'nome' }, [a, a === anno ? el('small', { text: "l'anno scelto qui sopra" }) : null]),
+            el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${100 * mm['competenza_' + a] / maxM}%` })]),
+            el('div', { class: 'val', text: mln(mm['competenza_' + a], 1) })])));
+        })(),
+        el('p', { class: 'nota', text: 'Competenza di previsione per anno. La cassa è quella del solo 2026: per il 2027 e il 2028 il documento riporta la sola competenza.' }),
         el('h4', { text: `Programmi della missione nel ${anno}` }),
         prog.length
           ? el('ul', { class: 'programmi' }, prog.map(([pc, p]) => el('li', {}, [
             el('span', { class: 'cod', text: `${k}.${pc}` }),
             el('span', { class: 'nome', text: nome(p.nome) }),
-            el('b', { text: mln(p['competenza_' + anno], 1) })])))
+            el('b', { text: mln(p['competenza_' + anno], 1) }),
+            el('span', { class: 'pista', 'aria-hidden': 'true' }, [el('span', { class: 'riempi', style: `width:${100 * p['competenza_' + anno] / prog[0][1]['competenza_' + anno]}%` })])
+          ])))
           : el('p', { class: 'nota', text: `Nessun programma di questa missione ha una previsione nel ${anno}.` }),
         el('p', { class: 'nota progetti' }, [
           'Il bilancio classifica la spesa per missioni e programmi, il Programma triennale delle opere per settore e sottosettore del CUP: sono due classificazioni diverse e nei dati aperti non c\'è un campo che le colleghi. Qui quindi si vedono i programmi, non i progetti. I progetti si esplorano a parte: ',

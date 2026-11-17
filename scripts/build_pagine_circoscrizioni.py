@@ -1,0 +1,170 @@
+"""Genera le otto pagine di circoscrizione (circoscrizione/1…8/index.html).
+
+Uso: python3 -I scripts/build_pagine_circoscrizioni.py
+
+Le pagine sono involucri statici: titolo, descrizione, breadcrumb e testata sono nel
+file, i grafici li disegna js/circoscrizione.js leggendo gli snapshot. Sono scritte da
+qui perché testata e piede restino uguali in tutte e otto (e a quelli del resto del
+sito): se cambia il menu, si cambia in questo script e si rigenerano, non a mano.
+
+Le pagine generate vanno pubblicate: fanno parte del sito, non sono un file di
+servizio.
+"""
+import json
+import os
+from string import Template
+
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROM = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII']
+SITO = 'https://palermohub.github.io/palermo_in_chiaro'
+V_CSS = '20261117w'
+V_APP = '20261117a'
+
+GEO = json.load(open(os.path.join(BASE, 'data/geo/circoscrizioni.json'), encoding='utf-8'))['circoscrizioni']
+
+PAGINA = Template('''<!doctype html>
+<html lang="it" data-base="../../" data-circ="$rom">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circoscrizione $rom · Palermo in chiaro</title>
+<meta id="meta-descrizione" name="description" content="$descrizione">
+<link rel="canonical" href="$url">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#edf1f0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1b27">
+<meta property="og:type" content="article">
+<meta property="og:locale" content="it_IT">
+<meta property="og:site_name" content="Palermo in chiaro">
+<meta property="og:title" content="Circoscrizione $rom · Palermo in chiaro">
+<meta property="og:description" content="$descrizione">
+<meta property="og:url" content="$url">
+<meta property="og:image" content="$sito/img/social-card.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mappa delle 8 circoscrizioni di Palermo con il titolo «Come vengono distribuiti i soldi pubblici nelle 8 circoscrizioni di Palermo»">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Circoscrizione $rom · Palermo in chiaro">
+<meta name="twitter:description" content="$descrizione">
+<meta name="twitter:image" content="$sito/img/social-card.png">
+<link rel="icon" href="../../img/favicon.png">
+<script src="../../js/consenso.js?v=20261116z"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../css/style.css?v=$vcss">
+<script src="../../js/tema.js?v=20261116y"></script>
+<script type="application/ld+json">
+{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+  {"@type": "ListItem", "position": 1, "name": "Palermo in chiaro", "item": "$sito/"},
+  {"@type": "ListItem", "position": 2, "name": "Circoscrizioni", "item": "$sito/index.html#mappa"},
+  {"@type": "ListItem", "position": 3, "name": "Circoscrizione $rom", "item": "$url"}
+]}
+</script>
+</head>
+<body>
+<a class="skip" href="#contenuto">Vai al contenuto</a>
+
+<header class="testata">
+  <div class="testata-in">
+    <a class="marchio" href="../../" aria-label="Palermo in chiaro, inizio pagina">Palermo in chiaro</a>
+    <span class="beta" title="I dati sono in revisione: prima di citare un numero controlla la fonte">Versione beta</span>
+    <nav aria-label="Sezioni">
+      <a href="../../index.html#mappa">Circoscrizioni</a>
+      <a href="../../index.html#opere">Opere</a>
+      <a href="../../index.html#bilancio">Bilancio</a>
+      <a href="../../index.html#appalti">Appalti</a>
+      <a href="../../index.html#progetti">PNRR e coesione</a>
+      <a href="../../progetti.html">Elenco progetti</a>
+      <a href="../../statistiche.html">Statistiche</a>
+      <a href="../../fonti.html">Fonti</a>
+      <a href="../../metodo.html">Metodo e licenze</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenuto" class="page circoscrizione">
+  <div id="avviso" class="avviso" hidden></div>
+
+  <header class="pagina-testa circ-testa" id="circ-testa"></header>
+  <nav class="circ-nav" id="circ-nav" aria-label="Le 8 circoscrizioni"></nav>
+
+  <div class="cifre" id="cifre"></div>
+
+  <section class="capitolo" id="soldi" aria-labelledby="t-soldi">
+    <div class="capitolo-testa">
+      <p class="occhiello">1 · I soldi</p>
+      <h2 id="t-soldi">Le opere programmate: quanto, quando, per cosa</h2>
+      <p class="lede">Il Programma triennale dei lavori pubblici 2026-2028, letto per la circoscrizione in cui cadono gli interventi. Sono importi programmati, non spese: il Comune li prevede, non li ha pagati. Il confronto con le altre sette circoscrizioni dice dove i soldi cadono, non chi li decide.</p>
+    </div>
+    <div class="grafici" id="grafici-soldi"></div>
+  </section>
+
+  <section class="capitolo" id="territorio" aria-labelledby="t-territorio">
+    <div class="capitolo-testa">
+      <p class="occhiello">2 · Il territorio</p>
+      <h2 id="t-territorio">Quartieri e UPL</h2>
+      <p class="lede">La circoscrizione raggruppa i quartieri, e i quartieri le UPL (unità di pianificazione locale). Qui si vede dove ricadono i progetti, livello per livello: è la geografia dichiarata nel Programma triennale, non un calcolo.</p>
+    </div>
+    <div class="grafici" id="grafici-territorio"></div>
+  </section>
+
+  <section class="capitolo" id="progetti" aria-labelledby="t-progetti">
+    <div class="capitolo-testa">
+      <p class="occhiello">3 · I progetti</p>
+      <h2 id="t-progetti">Le voci che ricadono qui</h2>
+      <p class="lede" id="progetti-lede">Opere, PNRR e coesione collegati per CUP o CUI. Un progetto può comparire in più fonti: gli importi restano separati e non si sommano.</p>
+    </div>
+    <div id="progetti-lista"></div>
+  </section>
+
+  <section class="capitolo" id="comune" aria-labelledby="t-comune">
+    <div class="capitolo-testa">
+      <p class="occhiello">4 · Il resto del Comune</p>
+      <h2 id="t-comune">Quello che il Comune non divide per circoscrizione</h2>
+      <p class="lede">Bilancio, appalti, PNRR e fondi di coesione sono del Comune nel suo insieme: le fonti non hanno una ripartizione per circoscrizione e il sito non la stima. Le cifre qui sotto servono a dare la scala, non a dire quanto tocca a questa circoscrizione.</p>
+    </div>
+    <div id="non-attribuito"></div>
+  </section>
+
+  <div class="limiti" id="limiti"></div>
+
+  <p class="piede">Sito indipendente: non è un sito del Comune di Palermo. Le posizioni dei progetti sulla mappa le ha elaborate OpenDataSicilia dalle tavole del Programma triennale: non sono coordinate ufficiali del Comune. Un valore insolito è un segnale da approfondire, non la prova di uno spreco o di un illecito.</p>
+</main>
+
+<footer class="credito">
+  <div class="credito-in">
+    <a class="credito-logo" href="https://opendatasicilia.it/" target="_blank" rel="noopener"><img src="../../img/opendatasicilia.png" alt="OpenDataSicilia" width="46" height="53"></a>
+    <div class="credito-testo">
+      <p><b>Palermo in chiaro</b> è un progetto di <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a>. Le posizioni dei progetti sulla mappa le ha elaborate OpenDataSicilia dalle tavole del Programma triennale: non sono coordinate ufficiali del Comune.</p>
+      <p class="credito-legale">© 2026 <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a> · Dati <a href="https://creativecommons.org/licenses/by/4.0/deed.it" target="_blank" rel="noopener">CC BY 4.0</a> · Codice <a href="https://github.com/PalermoHub/palermo_in_chiaro/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> · <a href="../../privacy.html">Privacy e cookie</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="../../js/su.js?v=20261116y"></script>
+<script src="../../js/circoscrizione.js?v=$vapp"></script>
+</body>
+</html>
+''')
+
+
+def scrivi():
+    for i, rom in enumerate(ROM, 1):
+        quartieri = GEO[rom].get('quartieri') or []
+        descrizione = (
+            f'Opere programmate 2026-2028, quartieri, progetti e finanziamenti della '
+            f'Circoscrizione {rom} di Palermo' + (f' ({", ".join(quartieri)})' if quartieri else '') +
+            ', con il confronto con le altre sette. Ogni numero porta la fonte e quello che non misura.'
+        )
+        url = f'{SITO}/circoscrizione/{i}/'
+        html = PAGINA.substitute(rom=rom, descrizione=descrizione, url=url, sito=SITO, vcss=V_CSS, vapp=V_APP)
+        cartella = os.path.join(BASE, 'circoscrizione', str(i))
+        os.makedirs(cartella, exist_ok=True)
+        with open(os.path.join(cartella, 'index.html'), 'w', encoding='utf-8') as f:
+            f.write(html)
+        print('scritto', os.path.join('circoscrizione', str(i), 'index.html'))
+
+
+if __name__ == '__main__':
+    scrivi()

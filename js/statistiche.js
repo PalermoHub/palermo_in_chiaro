@@ -371,6 +371,8 @@
           el('a', { href: 'index.html?circ=' + circ + '#mappa', text: 'Apri la mappa della circoscrizione' }),
           el('span', { class: 'sep', text: '·' }),
           el('a', { href: `progetti.html?circ=${circ}`, text: 'I progetti che ricadono qui' }),
+          el('span', { class: 'sep', text: '·' }),
+          el('a', { href: `circoscrizione/${IDX[circ]}/`, text: 'La scheda dei soldi e delle opere' }),
         ]),
       ]);
       const num = [

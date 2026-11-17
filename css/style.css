@@ -235,6 +235,13 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .riga dt { color: var(--muto); }
 .riga dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
 .scheda h3 { font-size: 1.05rem; margin: 18px 0 2px; }
+.scheda h4 { font-size: 0.9rem; margin: 14px 0 4px; }
+/* nella scheda laterale le barre stanno su due righe: nome e valore, poi la pista */
+.scheda .barre { margin-top: 4px; }
+.scheda .barra { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nome val" "pista pista"; gap: 2px 10px; padding: 6px 0; }
+.scheda .barra .nome { grid-area: nome; font-size: 0.84rem; line-height: 1.25; }
+.scheda .barra .val { grid-area: val; font-size: 0.84rem; }
+.scheda .barra .pista { grid-area: pista; height: 8px; }
 .scheda .nota { font-size: 0.84rem; color: var(--muto); margin: 8px 0 0; }
 .scheda .vuota p { margin: 8px 0; }
 
@@ -551,6 +558,10 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
 .scheda-missione .nota { font-size: 0.86rem; color: var(--muto); margin: 8px 0 0; max-width: 52rem; }
 .scheda-missione .nota.progetti { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--linea); }
 .scheda-missione .badge.ufficiale { margin-right: 4px; }
+.scheda-missione ul.programmi .pista { grid-column: 2 / -1; height: 7px; margin-top: 3px; }
+.scheda-missione ul.programmi .pista .riempi { display: block; height: 100%; background: var(--maiolica); min-width: 2px; }
+.scheda-missione .barra.anno-scelto { background: var(--maiolica-chiara); }
+.scheda-missione .barra.anno-scelto .nome { font-weight: 600; }
 .barra[aria-expanded="true"] { background: var(--maiolica-chiara); }
 .barra[aria-expanded="true"] .nome { font-weight: 600; }
 @media (max-width: 900px) { .scheda-missione ul.programmi li { grid-template-columns: 3rem 1fr; } .scheda-missione ul.programmi b { grid-column: 2; } }
@@ -735,6 +746,24 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 .pannello { max-width: 92rem; }
 .pannello:focus-visible { outline: 2px solid var(--cupola); outline-offset: 6px; }
 .pannello-lede { max-width: 46rem; margin: 0 0 14px; }
+
+/* pagina di una circoscrizione: intestazione, pastiglie delle otto, grafici */
+.circ-testa .occhiello { margin-bottom: 2px; }
+.circ-testa h1 { margin-bottom: 2px; }
+.circ-quartieri { margin: 4px 0 0; font-size: 0.94rem; color: var(--muto); }
+.circ-quartieri a { color: var(--maiolica-scura); }
+.circ-testa .lede { margin-top: 12px; }
+.circ-frecce { display: flex; justify-content: space-between; gap: 12px; margin: 14px 0 0; font-size: 0.9rem; }
+.circ-frecce a { color: var(--maiolica-scura); text-decoration: none; }
+.circ-frecce a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.circ-nav { display: flex; flex-wrap: wrap; gap: 6px; margin: 20px 0 24px; }
+.circ-nav a { display: inline-flex; align-items: center; justify-content: center; min-width: 44px; padding: 5px 12px; border: 1px solid var(--linea); border-radius: 99px; font-family: var(--font-titoli); font-weight: 600; font-size: 0.95rem; color: var(--inchiostro); text-decoration: none; }
+.circ-nav a:hover { border-color: var(--maiolica); background: var(--maiolica-chiara); }
+.circ-nav a[aria-current="page"] { background: var(--inchiostro); border-color: var(--inchiostro); color: var(--carta); }
+.circoscrizione .riga-barra.link { color: var(--inchiostro); text-decoration: none; }
+.circoscrizione .riga-barra.link:hover { background: var(--maiolica-chiara); }
+.circoscrizione .riga-barra.link:hover .nome b { text-decoration: underline; text-underline-offset: 3px; }
+.circoscrizione .riga-barra.link:focus-visible { outline: 2px solid var(--cupola); outline-offset: -2px; }
 
 /* tabelle dentro i grafici */
 .dati { margin-top: 12px; font-size: 0.86rem; }
