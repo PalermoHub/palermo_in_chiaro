@@ -630,6 +630,60 @@
       document.querySelectorAll('#bilancio-barre .barra').forEach(b => b.setAttribute('aria-expanded', String(b.dataset.m === missioneSel)));
     }
 
+    /* il bilancio si legge da due parti: le missioni di spesa a sinistra, le entrate a destra */
+    const ENT = D.bil.entrate, POP = D.bil.popolazione;
+    const partiteGiro = (a) => D.bil.missioni['99'] ? D.bil.missioni['99']['competenza_' + a] : 0;
+    const fondiAnno = (a) => ['fpv_spese_correnti', 'fpv_conto_capitale', 'avanzo_di_amministrazione'].reduce((s, k) => s + ENT.fondi[k][a], 0);
+    const entrata = (cls, etichetta, nome, v, max) => el('div', { class: 'entrata ' + cls, role: 'listitem' }, [
+      el('div', { class: 'et' }, [el('b', { text: etichetta }), nome]),
+      el('div', { class: 'ev', text: mln(v, 1) }),
+      el('div', { class: 'ep', 'aria-hidden': 'true' }, [el('span', { style: `width:${100 * v / max}%` })]),
+    ]);
+
+    /* 1. entrate per titolo: la facciata che manca quando si guardano solo le missioni */
+    function disegnaEntrate() {
+      const voci = Object.entries(ENT.titoli).map(([k, v]) => ({ k, nome: v.nome, v: v['competenza_' + anno] })).filter(x => x.v > 0).sort((a, b) => b.v - a.v);
+      const fondi = fondiAnno(anno), max = Math.max(voci[0].v, fondi), ev = ENT.evidenza;
+      $('bilancio-entrate').replaceChildren(
+        el('h3', { text: 'Da dove arrivano i soldi nel ' + anno }),
+        el('div', { class: 'entrate-righe', role: 'list', 'aria-label': 'Entrate per titolo, ' + anno }, [
+          ...voci.map(x => entrata(x.k === '9' ? 'conto-terzi' : '', 'Titolo ' + x.k, x.nome, x.v, max)),
+          fondi > 0 ? entrata('fondi', 'In più', 'Fondo pluriennale vincolato e avanzo di amministrazione', fondi, max) : null,
+        ]),
+        el('p', { class: 'nota' }, [
+          'I titoli valgono ', el('b', { text: mln(ENT.totale_titoli[anno], 1) }), ', il fondo pluriennale vincolato e l\'avanzo aggiungono ', el('b', { text: mln(fondi, 1) }),
+          ': in tutto ', el('b', { text: mln(ENT.totale_generale[anno], 1) }), ', lo stesso totale delle spese qui accanto. Entrate e spese, insomma, tornano al centesimo.',
+        ]),
+        el('p', { class: 'nota' }, anno === '2026'
+          ? [`Il Comune prevede di accertare `, el('b', { text: mln(ev.proventi_da_controllo.competenza_2026, 1) }),
+            ` da controllo e repressione delle irregolarità (contravvenzioni comprese) e di incassarne `, el('b', { text: mln(ev.proventi_da_controllo.cassa_2026, 1) }),
+            `: ${it(ev.proventi_da_controllo.competenza_2026 / ev.proventi_da_controllo.cassa_2026, 1)} volte tanto. I contributi agli investimenti valgono `,
+            el('b', { text: mln(ev.contributi_agli_investimenti.competenza_2026, 1) }), ' di competenza contro ',
+            el('b', { text: mln(ev.contributi_agli_investimenti.cassa_2026, 1) }), ' di cassa: la differenza sono residui già impegnati e non ancora pagati, non spesa nuova.']
+          : ['La cassa della fonte è quella del 2026: per gli anni successivi il documento riporta la sola competenza, quindi qui non si confronta con gli incassi.']),
+      );
+    }
+
+    /* 2. quanta parte di quel totale è spesa vera, e quanto pesa su chi ci abita */
+    function disegnaNetto() {
+      const tot = D.bil.totale_spese_competenza[anno], pg = partiteGiro(anno), netto = tot - pg;
+      const perAbitante = (pop) => it(netto / pop) + '\u00a0€';
+      $('bilancio-netto').replaceChildren(
+        el('h3', { text: 'La spesa che conta' }),
+        el('dl', {}, [
+          riga('Totale di competenza ' + anno, mln(tot, 1)),
+          riga('Partite di giro, in entrata e in uscita', mln(pg, 1)),
+          riga('Spesa che conta', mln(netto, 1)),
+          riga('Per residente', perAbitante(POP.residenti_2024)),
+        ]),
+        el('p', { class: 'nota' }, [
+          `Il ${it(100 * pg / tot)}% del totale sono partite di giro: incassi e pagamenti che il Comune fa per conto di altri e che si compensano, non servizi. Toglierle è il modo per leggere quanto spende davvero. Il pro capite divide per i `,
+          el('b', { text: it(POP.residenti_2024) }), ` residenti della stima comunale 2024; con i `, el('b', { text: it(POP.residenti_censimento_2021) }),
+          ` del censimento 2021 sarebbero ${perAbitante(POP.residenti_censimento_2021)}.`,
+        ]),
+      );
+    }
+
     function disegnaBilancio() {
       const m = Object.entries(D.bil.missioni).map(([k, v]) => ({ k, nome: v.nome, v: v['competenza_' + anno] })).sort((a, b) => b.v - a.v);
       const maxB = m[0].v, totale = D.bil.totale_spese_competenza[anno];
@@ -653,6 +707,7 @@
         return b;
       }));
       schedaMissione();
+      disegnaEntrate(); disegnaNetto();
     }
     disegnaBilancio();
     $('bilancio-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, D.bil.non_misura.map(t => el('li', { text: t }))));

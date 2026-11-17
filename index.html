@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261117u">
+<link rel="stylesheet" href="css/style.css?v=20261117v">
 <script src="js/tema.js?v=20261116y"></script>
 
 </head>
@@ -118,8 +118,16 @@
     <div class="anni" role="radiogroup" aria-label="Anno del bilancio" id="bilancio-anni"></div>
   </div>
   <div class="scheda-missione" id="bilancio-scheda" hidden aria-live="polite"></div>
-  <div class="barre" id="bilancio-barre" role="list" aria-label="Spesa per missione"></div>
-  <div class="limiti" id="bilancio-limiti"></div>
+  <div class="bilancio-corpo">
+    <div class="bilancio-principale">
+      <div class="barre" id="bilancio-barre" role="list" aria-label="Spesa per missione"></div>
+      <div class="limiti" id="bilancio-limiti"></div>
+    </div>
+    <aside class="bilancio-lato" aria-label="Lo stesso bilancio letto dal lato delle entrate">
+      <div id="bilancio-entrate"></div>
+      <div id="bilancio-netto"></div>
+    </aside>
+  </div>
 </section>
 
 <section class="sezione" id="appalti" aria-labelledby="t-appalti">
@@ -164,6 +172,6 @@
 </footer>
 
 <script src="js/su.js?v=20261116y"></script>
-<script src="js/app.js?v=20261117u"></script>
+<script src="js/app.js?v=20261117v"></script>
 </body>
 </html>

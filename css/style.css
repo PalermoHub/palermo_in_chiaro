@@ -299,6 +299,30 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .opere-lato .pc-righe { margin-top: 8px; }
 @media (max-width: 1000px) { .opere-corpo { grid-template-columns: 1fr; } }
 
+/* sezione bilancio: le missioni di spesa a sinistra, a destra da dove arrivano i soldi */
+.bilancio-corpo { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 30px clamp(24px, 4vw, 56px); align-items: start; margin-top: 4px; }
+.bilancio-principale { min-width: 0; }
+.bilancio-lato { display: grid; gap: 30px; }
+.bilancio-lato h3 { font-size: 1.02rem; margin: 0 0 8px; }
+.bilancio-lato .nota { color: var(--muto); font-size: 0.84rem; margin: 9px 0 0; }
+.bilancio-lato .nota a { color: var(--maiolica-scura); }
+.bilancio-lato dl { margin: 0; }
+@media (max-width: 1000px) { .bilancio-corpo { grid-template-columns: 1fr; } }
+
+/* entrate per titolo: nome sopra, importo a destra, barra sotto */
+.entrate-righe { display: grid; }
+.entrata { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 3px 12px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--linea); }
+.entrata .et { font-size: 0.87rem; line-height: 1.3; }
+.entrata .et b { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muto); margin-right: 5px; white-space: nowrap; }
+.entrata .ev { font-size: 0.92rem; font-weight: 600; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.entrata .ep { grid-column: 1; height: 8px; margin-top: 3px; }
+.entrata .ep span { display: block; height: 100%; min-width: 2px; background: var(--ocra); }
+.entrata.conto-terzi .ep span, .entrata.fondi .ep span { background: repeating-linear-gradient(135deg, var(--ocra) 0 4px, transparent 4px 8px); }
+.entrata.conto-terzi .ev, .entrata.fondi .ev { font-weight: 400; }
+.entrata.fondi .et { color: var(--muto); }
+.entrata.totale { border-bottom: 0; padding-top: 10px; }
+.entrata.totale .et { font-weight: 600; }
+
 /* importo per abitante: una riga per circoscrizione, la più alta in cima */
 .pc-righe { display: grid; }
 .pc-riga, .pc-media { display: grid; grid-template-columns: 3.1rem minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 6px 2px; border-bottom: 1px solid var(--linea); }

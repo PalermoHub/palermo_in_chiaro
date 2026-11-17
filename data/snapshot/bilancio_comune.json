@@ -6,13 +6,14 @@
     "licenza": "non dichiarata nella pagina dei bilanci del Comune: atto pubblico, si cita la fonte"
   },
   "periodo": "Competenza 2026, 2027 e 2028; cassa 2026",
-  "verificato": "2026-11-16",
-  "misura": "Stanziamenti di spesa del Comune di Palermo per missione e programma. Sono previsioni, non spesa effettiva.",
+  "verificato": "2026-11-17",
+  "misura": "Stanziamenti di spesa del Comune di Palermo per missione e programma, e previsioni di entrata per titolo. Sono previsioni, non spesa effettiva.",
   "non_misura": [
     "La circoscrizione: il bilancio non ha capitoli per circoscrizione. Il testo di bilancio e dei suoi allegati non cita le circoscrizioni; il DUP le descrive solo come territorio.",
     "I pagamenti: SIOPE tratta il Comune come un solo ente e questo bilancio è di previsione.",
     "Le spese delle società partecipate e della Regione in città.",
-    "Le previsioni di competenza comprendono il fondo pluriennale vincolato e possono cambiare con le variazioni di bilancio (la più recente trovata è di luglio 2026)."
+    "Le previsioni di competenza comprendono il fondo pluriennale vincolato e possono cambiare con le variazioni di bilancio (la più recente trovata è di luglio 2026).",
+    "Gli incassi: le entrate sono previsioni di accertamento e di cassa, non soldi riscossi; la cassa del 2026 porta dentro anche i residui degli anni passati."
   ],
   "disavanzo_di_amministrazione": {
     "2026": 600000.0,
@@ -693,6 +694,122 @@
         }
       }
     }
+  },
+  "entrate": {
+    "fonte": {
+      "nome": "Comune di Palermo, Bilancio di previsione 2026/2028, Allegato A, sezione Entrate (delibera CC n. 176 del 26/05/2026)",
+      "ente": "Comune di Palermo, Ragioneria Generale",
+      "link": "https://repository.comune.palermo.it/bilancio-rendiconti.php?id=1&per=2026%2F2028",
+      "licenza": "non dichiarata nella pagina dei bilanci del Comune: atto pubblico, si cita la fonte"
+    },
+    "misura": "Previsioni di accertamento (competenza) e di cassa delle entrate, per titolo; fondo pluriennale vincolato e avanzo di amministrazione che finanziano la spesa. La somma dei titoli e dei fondi è il totale generale delle entrate, uguale al totale generale delle spese.",
+    "titoli": {
+      "1": {
+        "nome": "Entrate correnti di natura tributaria, contributiva e perequativa",
+        "cassa_2026": 459852108.71,
+        "competenza_2026": 494578720.08,
+        "competenza_2027": 510951220.08,
+        "competenza_2028": 519223720.08
+      },
+      "2": {
+        "nome": "Trasferimenti correnti",
+        "cassa_2026": 319679997.44,
+        "competenza_2026": 260149056.56,
+        "competenza_2027": 240642970.23,
+        "competenza_2028": 223460203.58
+      },
+      "3": {
+        "nome": "Entrate extratributarie",
+        "cassa_2026": 61660008.02,
+        "competenza_2026": 208784422.0,
+        "competenza_2027": 188995908.09,
+        "competenza_2028": 184706495.76
+      },
+      "4": {
+        "nome": "Entrate in conto capitale",
+        "cassa_2026": 1391081480.89,
+        "competenza_2026": 365550454.51,
+        "competenza_2027": 184133706.13,
+        "competenza_2028": 76236963.25
+      },
+      "5": {
+        "nome": "Entrate da riduzione di attività finanziarie",
+        "cassa_2026": 4104751.48,
+        "competenza_2026": 0.0,
+        "competenza_2027": 0.0,
+        "competenza_2028": 0.0
+      },
+      "6": {
+        "nome": "Accensione prestiti",
+        "cassa_2026": 47042326.17,
+        "competenza_2026": 0.0,
+        "competenza_2027": 0.0,
+        "competenza_2028": 0.0
+      },
+      "7": {
+        "nome": "Anticipazioni da istituto tesoriere/cassiere",
+        "cassa_2026": 0.0,
+        "competenza_2026": 0.0,
+        "competenza_2027": 0.0,
+        "competenza_2028": 0.0
+      },
+      "9": {
+        "nome": "Entrate per conto terzi e partite di giro",
+        "cassa_2026": 754017735.44,
+        "competenza_2026": 754017735.44,
+        "competenza_2027": 777227445.54,
+        "competenza_2028": 767905045.54
+      }
+    },
+    "fondi": {
+      "fpv_spese_correnti": {
+        "2026": 34057783.99,
+        "2027": 8562421.44,
+        "2028": 5315983.66
+      },
+      "fpv_conto_capitale": {
+        "2026": 103526434.44,
+        "2027": 2953799.67,
+        "2028": 0.0
+      },
+      "avanzo_di_amministrazione": {
+        "2026": 2675882.22,
+        "2027": 0.0,
+        "2028": 0.0
+      }
+    },
+    "totale_titoli": {
+      "2026": 2083080388.59,
+      "2027": 1901951250.07,
+      "2028": 1771532428.21
+    },
+    "totale_generale": {
+      "2026": 2223340489.24,
+      "2027": 1913467471.18,
+      "2028": 1776848411.87
+    },
+    "evidenza": {
+      "proventi_da_controllo": {
+        "nome": "Proventi derivanti dall'attività di controllo e repressione delle irregolarità e degli illeciti",
+        "cassa_2026": 23336773.59,
+        "competenza_2026": 157288850.0,
+        "competenza_2027": 135112850.0,
+        "competenza_2028": 135112850.0
+      },
+      "contributi_agli_investimenti": {
+        "nome": "Contributi agli investimenti",
+        "cassa_2026": 1380043162.35,
+        "competenza_2026": 353323693.0,
+        "competenza_2027": 173278014.22,
+        "competenza_2028": 65381271.34
+      }
+    }
+  },
+  "popolazione": {
+    "residenti_2024": 628693,
+    "residenti_censimento_2021": 635439,
+    "fonte": "Comune di Palermo, Ufficio statistica, Repertorio statistico 2024; ISTAT, censimento 2021",
+    "nota": "La stima 2024 non ha il dettaglio per circoscrizione: qui serve solo a dividere le cifre comunali per gli abitanti."
   },
   "senza_cassa_nel_testo_estratto": []
 }
