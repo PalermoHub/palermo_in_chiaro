@@ -196,7 +196,7 @@
         caricaProgetti();
         return [h,
           el('p', { class: 'nota', text: progStato === 'errore' ? 'L\'elenco dei progetti non si carica.' : 'Caricamento dei progetti della circoscrizione…' }),
-          el('p', { class: 'nota' }, [el('a', { href: elenco({ circ: sel }), text: 'Apri l\'elenco dei progetti della circoscrizione' }), '.'])];
+          el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: elenco({ circ: sel }), text: 'Apri l\'elenco dei progetti della circoscrizione' })])];
       }
       const base = PROG.progetti.filter(p => inCirc(p, sel))
         .sort((a, b) => (importoMax(b) - importoMax(a)) || a.titolo.localeCompare(b.titolo, 'it'));
@@ -232,7 +232,8 @@
           `. L'importo è quello più alto fra le fonti del progetto: fonti diverse non si sommano.` }),
         inp, out, conta,
         nGeo == null ? null : el('p', { class: 'nota', text: `I progetti con una posizione sono già disegnati sulla mappa: scegliendone uno qui sotto lo si evidenzia, gli altri aprono la loro scheda.` }),
-        el('p', { class: 'nota' }, [el('a', { href: elenco({ circ: sel }), text: `Vedi tutti i ${it(base.length)} progetti in elenco` }), ', con filtri e collegamenti alle fonti. Gli interventi che toccano più circoscrizioni non si dividono: restano nell\'elenco sotto «Più circoscrizioni».'])];
+        el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: elenco({ circ: sel }), text: `Vedi tutti i ${it(base.length)} progetti in elenco` })]),
+        el('p', { class: 'nota', text: 'L\'elenco ha filtri e collegamenti alle fonti. Gli interventi che toccano più circoscrizioni non si dividono: restano nell\'elenco sotto «Più circoscrizioni».' })];
     }
 
     /* senza circoscrizione scelta la scheda è quella di Palermo: elenca gli interventi che stanno sulla mappa */
