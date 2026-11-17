@@ -422,3 +422,37 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
 .credito p { margin: 0; font-size: 0.86rem; color: var(--muto); max-width: 48rem; }
 .credito b { font-weight: 600; color: var(--inchiostro); }
 @media (max-width: 600px) { .credito-in { align-items: flex-start; gap: 12px; } .credito-logo img { width: 38px; } }
+
+/* riga legale nel piede, sotto il testo del credito: ©, licenze, informativa privacy */
+.credito-testo { min-width: 0; }
+.credito .credito-legale { margin: 7px 0 0; font-size: 0.78rem; line-height: 1.5; color: var(--muto); }
+.credito-legale a { color: inherit; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
+.credito-legale a:hover { color: var(--inchiostro); }
+/* sotto i 900 px il pulsante «Torna in cima» (fisso in basso a destra) passerebbe
+   sopra la riga legale: il piede lascia lo spazio per il pulsante */
+@media (max-width: 900px) { .credito-in { padding-bottom: 74px; } }
+
+/* banner del consenso alle statistiche (lo inserisce js/consenso.js, in fondo al body) */
+.consenso {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  background: var(--sfondo-scheda); border-top: 1px solid var(--linea);
+  box-shadow: 0 -8px 28px rgba(15, 34, 51, 0.14);
+}
+.consenso-in {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 24px;
+  max-width: 1560px; margin: 0 auto; padding: 14px var(--gutter) 16px;
+}
+.consenso-titolo { flex: none; margin: 0; font-family: var(--font-titoli); font-weight: 700; font-size: 0.98rem; }
+.consenso-testo { margin: 0; flex: 1 1 26rem; font-size: 0.88rem; color: var(--muto); max-width: 62rem; }
+.consenso-azioni { display: flex; flex-wrap: wrap; gap: 8px; margin-left: auto; }
+.consenso button {
+  font: inherit; font-size: 0.88rem; border-radius: 99px; padding: 8px 16px; cursor: pointer;
+  border: 1px solid var(--linea); background: none; color: var(--inchiostro);
+}
+.consenso button:hover { border-color: var(--inchiostro); }
+.consenso .consenso-si { background: var(--inchiostro); border-color: var(--inchiostro); color: var(--carta); font-weight: 600; }
+.consenso .consenso-si:hover { background: var(--maiolica-scura); border-color: var(--maiolica-scura); }
+@media (max-width: 600px) { .consenso-azioni { width: 100%; margin-left: 0; } .consenso-azioni button { flex: 1 1 auto; } }
+
+/* spazio in fondo alla pagina finché il banner è aperto */
+body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }

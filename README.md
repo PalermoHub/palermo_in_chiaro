@@ -2,7 +2,7 @@
 
 Prototipo di un sito su come vengono distribuiti i soldi pubblici nelle 8 circoscrizioni di Palermo: residenti, opere programmate, bilancio, appalti, PNRR e fondi di coesione. Ogni numero ha fonte, periodo e quello che non misura. Impostazione ispirata a [Roma in chiaro](https://github.com/urbe-hub/roma-in-chiaro).
 
-**Stato: prototipo.** I dati sono in revisione e le licenze non sono definitive: vedi `LICENZE.md` e `PIANO.md`.
+**Stato: prototipo.** I dati sono in revisione e le licenze dei dati non sono definitive: vedi `LICENZE.md` e `PIANO.md`. Il codice è sotto licenza MIT (`LICENSE`); le pagine dichiarano «Dati CC BY 4.0» per le elaborazioni di OpenDataSicilia.
 
 ## Cosa non è
 
@@ -25,6 +25,7 @@ Il server serve anche `dati/` (circa 1 GB): in pubblicazione va escluso, vedi so
 ```
 index.html, metodo.html     pagine principali
 progetti.html, progetto.html  elenco e scheda di ogni progetto o finanziamento
+privacy.html                informativa privacy e cookie
 css/, js/                   stile e logica (nessuna libreria)
 data/snapshot/              snapshot JSON letti dal sito
 data/geo/                   confini e progetti per la mappa
@@ -33,6 +34,7 @@ dati/                       fonti scaricate e estratti (vedi dati/README.md)
 scripts/                    script che producono gli snapshot
 PIANO.md                    piano a fasi e cronologia delle verifiche
 LICENZE.md                  licenze verificate
+LICENSE                     licenza MIT del codice
 ```
 
 ## Rifare gli snapshot

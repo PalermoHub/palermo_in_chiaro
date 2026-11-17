@@ -25,7 +25,9 @@ Stato al 16/11/2026. Le licenze dei dati sono quelle dichiarate dalle fonti e le
 
 ## Codice
 
-Da decidere. Il codice (`index.html`, `css/`, `js/`, `scripts/`) non ha ancora una licenza. Roma in chiaro usa AGPL-3.0; i repository dello stesso autore usano CC BY 4.0. Finché non c'è una scelta, il codice non è rilasciato con alcuna licenza.
+**MIT** (testo in `LICENSE`). Riguarda il codice del sito (`index.html` e le altre pagine, `css/`, `js/`, `scripts/`): chiunque può riusarlo, modificarlo e ridistribuirlo citando il copyright. Non copre i dati né il logo.
+
+Il piede di ogni pagina dichiara «Dati CC BY 4.0» per le elaborazioni di OpenDataSicilia (`data/progetti.json`, gli snapshot, le posizioni dei progetti): la scelta dell'autore è questa. Restano fuori dalla dichiarazione, perché la licenza la decide la fonte, gli estratti ANAC (**CC BY-SA 4.0**, ShareAlike) e i dati del Comune di Palermo senza licenza dichiarata: per quelli valgono le righe qui sopra.
 
 ## Logo e immagini
 
