@@ -309,7 +309,7 @@
       const anni = Object.entries(D.app.anni);
       const { corpo } = figura(G, {
         titolo: 'Appalti avviati: importo a base di gara',
-        nota: 'CIG pubblicati da ANAC per il Comune di Palermo. L\'importo è a base di gara, non aggiudicato né pagato. Due CIG del 2026 hanno un importo anomalo in fonte (circa 2.684 M€): restano fuori dal grafico e la tabella mostra entrambe le versioni.',
+        nota: 'CIG pubblicati da ANAC per il Comune di Palermo. L\'importo è a base di gara, non aggiudicato né pagato. Due CIG del 2025 hanno un importo anomalo in fonte (circa 2.684 M€): restano fuori dal grafico e la tabella mostra entrambe le versioni.',
         tabella: {
           colonne: [{ nome: 'Anno' }, { nome: 'CIG', num: true }, { nome: 'Importo in fonte', num: true }, { nome: 'Senza i CIG anomali', num: true }],
           righe: anni.map(([a, x]) => [a, it(x.cig), it(x.importo_base_gara_eur_come_in_fonte, 0) + ' €', it(x.importo_base_gara_eur_senza_anomali, 0) + ' €']),

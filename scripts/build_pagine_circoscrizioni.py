@@ -190,6 +190,7 @@ def nav(rom):
         '        </ul>\n'
         '      </details>\n'
         '      <a href="../../progetti.html">Elenco progetti</a>\n'
+        '      <a href="../../guida.html">Guida</a>\n'
         '      <details class="tendina">\n'
         '        <summary>Statistiche</summary>\n'
         '        <ul>\n'

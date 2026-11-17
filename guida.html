@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guida · Palermo in chiaro</title>
+<meta name="description" content="Come si usa Palermo in chiaro, passo per passo: la mappa delle circoscrizioni, come si leggono i numeri, come si cercano progetti, finanziamenti e appalti.">
+<link rel="canonical" href="https://palermohub.github.io/palermo_in_chiaro/guida.html">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#edf1f0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0e1b27">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:site_name" content="Palermo in chiaro">
+<meta property="og:title" content="Guida · Palermo in chiaro">
+<meta property="og:description" content="Come si usa Palermo in chiaro, passo per passo: la mappa delle circoscrizioni, come si leggono i numeri, come si cercano progetti, finanziamenti e appalti.">
+<meta property="og:url" content="https://palermohub.github.io/palermo_in_chiaro/guida.html">
+<meta property="og:image" content="https://palermohub.github.io/palermo_in_chiaro/img/social-card.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Mappa delle 8 circoscrizioni di Palermo con il titolo «Come vengono distribuiti i soldi pubblici nelle 8 circoscrizioni di Palermo» e il dato: il 47% dell'importo delle opere programmate non ha una circoscrizione.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Guida · Palermo in chiaro">
+<meta name="twitter:description" content="Come si usa Palermo in chiaro, passo per passo: la mappa delle circoscrizioni, come si leggono i numeri, come si cercano progetti, finanziamenti e appalti.">
+<meta name="twitter:image" content="https://palermohub.github.io/palermo_in_chiaro/img/social-card.png">
+<meta name="twitter:image:alt" content="Mappa delle 8 circoscrizioni di Palermo con il titolo «Come vengono distribuiti i soldi pubblici nelle 8 circoscrizioni di Palermo» e il dato: il 47% dell'importo delle opere programmate non ha una circoscrizione.">
+<link rel="icon" href="img/favicon.png">
+<script src="js/consenso.js?v=20261116z"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20261121b">
+<script src="js/tema.js?v=20261120a"></script>
+
+<style>
+  .pagina { max-width: 1100px; margin: 0 auto; padding: clamp(28px, 5vw, 64px) var(--gutter) clamp(40px, 6vw, 88px); }
+  .pagina h1 { font-size: clamp(1.9rem, 4vw, 3rem); margin-bottom: 14px; }
+  .pagina h2 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); margin: 46px 0 10px; }
+  .pagina h3 { font-size: 1.05rem; margin: 26px 0 6px; }
+  .pagina p, .pagina li, .pagina dd { max-width: 46rem; }
+  .pagina ul { padding-left: 1.2em; }
+  .pagina li { margin: 5px 0; }
+
+  .in-breve { border-left: 3px solid var(--cupola); background: var(--sfondo-scheda); border-radius: 0 10px 10px 0; padding: 14px 20px 16px; margin: 22px 0 6px; max-width: 46rem; }
+  .in-breve p { margin: 6px 0; max-width: none; }
+
+  .guida-indice { background: var(--sfondo-scheda); border: 1px solid var(--linea); border-radius: 12px; padding: 16px 22px 18px; margin: 26px 0 10px; }
+  .guida-indice h2 { margin: 0 0 10px; font-family: var(--font-testo); font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muto); }
+  .guida-indice ol { margin: 0; padding-left: 1.2em; columns: 2; column-gap: 2.5rem; }
+  .guida-indice li { margin: 4px 0; break-inside: avoid; }
+  @media (max-width: 720px) { .guida-indice ol { columns: 1; } }
+
+  .passi { counter-reset: passo; list-style: none; padding-left: 0; margin: 16px 0 0; }
+  .passi > li { counter-increment: passo; position: relative; padding-left: 2.5rem; margin: 14px 0; }
+  .passi > li::before { content: counter(passo); position: absolute; left: 0; top: 0.1em; width: 1.7rem; height: 1.7rem; border-radius: 50%; background: var(--maiolica-chiara); color: var(--maiolica-scura); font-family: var(--font-titoli); font-weight: 700; font-size: 0.9rem; display: grid; place-items: center; }
+
+  .guida-figura { margin: 22px 0 30px; max-width: 62rem; }
+  .guida-figura a { display: block; border-radius: 12px; }
+  .guida-figura a:focus-visible { outline: 3px solid var(--maiolica); outline-offset: 3px; }
+  .guida-figura img { display: block; width: 100%; height: auto; border: 1px solid var(--linea); border-radius: 12px; background: var(--carta-2); }
+  .guida-figura figcaption { margin-top: 9px; font-size: 0.84rem; line-height: 1.45; color: var(--muto); max-width: 46rem; }
+  .guida-figura.telefono { max-width: 21rem; }
+
+  .parole { margin: 14px 0 0; max-width: 46rem; }
+  .parole dt { font-weight: 600; margin-top: 14px; }
+  .parole dd { margin: 2px 0 0; color: var(--inchiostro); }
+  .pagina kbd { font: inherit; font-size: 0.82em; border: 1px solid var(--linea); border-radius: 4px; padding: 1px 5px; background: var(--carta-2); }
+  @media (max-width: 640px) { .pagina h2 { margin-top: 38px; } }
+</style>
+</head>
+<body>
+<a class="skip" href="#contenuto">Vai al contenuto</a>
+<header class="testata">
+  <div class="testata-in">
+    <a class="marchio" href="./">Palermo in chiaro</a>
+    <nav class="menu-principale" aria-label="Sezioni">
+      <details class="tendina">
+        <summary>Home</summary>
+        <ul>
+          <li><a href="./#mappa">La mappa della città</a></li>
+          <li><a href="./#opere">Opere</a></li>
+          <li><a href="./#bilancio">Bilancio</a></li>
+          <li><a href="./#appalti">Appalti</a></li>
+          <li><a href="./#progetti">PNRR e coesione</a></li>
+        </ul>
+      </details>
+      <details class="tendina">
+        <summary>Circoscrizioni</summary>
+        <ul>
+          <li><a href="./circoscrizione/1/">Circoscrizione I</a></li>
+          <li><a href="./circoscrizione/2/">Circoscrizione II</a></li>
+          <li><a href="./circoscrizione/3/">Circoscrizione III</a></li>
+          <li><a href="./circoscrizione/4/">Circoscrizione IV</a></li>
+          <li><a href="./circoscrizione/5/">Circoscrizione V</a></li>
+          <li><a href="./circoscrizione/6/">Circoscrizione VI</a></li>
+          <li><a href="./circoscrizione/7/">Circoscrizione VII</a></li>
+          <li><a href="./circoscrizione/8/">Circoscrizione VIII</a></li>
+        </ul>
+      </details>
+      <a href="./progetti.html">Elenco progetti</a>
+      <a href="./guida.html" aria-current="page">Guida</a>
+      <details class="tendina">
+        <summary>Statistiche</summary>
+        <ul>
+          <li><a href="statistiche.html#generali">Palermo al censimento 2021</a></li>
+          <li><a href="statistiche.html#per-circoscrizione">Il profilo di una circoscrizione</a></li>
+          <li><a href="statistiche.html#argomenti">Argomento per argomento</a></li>
+        </ul>
+      </details>
+      <a href="./fonti.html">Fonti</a>
+      <details class="tendina">
+        <summary>Metodo e licenze</summary>
+        <ul>
+          <li><a href="metodo.html#numeri">Come nascono i numeri</a></li>
+          <li><a href="metodo.html#limiti">Cosa non misura</a></li>
+          <li><a href="metodo.html#fonti">Fonti e licenze</a></li>
+          <li><a href="metodo.html#errori">Segnala un errore</a></li>
+        </ul>
+      </details>
+    </nav>
+    <button type="button" class="cerca-apri" aria-haspopup="dialog" aria-controls="cerca-finestra" aria-expanded="false" title="Cerca in tutto il sito (premi /)">
+      <svg class="cerca-ico" viewBox="0 0 20 20" width="16" height="16" aria-hidden="true" focusable="false"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2"></circle><path d="M12.6 12.6 17 17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg>
+      <span class="cerca-apri-parola">Cerca</span>
+      <kbd class="cerca-tasto" aria-hidden="true">/</kbd>
+    </button>
+    <nav class="briciole-testata" aria-label="Percorso di navigazione">
+      <ol>
+        <li><a href="./">Palermo in chiaro</a></li>
+        <li><span aria-current="page">Guida</span></li>
+        <li class="briciola-sezione" hidden><a href="#cosa" data-briciola-sezione aria-current="location"></a></li>
+      </ol>
+    </nav>
+  </div>
+</header>
+
+<main id="contenuto" class="pagina">
+  <h1>Guida: cosa è, come si legge, come si cerca</h1>
+  <p class="lede">Palermo in chiaro mette in mappa e in elenco i dati pubblici del Comune di Palermo: le opere programmate, il bilancio, gli appalti, i fondi del PNRR e della coesione, i residenti del censimento. Questa guida spiega passo per passo cosa trovi, come si leggono i numeri e come si cerca un progetto o un finanziamento. Non serve sapere nulla di dati o di informatica.</p>
+
+  <div class="in-breve">
+    <p><b>In tre righe.</b> Il sito non produce dati nuovi: mette insieme quelli che il Comune, l'ISTAT, l'ANAC e OpenCoesione pubblicano già, e li rende leggibili.</p>
+    <p>Ogni numero porta con sé la fonte, il periodo e quello che non misura: senza queste tre informazioni un numero non dice niente.</p>
+    <p>Non è un sito del Comune: è un progetto indipendente di OpenDataSicilia. Un valore strano è un segnale da approfondire, non la prova di uno spreco o di un illecito.</p>
+  </div>
+
+  <nav class="guida-indice" aria-label="Cosa trovi in questa guida">
+    <h2>Cosa trovi in questa guida</h2>
+    <ol>
+      <li><a href="#cosa">Che cos'è questo sito</a></li>
+      <li><a href="#leggere">Come si leggono i numeri</a></li>
+      <li><a href="#mappa">La mappa della città</a></li>
+      <li><a href="#circoscrizione">La pagina di una circoscrizione</a></li>
+      <li><a href="#cercare">Cercare un progetto o un finanziamento</a></li>
+      <li><a href="#appalti">Cercare un appalto</a></li>
+      <li><a href="#statistiche">I grafici delle statistiche</a></li>
+      <li><a href="#fonti">Da dove vengono i numeri</a></li>
+      <li><a href="#telefono">Sul telefono e col tema scuro</a></li>
+      <li><a href="#errori">Se un numero non torna</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="cosa">Che cos'è questo sito</h2>
+  <p>Palermo in chiaro risponde a una domanda semplice: <b>dove finiscono i soldi pubblici della città</b>. Per farlo usa sei gruppi di dati, tutti già pubblici:</p>
+  <ul>
+    <li><b>Opere pubbliche</b>: i 548 interventi del Programma triennale dei lavori pubblici 2026-2028, con l'importo programmato per ciascuno e la circoscrizione in cui cade.</li>
+    <li><b>Bilancio</b>: le previsioni di spesa del Comune per missione, dal bilancio di previsione 2026-2028.</li>
+    <li><b>Appalti</b>: le gare avviate dal Comune, una riga per CIG, con l'importo a base di gara.</li>
+    <li><b>PNRR</b>: i 61 progetti del Piano nazionale di ripresa e resilienza seguiti dal Comune.</li>
+    <li><b>Fondi di coesione</b>: i progetti europei e nazionali in cui il Comune è tra i beneficiari.</li>
+    <li><b>Residenti</b>: le cifre del censimento ISTAT 2021 per le 8 circoscrizioni.</li>
+  </ul>
+  <p>Le <b>circoscrizioni</b> sono le otto parti in cui è divisa Palermo. Si chiamano con i numeri romani, da I a VIII, e ognuna raggruppa alcuni quartieri: la VII, per esempio, comprende Arenella-Vergine Maria, Pallavicino, Partanna Mondello e Tommaso Natale-Sferracavallo. Il Comune non tiene un bilancio separato per circoscrizione: per questo il sito dice sempre se un numero riguarda tutta la città o una sua parte.</p>
+
+  <h2 id="leggere">Come si leggono i numeri</h2>
+  <p>Quasi tutti i fraintendimenti su questi dati nascono da tre domande che nessuno fa. Il sito le fa per te, e le risposte sono scritte accanto al numero.</p>
+  <ol class="passi">
+    <li><b>Chi lo dice?</b> Accanto a ogni grafico e a ogni cifra c'è la fonte: Comune di Palermo, ISTAT, ANAC, OpenCoesione. In <a href="fonti.html">Fonti</a> c'è anche la data in cui ogni elenco è stato letto: se è di qualche mese fa, il dato potrebbe essere cambiato.</li>
+    <li><b>Di che periodo parla?</b> Un importo del 2026 e uno del 2028 dicono cose diverse. Il periodo è scritto nel titolo o nella nota del grafico, e nella scheda di ogni progetto gli importi sono divisi anno per anno.</li>
+    <li><b>Cosa non misura?</b> Ogni sezione ha un riquadro <b>«Cosa non misura»</b>. È la parte più importante: dice cosa il dato non può dirti, per esempio che il 47% dell'importo delle opere non ha una circoscrizione e resta fuori dai confronti tra quartieri.</li>
+  </ol>
+  <p>Poi ci sono due trappole da evitare:</p>
+  <ul>
+    <li><b>Stanziamento non è spesa.</b> Il bilancio mostra quanto il Comune prevede di spendere, e un'opera programmata è un lavoro previsto: nessuno dei due dice quanto è già stato pagato.</li>
+    <li><b>Fonti diverse non si sommano.</b> Un importo di gara, un finanziamento PNRR e uno stanziamento di bilancio misurano cose diverse, anche quando parlano dello stesso progetto. Il sito li mostra separati e non li addiziona mai.</li>
+  </ul>
+  <p>Se un numero ti sembra impossibile, spesso lo è: due appalti del 2025 hanno in fonte un importo di circa 2.684 milioni di euro, evidentemente sbagliato. Il sito non li corregge, li segnala. Un valore anomalo è un indizio da verificare alla fonte, non una conclusione.</p>
+
+  <h3>Le parole che servono</h3>
+  <dl class="parole">
+    <dt>Circoscrizione</dt>
+    <dd>Una delle otto parti della città. Raggruppa quartieri e <b>UPL</b> (unità di pianificazione locale), che è il livello più fine usato nel Programma triennale.</dd>
+    <dt>Programma triennale delle opere pubbliche</dt>
+    <dd>L'elenco dei lavori che il Comune prevede di fare in tre anni, con quanto costano. È un programma, non un cantiere aperto.</dd>
+    <dt>Stanziamento di competenza</dt>
+    <dd>La somma che il bilancio assegna a una missione di spesa per un anno. È una previsione, non un pagamento.</dd>
+    <dt>CIG</dt>
+    <dd>Codice identificativo di gara: il numero che identifica un appalto. Nel sito c'è una riga per ogni CIG.</dd>
+    <dt>CUP</dt>
+    <dd>Codice unico di progetto: identifica un'opera o un investimento pubblico. È il modo con cui il sito collega tra loro fonti diverse.</dd>
+    <dt>CUI</dt>
+    <dd>Codice unico di intervento, usato nei dati ANAC sugli appalti. Quando CUI e CUP coincidono, il sito collega un appalto al suo progetto.</dd>
+    <dt>PNRR</dt>
+    <dd>Il Piano nazionale di ripresa e resilienza, con i fondi europei del Next Generation EU. I progetti PNRR del Comune hanno una scheda sul sito del Comune.</dd>
+    <dt>Fondi di coesione</dt>
+    <dd>I fondi europei e nazionali che finanziano progetti nelle regioni con ritardi di sviluppo. I dati arrivano dal portale OpenCoesione.</dd>
+  </dl>
+
+  <h2 id="mappa">La mappa della città</h2>
+  <figure class="guida-figura">
+    <a class="guida-figura-link" href="img/guida/mappa-citta.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+      <img src="img/guida/mappa-citta.webp" width="1200" height="859" loading="lazy" decoding="async" alt="La home di Palermo in chiaro: a sinistra la mappa delle otto circoscrizioni con i numeri romani, sopra le sei misure da mostrare, i due menù Quartiere e UPL e l'interruttore per mostrare i singoli progetti; a destra la scheda di Palermo con i residenti e quattro riquadri: opere programmate, bilancio previsto, appalti avviati, PNRR e fondi di coesione.">
+    </a>
+    <figcaption>La pagina iniziale: a sinistra la mappa, a destra la scheda con la sintesi della città e le quattro cifre principali.</figcaption>
+  </figure>
+  <ol class="passi">
+    <li><b>Scegli cosa guardare.</b> Le sei misure in alto cambiano il colore delle circoscrizioni: <i>Residenti</i>, <i>Densità</i>, <i>Over 65</i>, <i>Stranieri</i>, <i>Opere programmate</i>, <i>Opere per residente</i>. Il colore più scuro indica il valore più alto; la scala è scritta sotto la mappa.</li>
+    <li><b>Clicca una circoscrizione.</b> Il clic su un poligono apre la pagina di quella circoscrizione. Si può fare anche da tastiera: con Tab arrivi al poligono, con Invio lo apri.</li>
+    <li><b>Scendi di livello.</b> I menù <i>Quartiere</i> e <i>UPL</i> restringono la mappa a una parte della città. L'interruttore <i>Mostra i singoli progetti</i> fa comparire i punti dei progetti localizzati.</li>
+    <li><b>Guarda la scheda.</b> A destra compare la sintesi: residenti, famiglie, over 65, laureati, abitazioni vuote, e le quattro cifre del Comune (opere, bilancio, appalti, PNRR e coesione). Sono di fonti e periodi diversi: non si sommano.</li>
+  </ol>
+
+  <h2 id="circoscrizione">La pagina di una circoscrizione</h2>
+  <figure class="guida-figura">
+    <a class="guida-figura-link" href="img/guida/circoscrizione.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+      <img src="img/guida/circoscrizione.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La pagina della Circoscrizione VII: il titolo con i quartieri, i residenti, l'importo delle opere programmate, i pulsanti verso la mappa dei progetti, l'elenco e il profilo, poi una mappa con i punti dei progetti e a destra la scheda con residenti, densità, over 65, indice di vecchiaia, stranieri.">
+    </a>
+    <figcaption>La pagina della Circoscrizione VII: in alto la sintesi, sotto la mappa dei progetti e la scheda con i numeri del territorio.</figcaption>
+  </figure>
+  <p>Ogni circoscrizione ha una pagina sua, con quattro capitoli in ordine fisso:</p>
+  <ul>
+    <li><b>I soldi.</b> Le opere programmate nel triennio, lette per settore, per anno e per quartiere, con il confronto tra le otto circoscrizioni.</li>
+    <li><b>Il territorio.</b> Quartieri e UPL, cioè dove ricadono i progetti, livello per livello.</li>
+    <li><b>I progetti.</b> Le voci che cadono qui, con il collegamento alla scheda di ciascuna.</li>
+    <li><b>Il resto del Comune.</b> Bilancio, appalti, PNRR e coesione, che la fonte non divide per circoscrizione: sono lì per dare la scala, non per dire quanto tocca a questo quartiere.</li>
+  </ul>
+  <p>In alto, i pulsanti <i>Vai alla mappa dei progetti</i>, <i>Tutti i progetti in elenco</i> e <i>Il profilo sociale su Statistiche</i> portano direttamente alla parte che interessa. Le frecce <i>Circoscrizione VI</i> e <i>Circoscrizione VIII</i> passano alla precedente e alla successiva.</p>
+
+  <h2 id="cercare">Cercare un progetto o un finanziamento</h2>
+  <p>Ci sono tre strade, dalla più larga alla più stretta.</p>
+
+  <h3>1. L'elenco dei progetti e i suoi filtri</h3>
+  <figure class="guida-figura">
+    <a class="guida-figura-link" href="img/guida/elenco-progetti.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+      <img src="img/guida/elenco-progetti.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La pagina Elenco progetti: il riquadro «Cosa non fa questo elenco», i filtri di ricerca per titolo, CUP o CUI, fonte, circoscrizione, quartiere, UPL, ordinamento e la casella «Solo progetti presenti in più fonti», poi le prime voci con importi e fonti.">
+    </a>
+    <figcaption>L'elenco dei progetti: la casella di ricerca, i cinque filtri e la casella «Solo progetti presenti in più fonti».</figcaption>
+  </figure>
+  <p>La pagina <a href="progetti.html">Elenco progetti</a> contiene tutte le voci del sito: le opere del Programma triennale, le schede PNRR, i progetti di coesione e, più in basso, gli appalti. Si filtra così:</p>
+  <ul>
+    <li><b>Cerca per titolo, CUP o CUI</b>: basta una parola del titolo («tram», «asilo», «mercato») oppure il codice, se ce l'hai già.</li>
+    <li><b>Fonte</b>: solo opere, solo PNRR, solo coesione, solo appalti collegati.</li>
+    <li><b>Circoscrizione, quartiere, UPL</b>: i tre livelli si stringono a vicenda. Scegliere una UPL sceglie anche il suo quartiere.</li>
+    <li><b>Ordina per</b>: importo delle opere, importo PNRR, finanziamento di coesione oppure titolo.</li>
+    <li><b>Solo progetti presenti in più fonti</b>: mostra le voci che hanno un CUP o un CUI in comune tra due fonti, cioè i casi in cui lo stesso progetto è finanziato da più parti.</li>
+  </ul>
+  <p>Sotto i filtri compare il conteggio («30 di 887 voci»), e ogni modifica dei filtri cambia l'indirizzo della pagina: un elenco filtrato si può copiare e mandare a qualcuno, e chi lo apre vede la stessa selezione. Le etichette sopra l'elenco si tolgono con un clic.</p>
+
+  <h3>2. La scheda di un progetto</h3>
+  <figure class="guida-figura">
+    <a class="guida-figura-link" href="img/guida/scheda-progetto.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+      <img src="img/guida/scheda-progetto.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La scheda del progetto delle nuove linee tramviarie: il titolo, le etichette Opere pubbliche e PNRR, CUP e CUI, a sinistra gli importi anno per anno e la fonte di finanziamento, a destra identificativi, circoscrizione, quartiere, UPL, posizione e fonti collegate.">
+    </a>
+    <figcaption>La scheda di un progetto: a sinistra gli importi e i finanziamenti, a destra gli identificativi e il territorio, in fondo i collegamenti alle fonti.</figcaption>
+  </figure>
+  <p>Il clic sul nome di una voce apre la sua scheda. Qui trovi:</p>
+  <ul>
+    <li>le <b>etichette delle fonti</b> in cui compare il progetto (opere pubbliche, PNRR, coesione, appalti);</li>
+    <li>gli <b>importi separati per fonte</b>, con le annualità 2026, 2027 e 2028 e il tipo di finanziamento dichiarato;</li>
+    <li>gli <b>identificativi</b> (CUP, CUI e il codice della voce), la circoscrizione, il quartiere e la UPL;</li>
+    <li>i <b>collegamenti</b> alla scheda OpenCUP, alla scheda OpenCoesione, al progetto PNRR del Comune e agli appalti collegati.</li>
+  </ul>
+  <p>Il percorso in alto dice da dove sei arrivato: se hai aperto la scheda dalla Circoscrizione VII, in alto leggi «Palermo in chiaro › Circoscrizioni › Circoscrizione VII», e torni indietro con un clic.</p>
+
+  <h3>3. La ricerca globale</h3>
+  <figure class="guida-figura">
+    <a class="guida-figura-link" href="img/guida/cerca.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+      <img src="img/guida/cerca.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La finestra di ricerca aperta sulla home con la parola «oreto» scritta: i suggerimenti sono il quartiere Oreto-Stazione, due UPL e cinque progetti, con le lettere cercate evidenziate in ocra e il collegamento «Cerca oreto in tutti i progetti».">
+    </a>
+    <figcaption>La ricerca globale con «oreto»: pagina, quartiere, UPL e progetti, con le lettere cercate evidenziate.</figcaption>
+  </figure>
+  <p>Il pulsante <b>Cerca</b> in alto a destra (oppure il tasto <kbd>/</kbd>, o <kbd>Ctrl</kbd>+<kbd>K</kbd>) apre una finestra che cerca in tutto il sito: pagine, sezioni, circoscrizioni, quartieri, UPL e tutti i progetti. Bastano tre lettere o numeri; non importa se scrivi con o senza accenti, maiuscole o minuscole, e un refuso non blocca la ricerca. Si sceglie con le frecce e si apre con Invio. In fondo alla finestra c'è sempre il collegamento che porta la stessa parola dentro l'elenco completo.</p>
+
+  <h2 id="appalti">Cercare un appalto</h2>
+  <p>Gli appalti non si caricano all'apertura del sito: sono circa 1.450 righe. In fondo alla pagina <a href="progetti.html#cig">Elenco progetti</a> c'è il pulsante <b>Carica gli appalti</b>; dopo il clic compare una tabella con CIG, oggetto, anno, importo a base di gara e, dove esiste, il progetto collegato. Si cerca per oggetto, CIG o CUI e si filtra per anno di pubblicazione. Anche qui l'importo è quello a base di gara: non è la somma pagata all'impresa.</p>
+
+  <h2 id="statistiche">I grafici delle statistiche</h2>
+  <figure class="guida-figura">
+    <a class="guida-figura-link" href="img/guida/statistiche.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+      <img src="img/guida/statistiche.webp" width="1200" height="844" loading="lazy" decoding="async" alt="La pagina Statistiche: il titolo, tre pulsanti per i capitoli, il riquadro «Come leggere questi grafici» e l'inizio del capitolo «Palermo al censimento 2021» con le prime cifre: residenti, famiglie, stranieri.">
+    </a>
+    <figcaption>Statistiche: tre capitoli (la città, una circoscrizione, un argomento) e, per ogni grafico, fonte, anno e cosa non misura.</figcaption>
+  </figure>
+  <p>La pagina <a href="statistiche.html">Statistiche</a> non parla di soldi ma di persone: residenti, età, istruzione, famiglie, abitazioni, stranieri e lavoro, dal censimento 2021. È divisa in tre capitoli: <i>I numeri della città</i>, <i>Una circoscrizione</i>, <i>Un argomento</i>. Ogni grafico porta accanto la sua fonte e la sua nota; il confronto tra circoscrizioni si fa nello stesso capitolo, con la stessa base di calcolo.</p>
+
+  <h2 id="fonti">Da dove vengono i numeri</h2>
+  <p>Tre pagine raccontano il dietro le quinte, e sono quelle da leggere quando un numero serve per decidere o per scrivere:</p>
+  <ul>
+    <li><a href="fonti.html">Fonti</a>: l'elenco completo, una volta sola, con periodo, data di lettura, licenza e le pagine in cui ogni fonte è usata.</li>
+    <li><a href="metodo.html#numeri">Metodo e licenze</a>: come nasce ogni numero, con quali controlli, e cosa succede quando un totale non torna. Se un controllo non torna, lo script si ferma e il dato non viene pubblicato.</li>
+    <li><a href="metodo.html#limiti">Cosa non misura</a>: i limiti, in un elenco solo. È la pagina che smentisce le conclusioni affrettate.</li>
+  </ul>
+  <p>Le licenze non sono tutte uguali: i dati ISTAT e OpenCoesione sono CC BY 4.0, quelli ANAC CC BY-SA 4.0, i dati del Comune si citano come atti pubblici. Il codice del sito è MIT. I dettagli sono in <a href="https://github.com/PalermoHub/palermo_in_chiaro/blob/main/LICENZE.md" target="_blank" rel="noopener">LICENZE.md</a>.</p>
+
+  <h2 id="telefono">Sul telefono e col tema scuro</h2>
+  <figure class="guida-figura telefono">
+    <a class="guida-figura-link" href="img/guida/telefono.webp" target="_blank" rel="noopener" title="Apri lo screenshot a dimensione intera">
+      <img src="img/guida/telefono.webp" width="720" height="1558" loading="lazy" decoding="async" alt="La home di Palermo in chiaro su uno schermo da telefono: il marchio, i pulsanti Cerca e tema, il menù che scorre in orizzontale, il titolo, le sei misure e la mappa sotto.">
+    </a>
+    <figcaption>La stessa pagina su un telefono: il menù si sposta di lato, la mappa va sotto il testo.</figcaption>
+  </figure>
+  <p>Il sito funziona allo stesso modo su telefono e su computer: cambia la disposizione, non il contenuto. Se lo schermo è stretto, il menù scorre in orizzontale e i grafici si mettono in colonna. Il pulsante con il sole o la luna, in alto a destra, passa dal tema chiaro a quello scuro; se non lo tocchi, il sito segue la preferenza del tuo sistema. La scelta resta memorizzata nel browser.</p>
+
+  <h2 id="errori">Se un numero non torna</h2>
+  <p>Può succedere: le fonti cambiano, gli atti si correggono, un dato può essere letto male. Una segnalazione serve se indica tre cose: <b>dove</b> compare il numero (la pagina e il grafico), <b>quale fonte ufficiale</b> lo smentisce, e <b>quale sarebbe il valore giusto</b> secondo quella fonte. Senza una fonte ufficiale il numero non si cambia. Le istruzioni sono nella pagina <a href="metodo.html#errori">Metodo e licenze</a>.</p>
+
+  <h3>Da dove cominciare</h3>
+  <ul>
+    <li>Vuoi capire la città in un minuto: <a href="./">la mappa della home</a>.</li>
+    <li>Ti interessa il tuo quartiere: <a href="./circoscrizione/7/">la pagina della tua circoscrizione</a> (qui la VII, dalla barra in alto scegli la tua).</li>
+    <li>Cerchi un'opera o un finanziamento preciso: <a href="progetti.html">l'elenco dei progetti</a> o la ricerca con <kbd>/</kbd>.</li>
+  </ul>
+
+  <p class="piede"><a href="./">Torna alla mappa</a> · <a href="progetti.html">Elenco dei progetti</a> · <a href="metodo.html">Metodo e licenze</a></p>
+</main>
+
+<footer class="credito">
+  <div class="credito-in">
+    <a class="credito-logo" href="https://opendatasicilia.it/" target="_blank" rel="noopener"><img src="img/opendatasicilia.png" alt="OpenDataSicilia" width="46" height="53"></a>
+    <div class="credito-testo">
+      <p><b>Palermo in chiaro</b> è un progetto di <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a>. Le posizioni dei progetti sulla mappa le ha elaborate OpenDataSicilia dalle tavole del Programma triennale: non sono coordinate ufficiali del Comune.</p>
+      <p class="credito-legale">© 2026 <a href="https://opendatasicilia.it/" target="_blank" rel="noopener">OpenDataSicilia</a> · Dati <a href="https://creativecommons.org/licenses/by/4.0/deed.it" target="_blank" rel="noopener">CC BY 4.0</a> · Codice <a href="https://github.com/PalermoHub/palermo_in_chiaro/blob/main/LICENSE" target="_blank" rel="noopener">MIT</a> · <a href="privacy.html">Privacy e cookie</a> · <a href="#crediti" data-crediti>Credits</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="js/menu.js?v=20261120a"></script>
+<script src="js/cerca.js?v=20261121a"></script>
+<script src="js/crediti.js?v=20261119a"></script>
+<script src="js/su.js?v=20261116y"></script>
+</body>
+</html>

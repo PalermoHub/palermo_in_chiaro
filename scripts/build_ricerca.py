@@ -33,6 +33,8 @@ PAGINE = [
      'statistiche censimento dati grafici popolazione eta istruzione famiglie abitazioni stranieri lavoro'),
     ('fonti.html', 'Fonti', 'Le fonti una volta sola, con periodo, licenza e data di lettura',
      'fonti licenze dati istat anac opencoesione pnrr comune palermo'),
+    ('guida.html', 'Guida', 'Come si usa il sito: la mappa, come si leggono i numeri, come si cercano progetti, finanziamenti e appalti',
+     'guida come si usa aiuto leggere numeri cercare progetti finanziamenti appalti cig cup cui mappa circoscrizioni spiegazione'),
     ('metodo.html', 'Metodo e licenze', 'Come nascono i numeri, cosa non misurano e come segnalare un errore',
      'metodo licenze numeri limiti errori segnala'),
     ('privacy.html', 'Privacy e cookie', 'Quali dati tratta il sito, cookie e come cambiare la scelta',
