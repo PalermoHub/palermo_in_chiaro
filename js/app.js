@@ -396,19 +396,6 @@
       `di finanziamento pubblico su ${co.totale.progetti} progetti con il Comune tra i beneficiari.`,
       co.per_programma.slice(0, 6).map(s => ({ nome: s.voce.split(':::')[0].slice(0, 40), sub: `${s.progetti} progetti`, n: s.finanziamento_pubblico_netto_eur, testo: mln(s.finanziamento_pubblico_netto_eur, 0), href: elenco({ fonte: 'coesione', programma: s.voce.split(':::')[0] }) })), co.non_misura));
 
-    /* fonti */
-    const fonte = (n, s) => {
-      const periodo = typeof s.periodo === 'string' ? s.periodo : Object.values(s.periodo).join('; ');
-      const nome = s.fonte.link ? el('a', { href: s.fonte.link, text: s.fonte.nome, target: '_blank', rel: 'noopener' }) : s.fonte.nome;
-      return el('li', {}, [el('b', { text: n + ': ' }), nome,
-        el('span', { class: 'ver', text: `Periodo: ${periodo}. Letto il ${s.verificato.split('-').reverse().join('/')}.${s.fonte.link ? ' Il nome della fonte apre la pagina ufficiale.' : ''}` })]);
-    };
-    $('fonti').replaceChildren(...[['Profilo', D.prof], ['Opere pubbliche', D.opere], ['Bilancio', D.bil], ['Appalti', D.app], ['PNRR', D.pnrr], ['Coesione', D.coe]].map(([n, s]) => fonte(n, s)));
-    $('fonti').append(el('li', {}, [el('b', { text: 'Tutti i progetti: ' }),
-      el('a', { href: 'progetti.html', text: 'elenco e singole schede' }),
-      el('span', { class: 'ver', text: 'Una voce per progetto con CUP, importi per fonte e collegamenti a OpenCUP, OpenCoesione, PNRR del Comune e ANAC.' })]));
-
-
     /* ---- singoli progetti sulla mappa ---- */
     const PREC = { pallino: 'letta sulla tavola, circa 3-10 m', etichetta: 'dall\'etichetta sulla tavola, circa 25-40 m', toponimo: 'ricavata dal nome del luogo, circa 300 m (approssimata)', da_poligono: 'centro di un poligono' };
     const gP = document.createElementNS(NS, 'g'); gP.setAttribute('id', 'progetti-g'); gP.setAttribute('hidden', ''); svg.append(gP);

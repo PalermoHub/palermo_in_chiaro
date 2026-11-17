@@ -1,0 +1,1374 @@
+{
+  "fonte": {
+    "nome": "ISTAT, Censimento permanente della popolazione e delle abitazioni 2021, indicatori per sezione di censimento",
+    "ente": "ISTAT",
+    "link": "https://www.istat.it/notizia/basi-territoriali-e-variabili-censuarie/",
+    "licenza": "CC BY 4.0 (ISTAT, https://www.istat.it/dati/open-data/, verificata il 16/11/2026)",
+    "confini": "Circoscrizioni del Comune di Palermo; attribuzione delle sezioni nel file dati/censimento_2021/geo_sezioni_2021.geojson"
+  },
+  "periodo": "Censimento 2021 (dati al 31/12/2021)",
+  "verificato": "2026-11-17",
+  "misura": "Struttura per età e sesso, titolo di studio, famiglie, abitazioni, stranieri e occupazione per circoscrizione, sommando le sezioni di censimento.",
+  "non_misura": [
+    "Variazioni dopo il 2021: il Comune stima 628.693 residenti nel 2024 (Repertorio statistico 2024), senza dettaglio per circoscrizione.",
+    "Il reddito: non è in questo dataset, quindi non c'è un grafico sul reddito.",
+    "Le cittadinanze elencate sono le prime dieci del file ISTAT: coprono circa l'81% degli stranieri residenti, non tutti.",
+    "Le quote di laureati e occupati usano le definizioni censuarie e non sono confrontabili con altre fonti.",
+    "Una circoscrizione con valori insoliti è un segnale da approfondire, non la prova di un problema."
+  ],
+  "sezioni_per_circoscrizione": {
+    "I": 556,
+    "II": 314,
+    "III": 276,
+    "IV": 329,
+    "V": 404,
+    "VI": 204,
+    "VII": 288,
+    "VIII": 708
+  },
+  "valori_mancanti_sezioni": {},
+  "circoscrizioni": [
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII"
+  ],
+  "classi_eta": [
+    "0-4",
+    "5-9",
+    "10-14",
+    "15-19",
+    "20-24",
+    "25-29",
+    "30-34",
+    "35-39",
+    "40-44",
+    "45-49",
+    "50-54",
+    "55-59",
+    "60-64",
+    "65-69",
+    "70-74",
+    "75+"
+  ],
+  "classi_istruzione": [
+    "Nessun titolo",
+    "Licenza elementare",
+    "Licenza media",
+    "Diploma",
+    "Laurea o più"
+  ],
+  "classi_famiglie": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6 o più"
+  ],
+  "cittadinanze": [
+    "Bangladesh",
+    "Sri Lanka",
+    "Romania",
+    "Ghana",
+    "Filippine",
+    "Marocco",
+    "Tunisia",
+    "Cina",
+    "Maurizio",
+    "Nigeria"
+  ],
+  "palermo": {
+    "residenti": 635439,
+    "superficie_kmq": 160.23,
+    "eta": {
+      "maschi": [
+        13856,
+        15193,
+        16544,
+        17299,
+        17101,
+        17392,
+        18086,
+        18382,
+        20252,
+        22965,
+        23148,
+        23209,
+        20388,
+        18157,
+        16476,
+        25403
+      ],
+      "femmine": [
+        13042,
+        14494,
+        15993,
+        16358,
+        15871,
+        17035,
+        17949,
+        18882,
+        21522,
+        24297,
+        25267,
+        25819,
+        23316,
+        21338,
+        20041,
+        40364
+      ],
+      "totale": [
+        26898,
+        29687,
+        32537,
+        33657,
+        32972,
+        34427,
+        36035,
+        37264,
+        41774,
+        47262,
+        48415,
+        49028,
+        43704,
+        39495,
+        36517,
+        65767
+      ]
+    },
+    "istruzione": {
+      "popolazione_9_piu": 585046,
+      "conteggi": [
+        27259,
+        92396,
+        187275,
+        180682,
+        97434
+      ],
+      "quote": [
+        4.7,
+        15.8,
+        32.0,
+        30.9,
+        16.7
+      ]
+    },
+    "famiglie": {
+      "totale": 263118,
+      "conteggi": [
+        83798,
+        70707,
+        50787,
+        41277,
+        12132,
+        4417
+      ],
+      "quote": [
+        31.8,
+        26.9,
+        19.3,
+        15.7,
+        4.6,
+        1.7
+      ],
+      "componenti_medi": 2.39,
+      "quota_single_pct": 31.8
+    },
+    "abitazioni": {
+      "totali": 325080,
+      "occupate": 257454,
+      "vuote": 67626,
+      "edifici": 52762,
+      "quota_vuote_pct": 20.8,
+      "abitanti_per_abitazione_occupata": 2.47,
+      "quota_occupate_pct": 79.2
+    },
+    "stranieri": {
+      "totale": 24376,
+      "ue": 3445,
+      "extraue": 20931,
+      "quota_pct": 3.8,
+      "eta": {
+        "0-14": 4275,
+        "15-64": 19138,
+        "65+": 963
+      },
+      "cittadinanze": {
+        "Bangladesh": 5514,
+        "Sri Lanka": 3073,
+        "Romania": 2643,
+        "Ghana": 2498,
+        "Filippine": 1705,
+        "Marocco": 1042,
+        "Tunisia": 1038,
+        "Cina": 933,
+        "Maurizio": 734,
+        "Nigeria": 709
+      }
+    },
+    "lavoro": {
+      "occupati": 187342,
+      "pop_15_64": 404538,
+      "pop_15_64_m": 198222,
+      "pop_15_64_f": 206316,
+      "tasso_pct": 46.3,
+      "occupati_m": 111983,
+      "occupati_f": 75359,
+      "tasso_m_pct": 56.5,
+      "tasso_f_pct": 36.5,
+      "occupati_stranieri": 9821,
+      "tasso_stranieri_pct": 51.3
+    }
+  },
+  "valori": {
+    "1": {
+      "circoscrizione": "I",
+      "superficie_kmq": 2.51,
+      "eta": {
+        "maschi": [
+          752,
+          698,
+          689,
+          656,
+          794,
+          856,
+          957,
+          1149,
+          1215,
+          1356,
+          1183,
+          1062,
+          911,
+          652,
+          477,
+          588
+        ],
+        "femmine": [
+          732,
+          700,
+          639,
+          649,
+          657,
+          750,
+          912,
+          955,
+          983,
+          1044,
+          1012,
+          946,
+          751,
+          594,
+          510,
+          981
+        ],
+        "totale": [
+          1484,
+          1398,
+          1328,
+          1305,
+          1451,
+          1606,
+          1869,
+          2104,
+          2198,
+          2400,
+          2195,
+          2008,
+          1662,
+          1246,
+          987,
+          1569
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 24205,
+        "conteggi": [
+          1540,
+          3921,
+          8461,
+          5903,
+          4380
+        ],
+        "quote": [
+          6.4,
+          16.2,
+          35.0,
+          24.4,
+          18.1
+        ]
+      },
+      "famiglie": {
+        "totale": 12935,
+        "conteggi": [
+          6588,
+          2547,
+          1701,
+          1275,
+          548,
+          276
+        ],
+        "quote": [
+          50.9,
+          19.7,
+          13.2,
+          9.9,
+          4.2,
+          2.1
+        ],
+        "componenti_medi": 2.03,
+        "quota_single_pct": 50.9
+      },
+      "abitazioni": {
+        "totali": 21592,
+        "occupate": 11831,
+        "vuote": 9761,
+        "edifici": 3538,
+        "quota_vuote_pct": 45.2,
+        "abitanti_per_abitazione_occupata": 2.27,
+        "quota_occupate_pct": 54.8
+      },
+      "stranieri": {
+        "totale": 4910,
+        "ue": 481,
+        "extraue": 4429,
+        "quota_pct": 18.3,
+        "eta": {
+          "0-14": 874,
+          "15-64": 3870,
+          "65+": 166
+        },
+        "cittadinanze": {
+          "Bangladesh": 2261,
+          "Sri Lanka": 223,
+          "Romania": 334,
+          "Ghana": 310,
+          "Filippine": 36,
+          "Marocco": 167,
+          "Tunisia": 267,
+          "Cina": 206,
+          "Maurizio": 121,
+          "Nigeria": 125
+        }
+      },
+      "lavoro": {
+        "occupati": 8338,
+        "pop_15_64": 18798,
+        "pop_15_64_m": 10139,
+        "pop_15_64_f": 8659,
+        "tasso_pct": 44.4,
+        "occupati_m": 5319,
+        "occupati_f": 3019,
+        "tasso_m_pct": 52.5,
+        "tasso_f_pct": 34.9,
+        "occupati_stranieri": 1968,
+        "tasso_stranieri_pct": 50.9
+      }
+    },
+    "2": {
+      "circoscrizione": "II",
+      "superficie_kmq": 21.43,
+      "eta": {
+        "maschi": [
+          1746,
+          1907,
+          1914,
+          2136,
+          1927,
+          2132,
+          2093,
+          2102,
+          2138,
+          2417,
+          2493,
+          2455,
+          2118,
+          1893,
+          1737,
+          2398
+        ],
+        "femmine": [
+          1670,
+          1743,
+          1874,
+          1880,
+          1829,
+          1995,
+          2147,
+          2187,
+          2283,
+          2504,
+          2724,
+          2657,
+          2381,
+          2191,
+          2014,
+          3646
+        ],
+        "totale": [
+          3416,
+          3650,
+          3788,
+          4016,
+          3756,
+          4127,
+          4240,
+          4289,
+          4421,
+          4921,
+          5217,
+          5112,
+          4499,
+          4084,
+          3751,
+          6044
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 63020,
+        "conteggi": [
+          3539,
+          12890,
+          24999,
+          16845,
+          4747
+        ],
+        "quote": [
+          5.6,
+          20.5,
+          39.7,
+          26.7,
+          7.5
+        ]
+      },
+      "famiglie": {
+        "totale": 26281,
+        "conteggi": [
+          6491,
+          7228,
+          5396,
+          4786,
+          1668,
+          712
+        ],
+        "quote": [
+          24.7,
+          27.5,
+          20.5,
+          18.2,
+          6.3,
+          2.7
+        ],
+        "componenti_medi": 2.62,
+        "quota_single_pct": 24.7
+      },
+      "abitazioni": {
+        "totali": 30550,
+        "occupate": 25746,
+        "vuote": 4804,
+        "edifici": 5910,
+        "quota_vuote_pct": 15.7,
+        "abitanti_per_abitazione_occupata": 2.69,
+        "quota_occupate_pct": 84.3
+      },
+      "stranieri": {
+        "totale": 1360,
+        "ue": 174,
+        "extraue": 1186,
+        "quota_pct": 2.0,
+        "eta": {
+          "0-14": 238,
+          "15-64": 1085,
+          "65+": 37
+        },
+        "cittadinanze": {
+          "Bangladesh": 231,
+          "Sri Lanka": 56,
+          "Romania": 140,
+          "Ghana": 255,
+          "Filippine": 7,
+          "Marocco": 52,
+          "Tunisia": 68,
+          "Cina": 326,
+          "Maurizio": 10,
+          "Nigeria": 14
+        }
+      },
+      "lavoro": {
+        "occupati": 17719,
+        "pop_15_64": 44598,
+        "pop_15_64_m": 22011,
+        "pop_15_64_f": 22587,
+        "tasso_pct": 39.7,
+        "occupati_m": 11668,
+        "occupati_f": 6051,
+        "tasso_m_pct": 53.0,
+        "tasso_f_pct": 26.8,
+        "occupati_stranieri": 554,
+        "tasso_stranieri_pct": 51.1
+      }
+    },
+    "3": {
+      "circoscrizione": "III",
+      "superficie_kmq": 20.29,
+      "eta": {
+        "maschi": [
+          1803,
+          1828,
+          1942,
+          2004,
+          2001,
+          2083,
+          2167,
+          2193,
+          2380,
+          2608,
+          2482,
+          2495,
+          2203,
+          2003,
+          1853,
+          2692
+        ],
+        "femmine": [
+          1699,
+          1799,
+          1832,
+          1888,
+          1798,
+          2030,
+          2191,
+          2233,
+          2453,
+          2548,
+          2614,
+          2814,
+          2545,
+          2345,
+          2145,
+          4057
+        ],
+        "totale": [
+          3502,
+          3627,
+          3774,
+          3892,
+          3799,
+          4113,
+          4358,
+          4426,
+          4833,
+          5156,
+          5096,
+          5309,
+          4748,
+          4348,
+          3998,
+          6749
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 65301,
+        "conteggi": [
+          3478,
+          12270,
+          24396,
+          18425,
+          6732
+        ],
+        "quote": [
+          5.3,
+          18.8,
+          37.4,
+          28.2,
+          10.3
+        ]
+      },
+      "famiglie": {
+        "totale": 28721,
+        "conteggi": [
+          8483,
+          7733,
+          5504,
+          4784,
+          1625,
+          592
+        ],
+        "quote": [
+          29.5,
+          26.9,
+          19.2,
+          16.7,
+          5.7,
+          2.1
+        ],
+        "componenti_medi": 2.48,
+        "quota_single_pct": 29.5
+      },
+      "abitazioni": {
+        "totali": 34410,
+        "occupate": 28095,
+        "vuote": 6315,
+        "edifici": 5593,
+        "quota_vuote_pct": 18.4,
+        "abitanti_per_abitazione_occupata": 2.55,
+        "quota_occupate_pct": 81.6
+      },
+      "stranieri": {
+        "totale": 3621,
+        "ue": 374,
+        "extraue": 3247,
+        "quota_pct": 5.0,
+        "eta": {
+          "0-14": 758,
+          "15-64": 2783,
+          "65+": 80
+        },
+        "cittadinanze": {
+          "Bangladesh": 852,
+          "Sri Lanka": 133,
+          "Romania": 327,
+          "Ghana": 988,
+          "Filippine": 11,
+          "Marocco": 255,
+          "Tunisia": 156,
+          "Cina": 103,
+          "Maurizio": 126,
+          "Nigeria": 219
+        }
+      },
+      "lavoro": {
+        "occupati": 19401,
+        "pop_15_64": 45730,
+        "pop_15_64_m": 22616,
+        "pop_15_64_f": 23114,
+        "tasso_pct": 42.4,
+        "occupati_m": 12433,
+        "occupati_f": 6968,
+        "tasso_m_pct": 55.0,
+        "tasso_f_pct": 30.1,
+        "occupati_stranieri": 1423,
+        "tasso_stranieri_pct": 51.1
+      }
+    },
+    "4": {
+      "circoscrizione": "IV",
+      "superficie_kmq": 26.17,
+      "eta": {
+        "maschi": [
+          2168,
+          2276,
+          2531,
+          2651,
+          2615,
+          2791,
+          2874,
+          2810,
+          3171,
+          3511,
+          3470,
+          3427,
+          3093,
+          2919,
+          2777,
+          3971
+        ],
+        "femmine": [
+          2085,
+          2186,
+          2468,
+          2445,
+          2462,
+          2787,
+          2907,
+          2949,
+          3345,
+          3691,
+          3739,
+          3935,
+          3640,
+          3505,
+          3238,
+          6251
+        ],
+        "totale": [
+          4253,
+          4462,
+          4999,
+          5096,
+          5077,
+          5578,
+          5781,
+          5759,
+          6516,
+          7202,
+          7209,
+          7362,
+          6733,
+          6424,
+          6015,
+          10222
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 90909,
+        "conteggi": [
+          4113,
+          15061,
+          31096,
+          28698,
+          11941
+        ],
+        "quote": [
+          4.5,
+          16.6,
+          34.2,
+          31.6,
+          13.1
+        ]
+      },
+      "famiglie": {
+        "totale": 40417,
+        "conteggi": [
+          12142,
+          11233,
+          7929,
+          6662,
+          1862,
+          589
+        ],
+        "quote": [
+          30.0,
+          27.8,
+          19.6,
+          16.5,
+          4.6,
+          1.5
+        ],
+        "componenti_medi": 2.42,
+        "quota_single_pct": 30.0
+      },
+      "abitazioni": {
+        "totali": 49215,
+        "occupate": 39667,
+        "vuote": 9548,
+        "edifici": 8443,
+        "quota_vuote_pct": 19.4,
+        "abitanti_per_abitazione_occupata": 2.49,
+        "quota_occupate_pct": 80.6
+      },
+      "stranieri": {
+        "totale": 1582,
+        "ue": 368,
+        "extraue": 1214,
+        "quota_pct": 1.6,
+        "eta": {
+          "0-14": 197,
+          "15-64": 1320,
+          "65+": 65
+        },
+        "cittadinanze": {
+          "Bangladesh": 106,
+          "Sri Lanka": 118,
+          "Romania": 290,
+          "Ghana": 183,
+          "Filippine": 13,
+          "Marocco": 93,
+          "Tunisia": 75,
+          "Cina": 39,
+          "Maurizio": 40,
+          "Nigeria": 103
+        }
+      },
+      "lavoro": {
+        "occupati": 28142,
+        "pop_15_64": 62313,
+        "pop_15_64_m": 30413,
+        "pop_15_64_f": 31900,
+        "tasso_pct": 45.2,
+        "occupati_m": 17146,
+        "occupati_f": 10996,
+        "tasso_m_pct": 56.4,
+        "tasso_f_pct": 34.5,
+        "occupati_stranieri": 614,
+        "tasso_stranieri_pct": 46.5
+      }
+    },
+    "5": {
+      "circoscrizione": "V",
+      "superficie_kmq": 17.5,
+      "eta": {
+        "maschi": [
+          2387,
+          2667,
+          2937,
+          2928,
+          2923,
+          2838,
+          3056,
+          3119,
+          3435,
+          3901,
+          3872,
+          3916,
+          3419,
+          3196,
+          2651,
+          4161
+        ],
+        "femmine": [
+          2222,
+          2520,
+          2708,
+          2872,
+          2775,
+          2836,
+          3065,
+          3251,
+          3683,
+          4105,
+          4328,
+          4209,
+          4013,
+          3701,
+          3493,
+          6806
+        ],
+        "totale": [
+          4609,
+          5187,
+          5645,
+          5800,
+          5698,
+          5674,
+          6121,
+          6370,
+          7118,
+          8006,
+          8200,
+          8125,
+          7432,
+          6897,
+          6144,
+          10967
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 99254,
+        "conteggi": [
+          4926,
+          17097,
+          34209,
+          30251,
+          12771
+        ],
+        "quote": [
+          5.0,
+          17.2,
+          34.5,
+          30.5,
+          12.9
+        ]
+      },
+      "famiglie": {
+        "totale": 44221,
+        "conteggi": [
+          13455,
+          12138,
+          8680,
+          7120,
+          2127,
+          701
+        ],
+        "quote": [
+          30.4,
+          27.4,
+          19.6,
+          16.1,
+          4.8,
+          1.6
+        ],
+        "componenti_medi": 2.42,
+        "quota_single_pct": 30.4
+      },
+      "abitazioni": {
+        "totali": 51696,
+        "occupate": 43410,
+        "vuote": 8286,
+        "edifici": 6987,
+        "quota_vuote_pct": 16.0,
+        "abitanti_per_abitazione_occupata": 2.49,
+        "quota_occupate_pct": 84.0
+      },
+      "stranieri": {
+        "totale": 5175,
+        "ue": 526,
+        "extraue": 4649,
+        "quota_pct": 4.8,
+        "eta": {
+          "0-14": 1083,
+          "15-64": 3916,
+          "65+": 176
+        },
+        "cittadinanze": {
+          "Bangladesh": 855,
+          "Sri Lanka": 1293,
+          "Romania": 428,
+          "Ghana": 558,
+          "Filippine": 264,
+          "Marocco": 349,
+          "Tunisia": 193,
+          "Cina": 51,
+          "Maurizio": 206,
+          "Nigeria": 168
+        }
+      },
+      "lavoro": {
+        "occupati": 30584,
+        "pop_15_64": 68544,
+        "pop_15_64_m": 33407,
+        "pop_15_64_f": 35137,
+        "tasso_pct": 44.6,
+        "occupati_m": 18660,
+        "occupati_f": 11924,
+        "tasso_m_pct": 55.9,
+        "tasso_f_pct": 33.9,
+        "occupati_stranieri": 2000,
+        "tasso_stranieri_pct": 51.1
+      }
+    },
+    "6": {
+      "circoscrizione": "VI",
+      "superficie_kmq": 24.09,
+      "eta": {
+        "maschi": [
+          1298,
+          1530,
+          1774,
+          1838,
+          1794,
+          1765,
+          1742,
+          1822,
+          2098,
+          2452,
+          2528,
+          2583,
+          2227,
+          1943,
+          2006,
+          3474
+        ],
+        "femmine": [
+          1185,
+          1434,
+          1739,
+          1786,
+          1655,
+          1704,
+          1815,
+          1936,
+          2347,
+          2785,
+          2930,
+          3007,
+          2658,
+          2461,
+          2437,
+          5357
+        ],
+        "totale": [
+          2483,
+          2964,
+          3513,
+          3624,
+          3449,
+          3469,
+          3557,
+          3758,
+          4445,
+          5237,
+          5458,
+          5590,
+          4885,
+          4404,
+          4443,
+          8831
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 65278,
+        "conteggi": [
+          2444,
+          8301,
+          16866,
+          23385,
+          14282
+        ],
+        "quote": [
+          3.7,
+          12.7,
+          25.8,
+          35.8,
+          21.9
+        ]
+      },
+      "famiglie": {
+        "totale": 29211,
+        "conteggi": [
+          8714,
+          8380,
+          6011,
+          4684,
+          1092,
+          330
+        ],
+        "quote": [
+          29.8,
+          28.7,
+          20.6,
+          16.0,
+          3.7,
+          1.1
+        ],
+        "componenti_medi": 2.39,
+        "quota_single_pct": 29.8
+      },
+      "abitazioni": {
+        "totali": 33393,
+        "occupate": 28781,
+        "vuote": 4612,
+        "edifici": 4964,
+        "quota_vuote_pct": 13.8,
+        "abitanti_per_abitazione_occupata": 2.44,
+        "quota_occupate_pct": 86.2
+      },
+      "stranieri": {
+        "totale": 832,
+        "ue": 297,
+        "extraue": 535,
+        "quota_pct": 1.2,
+        "eta": {
+          "0-14": 83,
+          "15-64": 704,
+          "65+": 45
+        },
+        "cittadinanze": {
+          "Bangladesh": 41,
+          "Sri Lanka": 93,
+          "Romania": 225,
+          "Ghana": 44,
+          "Filippine": 16,
+          "Marocco": 20,
+          "Tunisia": 32,
+          "Cina": 23,
+          "Maurizio": 24,
+          "Nigeria": 10
+        }
+      },
+      "lavoro": {
+        "occupati": 22376,
+        "pop_15_64": 43472,
+        "pop_15_64_m": 20849,
+        "pop_15_64_f": 22623,
+        "tasso_pct": 51.5,
+        "occupati_m": 12548,
+        "occupati_f": 9828,
+        "tasso_m_pct": 60.2,
+        "tasso_f_pct": 43.4,
+        "occupati_stranieri": 329,
+        "tasso_stranieri_pct": 46.7
+      }
+    },
+    "7": {
+      "circoscrizione": "VII",
+      "superficie_kmq": 33.01,
+      "eta": {
+        "maschi": [
+          1673,
+          1861,
+          2044,
+          2137,
+          2060,
+          1996,
+          2241,
+          2134,
+          2403,
+          2564,
+          2782,
+          2907,
+          2478,
+          2145,
+          1929,
+          2778
+        ],
+        "femmine": [
+          1509,
+          1788,
+          1937,
+          2019,
+          1891,
+          1947,
+          2079,
+          2217,
+          2492,
+          2809,
+          3017,
+          3144,
+          2703,
+          2342,
+          2191,
+          3849
+        ],
+        "totale": [
+          3182,
+          3649,
+          3981,
+          4156,
+          3951,
+          3943,
+          4320,
+          4351,
+          4895,
+          5373,
+          5799,
+          6051,
+          5181,
+          4487,
+          4120,
+          6627
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 68047,
+        "conteggi": [
+          3290,
+          10722,
+          23072,
+          21608,
+          9355
+        ],
+        "quote": [
+          4.8,
+          15.8,
+          33.9,
+          31.8,
+          13.7
+        ]
+      },
+      "famiglie": {
+        "totale": 29287,
+        "conteggi": [
+          8285,
+          7871,
+          5940,
+          4914,
+          1558,
+          719
+        ],
+        "quote": [
+          28.3,
+          26.9,
+          20.3,
+          16.8,
+          5.3,
+          2.5
+        ],
+        "componenti_medi": 2.51,
+        "quota_single_pct": 28.3
+      },
+      "abitazioni": {
+        "totali": 37350,
+        "occupate": 28633,
+        "vuote": 8717,
+        "edifici": 11664,
+        "quota_vuote_pct": 23.3,
+        "abitanti_per_abitazione_occupata": 2.59,
+        "quota_occupate_pct": 76.7
+      },
+      "stranieri": {
+        "totale": 1204,
+        "ue": 313,
+        "extraue": 891,
+        "quota_pct": 1.6,
+        "eta": {
+          "0-14": 152,
+          "15-64": 975,
+          "65+": 77
+        },
+        "cittadinanze": {
+          "Bangladesh": 44,
+          "Sri Lanka": 403,
+          "Romania": 208,
+          "Ghana": 36,
+          "Filippine": 41,
+          "Marocco": 30,
+          "Tunisia": 63,
+          "Cina": 15,
+          "Maurizio": 58,
+          "Nigeria": 5
+        }
+      },
+      "lavoro": {
+        "occupati": 21114,
+        "pop_15_64": 48020,
+        "pop_15_64_m": 23702,
+        "pop_15_64_f": 24318,
+        "tasso_pct": 44.0,
+        "occupati_m": 12937,
+        "occupati_f": 8177,
+        "tasso_m_pct": 54.6,
+        "tasso_f_pct": 33.6,
+        "occupati_stranieri": 457,
+        "tasso_stranieri_pct": 46.9
+      }
+    },
+    "8": {
+      "circoscrizione": "VIII",
+      "superficie_kmq": 15.24,
+      "eta": {
+        "maschi": [
+          2029,
+          2426,
+          2713,
+          2949,
+          2987,
+          2931,
+          2956,
+          3053,
+          3412,
+          4156,
+          4338,
+          4364,
+          3939,
+          3406,
+          3046,
+          5341
+        ],
+        "femmine": [
+          1940,
+          2324,
+          2796,
+          2819,
+          2804,
+          2986,
+          2833,
+          3154,
+          3936,
+          4811,
+          4903,
+          5107,
+          4625,
+          4199,
+          4013,
+          9417
+        ],
+        "totale": [
+          3969,
+          4750,
+          5509,
+          5768,
+          5791,
+          5917,
+          5789,
+          6207,
+          7348,
+          8967,
+          9241,
+          9471,
+          8564,
+          7605,
+          7059,
+          14758
+        ]
+      },
+      "istruzione": {
+        "popolazione_9_piu": 109032,
+        "conteggi": [
+          3929,
+          12134,
+          24176,
+          35567,
+          33226
+        ],
+        "quote": [
+          3.6,
+          11.1,
+          22.2,
+          32.6,
+          30.5
+        ]
+      },
+      "famiglie": {
+        "totale": 52045,
+        "conteggi": [
+          19640,
+          13577,
+          9626,
+          7052,
+          1652,
+          498
+        ],
+        "quote": [
+          37.7,
+          26.1,
+          18.5,
+          13.5,
+          3.2,
+          1.0
+        ],
+        "componenti_medi": 2.21,
+        "quota_single_pct": 37.7
+      },
+      "abitazioni": {
+        "totali": 66874,
+        "occupate": 51291,
+        "vuote": 15583,
+        "edifici": 5663,
+        "quota_vuote_pct": 23.3,
+        "abitanti_per_abitazione_occupata": 2.28,
+        "quota_occupate_pct": 76.7
+      },
+      "stranieri": {
+        "totale": 5692,
+        "ue": 912,
+        "extraue": 4780,
+        "quota_pct": 4.9,
+        "eta": {
+          "0-14": 890,
+          "15-64": 4485,
+          "65+": 317
+        },
+        "cittadinanze": {
+          "Bangladesh": 1124,
+          "Sri Lanka": 754,
+          "Romania": 691,
+          "Ghana": 124,
+          "Filippine": 1317,
+          "Marocco": 76,
+          "Tunisia": 184,
+          "Cina": 170,
+          "Maurizio": 149,
+          "Nigeria": 65
+        }
+      },
+      "lavoro": {
+        "occupati": 39668,
+        "pop_15_64": 73063,
+        "pop_15_64_m": 35085,
+        "pop_15_64_f": 37978,
+        "tasso_pct": 54.3,
+        "occupati_m": 21272,
+        "occupati_f": 18396,
+        "tasso_m_pct": 60.6,
+        "tasso_f_pct": 48.4,
+        "occupati_stranieri": 2476,
+        "tasso_stranieri_pct": 55.2
+      }
+    }
+  }
+}
