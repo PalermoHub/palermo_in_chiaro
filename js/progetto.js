@@ -154,7 +154,7 @@
       riga('Identificativo', p.id),
       riga('CUP', p.cup || 'non presente'),
       riga('CUI', p.cui ? el('span', {}, [p.cui, ' ', el('a', { href: 'progetti.html?q=' + encodeURIComponent(p.cui), class: 'cerca-cod', text: 'cerca' })]) : 'non presente'),
-      riga('Circoscrizioni', p.circoscrizioni.length ? p.circoscrizioni.join(', ') : (p.opere ? 'non indicata nel Programma' : 'non disponibile')),
+      riga('Circoscrizioni', p.circoscrizioni.length ? nomiTerritorio(p.circoscrizioni, 'circ', 'in Circoscrizione') : (p.opere ? 'non indicata nel Programma' : 'non disponibile')),
       riga('Quartiere', p.quartieri.length ? nomiTerritorio(p.quartieri, 'quartiere', 'nel quartiere') : (p.opere ? 'non indicato nel Programma' : 'non disponibile')),
       riga('UPL', p.upl.length ? nomiTerritorio(p.upl, 'upl', 'nella UPL') : (p.opere ? 'non indicata nel Programma' : 'non disponibile')),
       riga('Posizione', p.localizzato ? 'sulla mappa' : 'non geolocalizzato'),

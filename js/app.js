@@ -328,12 +328,6 @@
       p.opere ? p.opere.importo_triennio_eur : -1,
       p.pnrr && p.pnrr.importo_finanziato_eur != null ? p.pnrr.importo_finanziato_eur : -1,
       p.coesione && p.coesione.length ? Math.max(...p.coesione.map(x => x.finanziamento_pubblico_netto_eur || 0)) : -1);
-    /* se il progetto è anche sulla mappa lo si apre qui, altrimenti nella sua pagina */
-    function apriVoce(p) {
-      const geo = p.id.startsWith('op-') ? p.id.slice(3) : null;
-      if (layerOn && PR && geo && PR.progetti.some(x => x.id === geo)) { apriProgetto(geo); return; }
-      location.href = 'progetto.html?id=' + encodeURIComponent(p.id);
-    }
     /* un intervento con più circoscrizioni non si divide: vale solo per il suo insieme */
     const inCirc = (p, c) => p.circoscrizioni.length === 1 && p.circoscrizioni[0] === c;
     /* il territorio scelto a scalare: circoscrizione, poi quartiere, poi UPL (ognuno stringe il precedente) */
@@ -362,12 +356,10 @@
         const vis = r.slice(0, 12);
         out.replaceChildren(...(vis.length ? vis.map(p => {
           const imp = importoMax(p);
-          const b = el('button', { type: 'button', role: 'listitem', class: 'voce-prog', title: 'Apri la scheda: ' + p.titolo }, [
+          return el('a', { href: 'progetto.html?id=' + encodeURIComponent(p.id), role: 'listitem', class: 'voce-prog', title: 'Apri la scheda del progetto: ' + p.titolo }, [
             el('span', {}, [el('span', { class: 'tit', text: p.titolo.length > 96 ? p.titolo.slice(0, 94) + '…' : p.titolo }),
               el('span', { class: 'fonti-riga mini' }, p.fonti.map(f => el('span', { class: 'badge ' + f, text: ETICH[f] || f })))]),
             el('b', { text: imp > 0 ? mln(imp, 1) : 'importo non disponibile' })]);
-          b.addEventListener('click', () => apriVoce(p));
-          return b;
         }) : [el('p', { class: 'nota', text: 'Nessun progetto trovato con questa ricerca.' })]));
         conta.textContent = (r.length ? `${it(Math.min(12, r.length))} di ${it(r.length)} progetti` : 'Nessun progetto') +
           (q ? ' con questa ricerca' : '') + (r.length ? ', per importo decrescente.' : '.');
@@ -422,11 +414,9 @@
       const base = PR.progetti.slice().sort((a, b) => b.importo_triennio_eur - a.importo_triennio_eur);
       const out = el('div', { class: 'elenco-prog', role: 'list' });
       base.slice(0, 12).forEach(pr => {
-        const b = el('button', { type: 'button', role: 'listitem', class: 'voce-prog', title: 'Apri sulla mappa: ' + pr.descrizione }, [
+        out.append(el('a', { href: 'progetto.html?id=' + encodeURIComponent('op-' + pr.id), role: 'listitem', class: 'voce-prog', title: 'Apri la scheda del progetto: ' + pr.descrizione }, [
           el('span', {}, [el('span', { class: 'tit', text: pr.descrizione.length > 96 ? pr.descrizione.slice(0, 94) + '…' : pr.descrizione })]),
-          el('b', { text: mln(pr.importo_triennio_eur, 1) })]);
-        b.addEventListener('click', () => apriProgetto(pr.id));
-        out.append(b);
+          el('b', { text: mln(pr.importo_triennio_eur, 1) })]));
       });
       const quota = it(100 * base.reduce((s, p) => s + p.importo_triennio_eur, 0) / tot.importo_triennio_eur, 0);
       return [el('h3', { text: `Progetti con posizione (${base.length})` }), out,
@@ -739,7 +729,11 @@
       const dl = el('dl', {}, [
         riga('Settore', p.settore.replace(/^\d+\.\d+ - /, '')), riga('Importo 2026-2028', mln(p.importo_triennio_eur, 2)),
         riga('Importo complessivo', mln(p.importo_complessivo_eur, 2)),
-        riga('Circoscrizione', p.circoscrizioni.length ? p.circoscrizioni.join(', ') : 'non indicata'),
+        /* la circoscrizione porta all'elenco filtrato, come quartiere e UPL nella scheda completa */
+        el('div', { class: 'riga' }, [el('dt', { text: 'Circoscrizione' }), el('dd', {}, [
+          p.circoscrizioni.length === 1
+            ? el('a', { href: 'progetti.html?circ=' + encodeURIComponent(p.circoscrizioni[0]), text: p.circoscrizioni[0] })
+            : p.circoscrizioni.length ? p.circoscrizioni.join(', ') : 'non indicata'])]),
         riga('CUP', p.cup || 'non ancora richiesto'), riga('Sulla mappa come', tipo)]);
       const extra = [];
       /* le fonti della voce, come nell'elenco e nella scheda completa */
