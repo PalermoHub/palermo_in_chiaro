@@ -332,6 +332,12 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .badge.cerca { background: var(--carta-2); border-color: var(--linea); color: var(--inchiostro); }
 .badge.verifica { background: var(--cupola); border-color: var(--cupola); color: var(--carta); padding: 2px 10px; font-weight: 600; }
 .badge.nessuno { border-color: var(--muto); color: var(--muto); }
+/* link in evidenza: pillola come i badge, per portare dall'indicatore all'elenco completo */
+.badge-link { display: inline-flex; align-items: center; gap: 7px; padding: 4px 13px 4px 14px;
+  border: 1px solid var(--cupola); border-radius: 99px; background: var(--carta-2);
+  font-size: 0.84rem; font-weight: 600; line-height: 1.35; color: var(--cupola); text-decoration: none; }
+.badge-link::after { content: '→'; }
+.badge-link:hover, .badge-link:focus-visible { background: var(--cupola); color: var(--carta); text-decoration: none; }
 .altro { margin-top: 16px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--carta); background: var(--inchiostro); border: 0; border-radius: 99px; padding: 9px 20px; cursor: pointer; }
 .altro:hover { background: var(--maiolica-scura); }
 .altro[hidden] { display: none; }

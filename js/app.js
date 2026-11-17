@@ -370,7 +370,7 @@
       return el('div', { class: 'coppia' }, [el('h3', { text: anno }), el('div', { class: 'grande', text: mln(a.importo_base_gara_eur_senza_anomali, 0) }),
         el('p', { class: 'nota', text: `a base di gara, ${it(a.cig_senza_anomali)} CIG${a.cig_con_importo_anomalo_non_corretti.length ? `. Esclusi ${a.cig_con_importo_anomalo_non_corretti.length} CIG con importo anomalo in fonte (${mln(a.importo_base_gara_eur_come_in_fonte, 0)} con essi)` : ''}.` }),
         el('p', { class: 'nota', text: `Più usata: ${a.per_procedura[0].voce.toLowerCase()} (${a.per_procedura[0].cig} CIG).` }),
-        el('p', { class: 'nota' }, [el('a', { href: 'progetti.html#cig', text: `Vedi i ${it(a.cig)} CIG con oggetto e importo` }), '.'])]);
+        el('p', { class: 'nota' }, [el('a', { class: 'badge-link', href: 'progetti.html#cig', text: `Vedi i ${it(a.cig)} CIG con oggetto e importo` })])]);
     };
     $('appalti-dati').replaceChildren(coppia('2025'), coppia('2026'));
     $('appalti-limiti').replaceChildren(el('h3', { text: 'Cosa non misura' }), el('ul', {}, D.app.non_misura.map(t => el('li', { text: t }))));
