@@ -70,7 +70,7 @@ PAGINA = Template('''<!doctype html>
     <a class="marchio" href="../../" aria-label="Palermo in chiaro, inizio pagina">Palermo in chiaro</a>
     <span class="beta" title="I dati sono in revisione: prima di citare un numero controlla la fonte">Versione beta</span>
     <nav aria-label="Sezioni">
-      <a href="../../index.html#mappa">Circoscrizioni</a>
+      <a href="../../">Home</a>
       <a href="../../index.html#opere">Opere</a>
       <a href="../../index.html#bilancio">Bilancio</a>
       <a href="../../index.html#appalti">Appalti</a>
