@@ -666,22 +666,21 @@
 
     /* le otto circoscrizioni a confronto, misura per misura: una striscia di punti per riga */
     {
-      const st = (nome, sub, f, formatta, media) => ({ nome, sub, formatta, media, punti: ROM.map(c => ({ id: c, nome: 'Circ. ' + c, val: f(c) || 0 })) });
       const mediaOtto = (f) => ROM.reduce((s, c) => s + (f(c) || 0), 0) / ROM.length;
       const n0 = (n) => it(n, Number.isInteger(n) ? 0 : 1);
       const box = $('opere-strisce');
       box.append(el('h3', { text: 'Le otto circoscrizioni a confronto' }),
-        el('p', { class: 'nota', text: 'Ogni riga è una misura, ogni punto una circoscrizione: più a destra è il valore più alto, e ogni riga ha la sua scala da 0 al massimo. Un clic su un punto apre la scheda della circoscrizione. Le opere sono solo quelle con una sola circoscrizione; un valore alto o basso è un segnale da approfondire, non un giudizio. La tacca è la media delle otto; per densità e indice di vecchiaia è il valore di Palermo.' }));
-      window.GraficiPIC.strisce(box, {
-        mediaNome: 'media',
-        apri: (c) => { location.href = paginaCirc(c); },
-        righe: [
-          st('Importo delle opere', 'Programma 2026-2028', c => O(c).importo_triennio_eur, n => mln(n, 0), mediaOtto(c => O(c).importo_triennio_eur)),
-          st('Opere per residente', 'importo diviso residenti 2021', c => O(c).importo_triennio_per_residente_eur, n => it(n) + ' €', mediaPc),
-          st('Interventi', 'del Programma triennale', c => O(c).interventi, n0, mediaOtto(c => O(c).interventi)),
-          st('Residenti', 'censimento 2021', c => P(c).residenti, n => it(n), mediaOtto(c => P(c).residenti)),
-          st('Densità', 'abitanti per km²', c => P(c).densita_ab_kmq, n => it(n), D.prof.totale_palermo.densita_ab_kmq),
-          st('Indice di vecchiaia', 'over 65 ogni 100 under 15', c => P(c).indice_vecchiaia, n => it(n), D.prof.totale_palermo.indice_vecchiaia),
+        el('p', { class: 'nota', text: 'Una riga per circoscrizione, una colonna per misura. Il colore va dal più basso al più alto di ciascuna colonna: i colori di colonne diverse non si confrontano. Un clic sul nome apre la scheda della circoscrizione. Le opere sono solo quelle con una sola circoscrizione; un valore alto o basso è un segnale da approfondire, non un giudizio. In fondo la media delle otto; per densità e indice di vecchiaia è il valore di Palermo.' }));
+      const col = (nome, sub, f, formatta, media) => ({ nome, sub, formatta, media, valori: Object.fromEntries(ROM.map(c => [c, f(c) || 0])) });
+      window.GraficiPIC.calore(box, {
+        righe: ROM, apri: paginaCirc, mediaNome: 'Media delle 8',
+        colonne: [
+          col('Importo opere', '2026-2028', c => O(c).importo_triennio_eur, n => mln(n, 0), mediaOtto(c => O(c).importo_triennio_eur)),
+          col('Opere per residente', 'euro', c => O(c).importo_triennio_per_residente_eur, n => it(n) + ' €', mediaPc),
+          col('Interventi', 'Programma', c => O(c).interventi, n0, mediaOtto(c => O(c).interventi)),
+          col('Residenti', 'censimento 2021', c => P(c).residenti, n => it(n), mediaOtto(c => P(c).residenti)),
+          col('Densità', 'ab. per km²', c => P(c).densita_ab_kmq, n => it(n), D.prof.totale_palermo.densita_ab_kmq),
+          col('Indice di vecchiaia', 'over 65 ogni 100 under 15', c => P(c).indice_vecchiaia, n => it(n), D.prof.totale_palermo.indice_vecchiaia),
         ],
       });
     }

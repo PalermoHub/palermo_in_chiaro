@@ -1547,3 +1547,23 @@ body > main { flex: 1 0 auto; }
 .str-pista i.p-tutte, .str-leg i.p-tutte { display: inline-flex; align-items: center; justify-content: center; text-align: center; }
 .str-pista i.p-tutte { position: absolute; }
 .str-leg i.p-tutte { position: static; }
+
+/* tabella a colori (js/grafici.js, calore) */
+.cal-scroll { overflow-x: auto; }
+.calore { width: 100%; border-collapse: separate; border-spacing: 2px; font-variant-numeric: tabular-nums; min-width: 620px; }
+.calore th, .calore td { padding: 8px 10px; font-size: 0.9rem; }
+.calore thead th { text-align: right; font-weight: 600; vertical-align: bottom; line-height: 1.2; }
+.calore thead th:first-child { text-align: left; }
+.calore thead small { display: block; color: var(--muto); font-weight: 400; font-size: 0.74rem; }
+.calore tbody th { text-align: left; font-weight: 600; white-space: nowrap; }
+.calore tbody th a { color: var(--inchiostro); text-decoration: none; }
+.calore tbody th a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.calore td.num { text-align: right; font-weight: 600; color: var(--inchiostro); border-radius: 2px; }
+.calore tbody td.cal-5, .calore tbody td.cal-6 { color: var(--carta); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .calore tbody td.cal-4 { color: var(--carta); } }
+:root[data-theme="dark"] .calore tbody td.cal-4 { color: var(--carta); }
+.calore tfoot th, .calore tfoot td { color: var(--muto); font-weight: 500; border-top: 1px solid var(--linea); text-align: right; }
+.calore tfoot th { text-align: left; }
+.cal-leg { display: flex; align-items: center; gap: 4px; margin-top: 10px; font-size: 0.78rem; color: var(--muto); }
+.cal-leg i { width: 22px; height: 12px; border-radius: 2px; display: inline-block; }
+.cal-leg span:first-child { margin-right: 6px; } .cal-leg span:last-child { margin-left: 6px; }

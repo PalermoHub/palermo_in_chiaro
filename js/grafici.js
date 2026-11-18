@@ -149,5 +149,35 @@
     host.append(box);
   }
 
-  window.GraficiPIC = { ciambella, colonne, strisce };
+
+  /* tabella a colori: una riga per unità, una colonna per misura, il numero in ogni cella.
+     Il colore va dal più basso al più alto di ciascuna colonna (scala propria). */
+  function calore(host, { righe, colonne, apri = null, mediaNome = 'Media' }) {
+    const sc = ['--s1', '--s2', '--s3', '--s4', '--s5', '--s6'];
+    const t = H('table', { class: 'calore' });
+    t.append(H('thead', {}, H('tr', {}, [H('th', { scope: 'col', text: 'Circoscrizione' })].concat(colonne.map((c) =>
+      H('th', { scope: 'col', class: 'num' }, [H('span', { text: c.nome }), c.sub ? H('small', { text: c.sub }) : null]))))));
+    const corpo = H('tbody');
+    const lim = colonne.map((c) => { const v = righe.map((r) => c.valori[r]); return [Math.min(...v), Math.max(...v)]; });
+    righe.forEach((r) => {
+      const tr = H('tr', { class: apri ? 'clic' : null });
+      tr.append(H('th', { scope: 'row' }, apri ? H('a', { href: apri(r), text: 'Circ. ' + r }) : 'Circ. ' + r));
+      colonne.forEach((c, k) => {
+        const v = c.valori[r], [mn, mx] = lim[k];
+        const b = mx > mn ? Math.min(5, Math.floor(6 * (v - mn) / (mx - mn))) : 2;
+        const cls = 'num cal-' + (b + 1);
+        const td = H('td', { class: cls, style: `background:var(${sc[b]})`, text: c.formatta(v) });
+        td.setAttribute('title', `Circ. ${r} · ${c.nome}: ${c.formatta(v)}${v === mx ? ' (il più alto)' : v === mn ? ' (il più basso)' : ''}`);
+        tr.append(td);
+      });
+      corpo.append(tr);
+    });
+    t.append(corpo);
+    t.append(H('tfoot', {}, H('tr', {}, [H('th', { scope: 'row', text: mediaNome })].concat(colonne.map((c) =>
+      H('td', { class: 'num', text: c.media != null ? c.formatta(c.media) : '' }))))));
+    const leg = H('div', { class: 'cal-leg' }, [H('span', { text: 'più basso' })].concat(sc.map((x) => H('i', { style: `background:var(${x})` })), [H('span', { text: 'più alto' })]));
+    host.append(H('div', { class: 'cal-scroll' }, t), leg);
+  }
+
+  window.GraficiPIC = { ciambella, colonne, strisce, calore };
 })();
