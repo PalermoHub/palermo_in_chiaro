@@ -94,5 +94,37 @@
     host.append(H('div', { class: 'col-scroll' }, svg));
   }
 
-  window.GraficiPIC = { ciambella, colonne };
+  /* una riga per misura: un punto per unità, quello scelto in evidenza, la tacca della media */
+  function strisce(host, { righe, scelta, conTip = null, nota = '' }) {
+    const box = H('div', { class: 'strisce' });
+    box.append(H('div', { class: 'str-leg' }, [
+      H('span', {}, [H('i', { class: 'p-scelto' }), 'questa circoscrizione']),
+      H('span', {}, [H('i', { class: 'p-altro' }), 'le altre']),
+      H('span', {}, [H('i', { class: 'p-media' }), 'media delle 8']),
+    ]));
+    righe.forEach((r) => {
+      const mx = Math.max(...r.punti.map((p) => p.val), r.media || 0) || 1;
+      const pos = (v) => Math.min(100, Math.max(0, 100 * v / mx));
+      const pista = H('div', { class: 'str-pista' });
+      r.punti.forEach((p) => {
+        const d = H('i', { class: p.id === scelta ? 'p-scelto' : 'p-altro', style: `left:${pos(p.val)}%` });
+        if (conTip) conTip(d, p.nome, [['Valore', r.formatta(p.val)], ['Misura', r.nome]]);
+        pista.append(d);
+      });
+      if (r.media != null) pista.append(H('i', { class: 'p-media', style: `left:${pos(r.media)}%` }));
+      const q = r.punti.find((p) => p.id === scelta);
+      const posiz = 1 + r.punti.filter((p) => p.val > q.val + 1e-6).length;
+      const riga = H('div', { class: 'str-riga', role: 'group' }, [
+        H('div', { class: 'str-nome' }, [H('b', { text: r.nome }), r.sub ? H('small', { text: r.sub }) : null]),
+        pista,
+        H('div', { class: 'str-val' }, [H('b', { text: r.formatta(q.val) }), H('small', { text: `media ${r.formatta(r.media)} · ${posiz}ª su ${r.punti.length}` })]),
+      ]);
+      riga.setAttribute('aria-label', `${r.nome}: ${r.formatta(q.val)}, media ${r.formatta(r.media)}, ${posiz}ª su ${r.punti.length}`);
+      box.append(riga);
+    });
+    if (nota) box.append(H('p', { class: 'grafico-nota sotto', text: nota }));
+    host.append(box);
+  }
+
+  window.GraficiPIC = { ciambella, colonne, strisce };
 })();

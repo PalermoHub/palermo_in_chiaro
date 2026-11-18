@@ -309,6 +309,28 @@
     const GT = $('grafici-territorio');
 
     if (G) {
+      /* 0. dove sta questa circoscrizione tra le otto, misura per misura */
+      const stri = (nome, sub, f, formatta, media) => ({
+        nome, sub, formatta, media,
+        punti: ROM.map((c) => ({ id: c, nome: 'Circ. ' + c, val: f(c) || 0 })),
+      });
+      window.GraficiPIC.strisce(figura(G, {
+        titolo: `La Circoscrizione ${CIRCO} tra le otto`,
+        nota: 'Ogni riga è una misura, ogni punto una circoscrizione: più a destra è il valore più alto. Ogni riga ha la sua scala, da 0 al massimo.',
+        larga: true,
+      }), {
+        scelta: CIRCO, conTip,
+        nota: 'La posizione 1ª è il valore più alto. Un valore alto o basso è un segnale da approfondire, non un giudizio. Le opere sono solo quelle con una sola circoscrizione.',
+        righe: [
+          stri('Importo delle opere', 'Programma 2026-2028', (c) => OP(c).importo_triennio_eur, (n) => mln(n, 1), somma(ROM.map((c) => OP(c).importo_triennio_eur)) / 8),
+          stri('Opere per residente', 'importo diviso residenti 2021', (c) => OP(c).importo_triennio_per_residente_eur, (n) => eur(n), mediaPerAbitante),
+          stri('Interventi', 'del Programma triennale', (c) => OP(c).interventi, (n) => it(n, Number.isInteger(n) ? 0 : 1), media(ROM.map((c) => OP(c).interventi))),
+          stri('Voci con PNRR o coesione', 'progetti collegati', (c) => CNT(c).pnrr + CNT(c).coesione, (n) => it(n, Number.isInteger(n) ? 0 : 1), media(ROM.map((c) => CNT(c).pnrr + CNT(c).coesione))),
+          stri('CIG collegati', 'appalti ANAC', (c) => CNT(c).appalti, (n) => it(n, Number.isInteger(n) ? 0 : 1), media(ROM.map((c) => CNT(c).appalti))),
+          stri('Residenti', 'censimento 2021', (c) => PR(c).residenti, (n) => it(n), media(ROM.map((c) => PR(c).residenti))),
+        ],
+      });
+
       /* 1. il peso di ogni circoscrizione */
       const righeImp = ROM.map((c) => ({
         id: c, nome: 'Circ. ' + c, sub: `${it(OP(c).interventi)} interventi`, val: OP(c).importo_triennio_eur,

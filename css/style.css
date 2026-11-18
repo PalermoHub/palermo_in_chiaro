@@ -1513,3 +1513,23 @@ body > main { flex: 1 0 auto; }
 .col-val { font-size: 12px; font-weight: 600; fill: var(--inchiostro); font-variant-numeric: tabular-nums; }
 .col-nome { font-size: 11.5px; fill: var(--muto); }
 @media (max-width: 560px) { .cia-box { grid-template-columns: 1fr; justify-items: center; } .cia-legenda { width: 100%; } }
+
+/* strisce di punti: la posizione tra le otto (js/grafici.js) */
+.str-leg { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.8rem; color: var(--muto); margin-bottom: 6px; }
+.str-leg span { display: inline-flex; align-items: center; gap: 6px; }
+.str-leg i { position: static; transform: none; }
+.str-riga { display: grid; grid-template-columns: minmax(7rem, 15rem) minmax(0, 1fr) minmax(8rem, 12rem); gap: 6px 16px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--linea); }
+.str-nome b { font-weight: 600; font-size: 0.92rem; }
+.str-nome small, .str-val small { display: block; color: var(--muto); font-size: 0.76rem; }
+.str-val { text-align: right; font-variant-numeric: tabular-nums; }
+.str-val b { font-size: 1rem; }
+.str-pista { position: relative; height: 22px; margin: 0 8px; }
+.str-pista::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid var(--linea); }
+.str-pista i, .str-leg i { display: inline-block; position: absolute; top: 50%; transform: translate(-50%, -50%); }
+.str-leg i { position: static; transform: none; }
+.p-altro { width: 11px; height: 11px; border-radius: 50%; background: var(--muto); opacity: 0.75; }
+.p-scelto { width: 15px; height: 15px; border-radius: 50%; background: var(--cupola); z-index: 2; }
+.p-media { width: 0; height: 18px; border-left: 2px solid var(--inchiostro); z-index: 1; }
+.str-leg .p-media { height: 14px; }
+.str-pista .p-altro:hover { opacity: 1; outline: 2px solid var(--inchiostro); }
+@media (max-width: 640px) { .str-riga { grid-template-columns: 1fr auto; } .str-pista { grid-column: 1 / -1; order: 3; } }
