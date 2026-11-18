@@ -2,13 +2,14 @@
 
    Il sito nasce per stare da solo su una pagina, ma PalermoHub lo carica dentro
    un iframe con la sua testata, il suo piede e due pulsanti fissi d'angolo
-   (45×45, right: 15px, z-index 1000 — lib/css/ph-css.css). Sopra l'iframe
-   quei pulsanti non si possono spostare: l'unica cosa che si può fare è
-   lasciargli il posto, e la barra in basso non deve finirci sotto.
+   (45×45, right: 15px, z-index 1000 — lib/css/ph-css.css). Qui si dice solo
+   «sto dentro un pannello»: il foglio di stile poi toglie la barra di
+   scorrimento verticale, che sul bordo destro duplicherebbe i pulsanti
+   dell'ospite, e lascia alla barra in basso tutta la larghezza.
 
-   Va caricato nell'<head>, prima che il corpo venga disegnato: così la barra
-   nasce già con lo spazio a destra, senza uno spostamento a pagina caricata.
-   Non è una scusa per disegnare in modo diverso: cambia solo quel margine. */
+   Va caricato nell'<head>, prima che il corpo venga disegnato: così la classe
+   c'è già al primo disegno e non si vede nulla cambiare a pagina caricata.
+   Non è una scusa per disegnare in modo diverso: cambiano solo quei due dettagli. */
 (() => {
   'use strict';
   let dentro = false;
