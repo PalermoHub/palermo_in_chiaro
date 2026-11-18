@@ -420,6 +420,31 @@
         });
       }
 
+      /* striscia di punti: posizione tra le otto, con la città come riferimento */
+      {
+        const { corpo } = figura(C, {
+          titolo: `La circoscrizione ${circ} tra le otto`,
+          nota: 'Ogni riga è una misura del censimento 2021, ogni punto una circoscrizione: più a destra è il valore più alto. Ogni riga ha la sua scala, da 0 al massimo. La tacca è il valore di Palermo, non la media delle otto cifre. Un clic su un punto passa a quella circoscrizione.',
+          larga: true,
+        });
+        const num0 = (n) => it(n, 0);
+        const r = (nome, sub, f, formatta, citta) => ({ nome, sub, formatta, media: citta, punti: ROM.map((c) => ({ id: c, nome: 'Circ. ' + c, val: f(c) || 0 })) });
+        window.GraficiPIC.strisce(corpo, {
+          scelta: circ, conTip, apri: selezionaCirc, mediaNome: 'Palermo',
+          nota: 'La posizione 1ª è il valore più alto. Un valore alto o basso è un segnale da approfondire, non un giudizio. Fonte: censimento ISTAT 2021.',
+          righe: [
+            r('Densità', 'abitanti per km²', (c) => P(c).densita_ab_kmq, num0, T.densita_ab_kmq),
+            r('Indice di vecchiaia', 'over 65 ogni 100 under 15', (c) => P(c).indice_vecchiaia, num0, T.indice_vecchiaia),
+            r('Quota 65 e più', 'sui residenti', (c) => P(c).quota_65_piu_pct, pct, T.quota_65_piu_pct),
+            r('Stranieri', 'quota sui residenti', (c) => P(c).quota_stranieri_pct, pct, T.quota_stranieri_pct),
+            r('Laureati', '9 anni e più', (c) => P(c).quota_laureati_9_piu_pct, pct, T.quota_laureati_9_piu_pct),
+            r('Occupazione', '15-64 anni', (c) => P(c).tasso_occupazione_15_64_pct, pct, T.tasso_occupazione_15_64_pct),
+            r('Abitazioni vuote', 'vuote o solo non residenti', (c) => P(c).quota_abitazioni_vuote_pct, pct, T.quota_abitazioni_vuote_pct),
+            r('Opere per residente', 'Programma 2026-2028', (c) => OP(c).importo_triennio_per_residente_eur, (n) => eur(n), opereProResidenteCitta),
+          ],
+        });
+      }
+
       /* mini colonne: come si colloca */
       {
         const { corpo } = figura(C, {

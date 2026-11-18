@@ -1533,3 +1533,9 @@ body > main { flex: 1 0 auto; }
 .str-leg .p-media { height: 14px; }
 .str-pista .p-altro:hover { opacity: 1; outline: 2px solid var(--inchiostro); }
 @media (max-width: 640px) { .str-riga { grid-template-columns: 1fr auto; } .str-pista { grid-column: 1 / -1; order: 3; } }
+.p-tutte { width: 13px; height: 13px; border-radius: 50%; background: var(--s5); opacity: 0.85; }
+.p-tutte.clic { cursor: pointer; }
+.str-pista .p-tutte:hover { opacity: 1; outline: 2px solid var(--inchiostro); }
+.strisce-home { margin-top: clamp(26px, 4vw, 44px); border-top: 1px solid var(--linea); padding-top: 14px; }
+.strisce-home h3 { font-size: 1.1rem; margin: 0 0 4px; }
+.strisce-home > .nota { margin: 0 0 10px; color: var(--muto); font-size: 0.86rem; max-width: 56rem; }

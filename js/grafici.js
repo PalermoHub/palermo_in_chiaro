@@ -94,32 +94,46 @@
     host.append(H('div', { class: 'col-scroll' }, svg));
   }
 
-  /* una riga per misura: un punto per unità, quello scelto in evidenza, la tacca della media */
-  function strisce(host, { righe, scelta, conTip = null, nota = '' }) {
+  /* una riga per misura: un punto per unità, la tacca della media.
+     Con `scelta` una unità è in evidenza e la riga dice la sua posizione («4ª su 8»);
+     senza, tutte sono uguali e la riga dice il valore più alto, il più basso e la media.
+     `apri(id)` rende i punti cliccabili. `mediaNome` è la parola per la tacca. */
+  function strisce(host, { righe, scelta = null, conTip = null, nota = '', apri = null, mediaNome = 'media delle 8' }) {
     const box = H('div', { class: 'strisce' });
     box.append(H('div', { class: 'str-leg' }, [
-      H('span', {}, [H('i', { class: 'p-scelto' }), 'questa circoscrizione']),
-      H('span', {}, [H('i', { class: 'p-altro' }), 'le altre']),
-      H('span', {}, [H('i', { class: 'p-media' }), 'media delle 8']),
+      scelta ? H('span', {}, [H('i', { class: 'p-scelto' }), 'questa circoscrizione']) : null,
+      H('span', {}, [H('i', { class: scelta ? 'p-altro' : 'p-tutte' }), scelta ? 'le altre' : 'una circoscrizione']),
+      H('span', {}, [H('i', { class: 'p-media' }), mediaNome]),
     ]));
     righe.forEach((r) => {
       const mx = Math.max(...r.punti.map((p) => p.val), r.media || 0) || 1;
       const pos = (v) => Math.min(100, Math.max(0, 100 * v / mx));
       const pista = H('div', { class: 'str-pista' });
       r.punti.forEach((p) => {
-        const d = H('i', { class: p.id === scelta ? 'p-scelto' : 'p-altro', style: `left:${pos(p.val)}%` });
-        if (conTip) conTip(d, p.nome, [['Valore', r.formatta(p.val)], ['Misura', r.nome]]);
+        const d = H('i', { class: p.id === scelta ? 'p-scelto' : (scelta ? 'p-altro' : 'p-tutte') + (apri ? ' clic' : ''), style: `left:${pos(p.val)}%` });
+        if (!conTip) d.setAttribute('title', `${p.nome}: ${r.formatta(p.val)}`);
+        if (conTip) conTip(d, p.nome, [['Valore', r.formatta(p.val)], ['Misura', r.nome], apri ? ['Clic', 'apri la scheda'] : null]);
+        if (apri) d.addEventListener('click', () => apri(p.id));
         pista.append(d);
       });
       if (r.media != null) pista.append(H('i', { class: 'p-media', style: `left:${pos(r.media)}%` }));
-      const q = r.punti.find((p) => p.id === scelta);
-      const posiz = 1 + r.punti.filter((p) => p.val > q.val + 1e-6).length;
+      let val, sub;
+      const mediaTxt = r.media != null ? (mediaNome === 'media delle 8' ? 'media ' : mediaNome + ' ') + r.formatta(r.media) : '';
+      if (scelta) {
+        const q = r.punti.find((p) => p.id === scelta);
+        const posiz = 1 + r.punti.filter((p) => p.val > q.val + 1e-6).length;
+        val = r.formatta(q.val); sub = `${mediaTxt} · ${posiz}ª su ${r.punti.length}`;
+      } else {
+        const ord = r.punti.slice().sort((a, b) => b.val - a.val);
+        val = `${r.formatta(ord[0].val)} · ${ord[0].nome}`;
+        sub = `più basso ${r.formatta(ord[ord.length - 1].val)} · ${ord[ord.length - 1].nome}${mediaTxt ? ' · ' + mediaTxt : ''}`;
+      }
       const riga = H('div', { class: 'str-riga', role: 'group' }, [
         H('div', { class: 'str-nome' }, [H('b', { text: r.nome }), r.sub ? H('small', { text: r.sub }) : null]),
         pista,
-        H('div', { class: 'str-val' }, [H('b', { text: r.formatta(q.val) }), H('small', { text: `media ${r.formatta(r.media)} · ${posiz}ª su ${r.punti.length}` })]),
+        H('div', { class: 'str-val' }, [H('b', { text: val }), H('small', { text: sub })]),
       ]);
-      riga.setAttribute('aria-label', `${r.nome}: ${r.formatta(q.val)}, media ${r.formatta(r.media)}, ${posiz}ª su ${r.punti.length}`);
+      riga.setAttribute('aria-label', `${r.nome}: ${val}; ${sub}`);
       box.append(riga);
     });
     if (nota) box.append(H('p', { class: 'grafico-nota sotto', text: nota }));
