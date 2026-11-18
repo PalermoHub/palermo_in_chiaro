@@ -1243,6 +1243,13 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
   /* «Torna in cima» lo fa la voce Mappa, che è sempre lì */
   .su { display: none; }
 
+  /* dentro un iframe la pagina ospite disegna i suoi pulsanti fissi nell'angolo
+     in basso a destra (45 px + 15 px dal bordo): la barra si ritira di 56 px,
+     altrimenti l'ultima voce resta sotto il pulsante e non si può toccare */
+  html.in-iframe .barra-basso { padding-right: 56px; }
+  /* con 56 px in meno ogni voce è più stretta: sotto i 400 px l'etichetta scende
+     di un punto, altrimenti «Territorio» e «Statistiche» si troncano */
+  @media (max-width: 400px) { html.in-iframe .barra-voce { font-size: clamp(0.6rem, 2.9vw, 0.7rem); } }
   .barra-basso {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 7;
     display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: stretch;
