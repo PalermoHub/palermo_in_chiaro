@@ -1,0 +1,569 @@
+{
+ "verificato": "2026-11-18",
+ "misura": "Quanto reggono i numeri in evidenza: invarianti interne, confronti con cifre pubblicate da altri, sensibilità della graduatoria per residente, agganci tra fonti.",
+ "non_misura": [
+  "Non è una verifica contabile né un audit: i confronti esterni sono quelli che le fonti permettono, e dove manca la fonte originale la voce è «non verificata».",
+  "Uno scarto non dice chi ha ragione: classifica la differenza (versione dell'atto, definizione diversa, fonte anomala, non spiegato).",
+  "Le ipotesi di ripartizione sono prove di sensibilità, non dati."
+ ],
+ "stato": "in revisione",
+ "invarianti": [
+  {
+   "invariante": "548 interventi, nessun codice duplicato",
+   "esito": true,
+   "dettaglio": ""
+  },
+  {
+   "invariante": "importo triennio = somma delle tre annualità, per ogni intervento",
+   "esito": true,
+   "dettaglio": ""
+  },
+  {
+   "invariante": "8 circoscrizioni + più circoscrizioni + non localizzato = totale Palermo (all'euro)",
+   "esito": true,
+   "dettaglio": "4373410918.53 vs 4373410918.53"
+  },
+  {
+   "invariante": "numero di interventi: somma dei gruppi = 548",
+   "esito": true,
+   "dettaglio": "548"
+  },
+  {
+   "invariante": "residenti 8 circoscrizioni = 635.439 (censimento 2021)",
+   "esito": true,
+   "dettaglio": ""
+  },
+  {
+   "invariante": "PNRR: snapshot = somma del CSV",
+   "esito": true,
+   "dettaglio": ""
+  },
+  {
+   "invariante": "titolo «minima V, massima I» riprodotto dalla base",
+   "esito": true,
+   "dettaglio": "V / I / x7.27"
+  },
+  {
+   "invariante": "i CSV ANAC non hanno colonna CUP (CUP→CIG impossibile)",
+   "esito": true,
+   "dettaglio": ""
+  }
+ ],
+ "confronti": [
+  {
+   "id": "programma_n_interventi",
+   "cifra_a": "numero di interventi",
+   "valore_a": 548,
+   "cifra_b": "numero di interventi",
+   "valore_b": 522,
+   "differenza": 26,
+   "differenza_relativa": 0.0498,
+   "tolleranza": 0,
+   "esito": "scarto",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
+   "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
+  },
+  {
+   "id": "programma_totale_triennio",
+   "cifra_a": "quadro finanziario 2026-2028 (€)",
+   "valore_a": 4373410918.53,
+   "cifra_b": "quadro finanziario 2026-2028 (€)",
+   "valore_b": 4326951221.36,
+   "differenza": 46459697.17,
+   "differenza_relativa": 0.0107,
+   "tolleranza": 0.001,
+   "esito": "scarto",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
+   "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
+  },
+  {
+   "id": "programma_2026",
+   "cifra_a": "annualità 2026 (€)",
+   "valore_a": 363609993.89,
+   "cifra_b": "annualità 2026 (€)",
+   "valore_b": 357540883.89,
+   "differenza": 6069110.0,
+   "differenza_relativa": 0.017,
+   "tolleranza": 0.001,
+   "esito": "scarto",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
+   "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
+  },
+  {
+   "id": "programma_2027",
+   "cifra_a": "annualità 2027 (€)",
+   "valore_a": 1348936054.55,
+   "cifra_b": "annualità 2027 (€)",
+   "valore_b": 1317656357.38,
+   "differenza": 31279697.17,
+   "differenza_relativa": 0.0237,
+   "tolleranza": 0.001,
+   "esito": "scarto",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
+   "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
+  },
+  {
+   "id": "programma_2028",
+   "cifra_a": "annualità 2028 (€)",
+   "valore_a": 2660864870.09,
+   "cifra_b": "annualità 2028 (€)",
+   "valore_b": 2651753980.09,
+   "differenza": 9110890.0,
+   "differenza_relativa": 0.0034,
+   "tolleranza": 0.001,
+   "esito": "scarto",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
+   "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
+  },
+  {
+   "id": "elenco_annuale_2026",
+   "cifra_a": "importo interventi in elenco annuale 2026 (€)",
+   "valore_a": 363609993.89,
+   "cifra_b": "importo degli interventi in elenco annuale (€)",
+   "valore_b": 364370908.58,
+   "differenza": -760914.69,
+   "differenza_relativa": 0.0021,
+   "tolleranza": 0.005,
+   "esito": "ok",
+   "classe": "ok",
+   "nota": "Nostri 91 interventi in elenco annuale, la cronaca dice «oltre 80».",
+   "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
+   "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
+  },
+  {
+   "id": "bilancio_spese_2026",
+   "cifra_a": "totale spese di competenza 2026",
+   "valore_a": 2223340489.24,
+   "cifra_b": "totale generale delle spese",
+   "valore_b": 2223340489.24,
+   "differenza": 0.0,
+   "differenza_relativa": 0.0,
+   "tolleranza": 0,
+   "esito": "ok",
+   "classe": "ok",
+   "nota": "Stessa grandezza, stesso atto.",
+   "fonte_a": "bilancio_comune.json",
+   "fonte_b": "Allegato A, DCC 176/2026 (testo)"
+  },
+  {
+   "id": "bilancio_spese_2027",
+   "cifra_a": "totale spese di competenza 2027",
+   "valore_a": 1913467471.18,
+   "cifra_b": "totale generale delle spese",
+   "valore_b": 1913467471.18,
+   "differenza": 0.0,
+   "differenza_relativa": 0.0,
+   "tolleranza": 0,
+   "esito": "ok",
+   "classe": "ok",
+   "nota": "Stessa grandezza, stesso atto.",
+   "fonte_a": "bilancio_comune.json",
+   "fonte_b": "Allegato A, DCC 176/2026 (testo)"
+  },
+  {
+   "id": "bilancio_spese_2028",
+   "cifra_a": "totale spese di competenza 2028",
+   "valore_a": 1776848411.87,
+   "cifra_b": "totale generale delle spese",
+   "valore_b": 1776848411.87,
+   "differenza": 0.0,
+   "differenza_relativa": 0.0,
+   "tolleranza": 0,
+   "esito": "ok",
+   "classe": "ok",
+   "nota": "Stessa grandezza, stesso atto.",
+   "fonte_a": "bilancio_comune.json",
+   "fonte_b": "Allegato A, DCC 176/2026 (testo)"
+  },
+  {
+   "id": "pnrr_importo",
+   "cifra_a": "importo finanziato delle schede (€)",
+   "valore_a": 301685399.2,
+   "cifra_b": "importo del report (€)",
+   "valore_b": 174200000.0,
+   "differenza": 127485399.2,
+   "differenza_relativa": 0.7318,
+   "tolleranza": 0.01,
+   "esito": "scarto",
+   "classe": "non_spiegato",
+   "nota": "Non spiegato. Provati solo filtri con una ragione indipendente (sotto): nessuno riproduce insieme importo e numero di progetti.",
+   "fonte_a": "sito PNRR del Comune, 61 schede (letto 16/11/2026)",
+   "fonte_b": "report del Comune (174,2 M€, citato in dati/README.md)"
+  },
+  {
+   "id": "pnrr_filtro_solo Lavori",
+   "cifra_a": "filtro «solo Lavori»",
+   "valore_a": 150964588.82,
+   "cifra_b": "174,2 M€ del report",
+   "valore_b": 174200000.0,
+   "differenza": null,
+   "esito": "prova",
+   "classe": "non_spiegato",
+   "nota": "38 progetti. Il filtro è accettato solo se riproduce importo e numero (48 nel report): non lo fa."
+  },
+  {
+   "id": "pnrr_filtro_solo conclusi",
+   "cifra_a": "filtro «solo conclusi»",
+   "valore_a": 150052101.75,
+   "cifra_b": "174,2 M€ del report",
+   "valore_b": 174200000.0,
+   "differenza": null,
+   "esito": "prova",
+   "classe": "non_spiegato",
+   "nota": "24 progetti. Il filtro è accettato solo se riproduce importo e numero (48 nel report): non lo fa."
+  },
+  {
+   "id": "pnrr_filtro_esclusi non conclusi",
+   "cifra_a": "filtro «esclusi non conclusi»",
+   "valore_a": 143011316.59,
+   "cifra_b": "174,2 M€ del report",
+   "valore_b": 174200000.0,
+   "differenza": null,
+   "esito": "prova",
+   "classe": "non_spiegato",
+   "nota": "33 progetti. Il filtro è accettato solo se riproduce importo e numero (48 nel report): non lo fa."
+  },
+  {
+   "id": "anac_cig_anomali",
+   "cifra_a": "CIG con importo_lotto > 1 mld €",
+   "valore_a": 2,
+   "cifra_b": "attesi",
+   "valore_b": 0,
+   "differenza": 2,
+   "esito": "scarto",
+   "classe": "fonte_anomala",
+   "nota": "CIG B7129C8050, B71B482B61: importo_lotto = importo_complessivo_gara = 2684420249 in entrambi, e in uno l'oggetto del lotto contiene «722892,97» (campo scambiato). Valore non attendibile (probabile errore di inserimento, forse 26.844.202,49 €): non corretto, escluso dal totale mostrato, ma ne resta traccia."
+  },
+  {
+   "id": "attribuzione_punto_in_poligono",
+   "cifra_a": "circoscrizione dichiarata nel Programma",
+   "valore_a": 440,
+   "cifra_b": "punto (tavola PDF) dentro il poligono del Comune",
+   "valore_b": 457,
+   "differenza": 0,
+   "esito": "ok",
+   "classe": "ok",
+   "nota": "457 interventi con un punto e una sola circoscrizione dichiarata; discordanti: 0. Controllo non circolare: i poligoni sono quelli del Comune (dati/censimento_2021), la dichiarazione viene dal Programma. Elenco: []"
+  }
+ ],
+ "scarti": [
+  {
+   "id": "programma_n_interventi",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "cifra_a": "numero di interventi",
+   "valore_a": 548,
+   "cifra_b": "numero di interventi",
+   "valore_b": 522
+  },
+  {
+   "id": "programma_totale_triennio",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "cifra_a": "quadro finanziario 2026-2028 (€)",
+   "valore_a": 4373410918.53,
+   "cifra_b": "quadro finanziario 2026-2028 (€)",
+   "valore_b": 4326951221.36
+  },
+  {
+   "id": "programma_2026",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "cifra_a": "annualità 2026 (€)",
+   "valore_a": 363609993.89,
+   "cifra_b": "annualità 2026 (€)",
+   "valore_b": 357540883.89
+  },
+  {
+   "id": "programma_2027",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "cifra_a": "annualità 2027 (€)",
+   "valore_a": 1348936054.55,
+   "cifra_b": "annualità 2027 (€)",
+   "valore_b": 1317656357.38
+  },
+  {
+   "id": "programma_2028",
+   "classe": "versione_atto",
+   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "cifra_a": "annualità 2028 (€)",
+   "valore_a": 2660864870.09,
+   "cifra_b": "annualità 2028 (€)",
+   "valore_b": 2651753980.09
+  },
+  {
+   "id": "pnrr_importo",
+   "classe": "non_spiegato",
+   "nota": "Non spiegato. Provati solo filtri con una ragione indipendente (sotto): nessuno riproduce insieme importo e numero di progetti.",
+   "cifra_a": "importo finanziato delle schede (€)",
+   "valore_a": 301685399.2,
+   "cifra_b": "importo del report (€)",
+   "valore_b": 174200000.0
+  },
+  {
+   "id": "anac_cig_anomali",
+   "classe": "fonte_anomala",
+   "nota": "CIG B7129C8050, B71B482B61: importo_lotto = importo_complessivo_gara = 2684420249 in entrambi, e in uno l'oggetto del lotto contiene «722892,97» (campo scambiato). Valore non attendibile (probabile errore di inserimento, forse 26.844.202,49 €): non corretto, escluso dal totale mostrato, ma ne resta traccia.",
+   "cifra_a": "CIG con importo_lotto > 1 mld €",
+   "valore_a": 2,
+   "cifra_b": "attesi",
+   "valore_b": 0
+  }
+ ],
+ "attribuzione": {
+  "soglia_confine_m": 100.0,
+  "classi_punti": {
+   "vicino_al_confine": {
+    "interventi": 69,
+    "importo_eur": 414079662.21
+   },
+   "dentro_poligono": {
+    "interventi": 383,
+    "importo_eur": 1916409523.13
+   },
+   "fuori_dai_poligoni": {
+    "interventi": 5,
+    "importo_eur": 22949157.64
+   }
+  },
+  "senza_geometria_o_piu_circoscrizioni": {
+   "piu_circoscrizioni": 14,
+   "non_localizzato": 94
+  }
+ },
+ "sensibilita": {
+  "scenari": [
+   {
+    "scenario": "Base: solo interventi con una circoscrizione (come sul sito)",
+    "minima": "V",
+    "massima": "I",
+    "rapporto_max_min": 7.27,
+    "per_residente_eur": {
+     "I": 8545,
+     "II": 3461,
+     "III": 4081,
+     "IV": 1808,
+     "V": 1175,
+     "VI": 6304,
+     "VII": 7244,
+     "VIII": 2080
+    },
+    "ordine_crescente": [
+     "V",
+     "IV",
+     "VIII",
+     "II",
+     "III",
+     "VI",
+     "VII",
+     "I"
+    ]
+   },
+   {
+    "scenario": "Più circoscrizioni divise in parti uguali",
+    "minima": "V",
+    "massima": "I",
+    "rapporto_max_min": 6.98,
+    "per_residente_eur": {
+     "I": 8553,
+     "II": 3522,
+     "III": 4280,
+     "IV": 1943,
+     "V": 1225,
+     "VI": 6353,
+     "VII": 7293,
+     "VIII": 2114
+    },
+    "ordine_crescente": [
+     "V",
+     "IV",
+     "VIII",
+     "II",
+     "III",
+     "VI",
+     "VII",
+     "I"
+    ]
+   },
+   {
+    "scenario": "In più, il non localizzato ripartito per residenti (ipotesi, non un dato)",
+    "minima": "V",
+    "massima": "I",
+    "rapporto_max_min": 2.65,
+    "per_residente_eur": {
+     "I": 11758,
+     "II": 6727,
+     "III": 7485,
+     "IV": 5148,
+     "V": 4430,
+     "VI": 9558,
+     "VII": 10498,
+     "VIII": 5319
+    },
+    "ordine_crescente": [
+     "V",
+     "IV",
+     "VIII",
+     "II",
+     "III",
+     "VI",
+     "VII",
+     "I"
+    ]
+   },
+   {
+    "scenario": "Senza i 1 interventi più grandi di ogni circoscrizione",
+    "minima": "V",
+    "massima": "I",
+    "rapporto_max_min": 7.0,
+    "per_residente_eur": {
+     "I": 7240,
+     "II": 3129,
+     "III": 2729,
+     "IV": 1403,
+     "V": 1035,
+     "VI": 3451,
+     "VII": 3680,
+     "VIII": 1776
+    },
+    "ordine_crescente": [
+     "V",
+     "IV",
+     "VIII",
+     "III",
+     "II",
+     "VI",
+     "VII",
+     "I"
+    ]
+   },
+   {
+    "scenario": "Senza i 3 interventi più grandi di ogni circoscrizione",
+    "minima": "V",
+    "massima": "I",
+    "rapporto_max_min": 6.14,
+    "per_residente_eur": {
+     "I": 5560,
+     "II": 2470,
+     "III": 1668,
+     "IV": 976,
+     "V": 905,
+     "VI": 2419,
+     "VII": 2879,
+     "VIII": 1286
+    },
+    "ordine_crescente": [
+     "V",
+     "IV",
+     "VIII",
+     "III",
+     "VI",
+     "II",
+     "VII",
+     "I"
+    ]
+   },
+   {
+    "scenario": "Senza i 5 interventi più grandi di ogni circoscrizione",
+    "minima": "IV",
+    "massima": "I",
+    "rapporto_max_min": 7.16,
+    "per_residente_eur": {
+     "I": 4795,
+     "II": 2101,
+     "III": 1086,
+     "IV": 670,
+     "V": 802,
+     "VI": 1827,
+     "VII": 2577,
+     "VIII": 1013
+    },
+    "ordine_crescente": [
+     "IV",
+     "V",
+     "VIII",
+     "III",
+     "VI",
+     "II",
+     "VII",
+     "I"
+    ]
+   }
+  ],
+  "bootstrap": {
+   "metodo": "bootstrap per circoscrizione (2000 ricampionamenti degli interventi con reinserimento, seme 20261118)",
+   "rapporto_max_min_p05_p50_p95": [
+    5.51,
+    8.45,
+    13.56
+   ],
+   "quota_ricampionamenti_in_cui_e_massima": {
+    "I": 0.515,
+    "III": 0.013,
+    "VI": 0.182,
+    "VII": 0.29
+   },
+   "avvertenza": "Con 8 unità e pochi interventi giganti il bootstrap dà un'idea dell'instabilità, non un intervallo di confidenza in senso stretto."
+  },
+  "titolo_stabile_in_tutti_gli_scenari": false
+ },
+ "catena_del_denaro": {
+  "programma_con_cup": {
+   "interventi": 130,
+   "importo_eur": 2081300875.15,
+   "quota_interventi": 0.237,
+   "quota_importo": 0.476
+  },
+  "programma_senza_cup": {
+   "interventi": 418,
+   "importo_eur": 2292110043.38,
+   "quota_importo": 0.524
+  },
+  "agganciati_a_pnrr_per_cup": {
+   "interventi": 11,
+   "importo_eur": 311513063.39
+  },
+  "agganciati_a_opencoesione_per_cup": {
+   "interventi": 22,
+   "importo_eur": 76053131.85,
+   "pagamenti_registrati_eur": 2254345.84
+  },
+  "agganciati_ad_almeno_una_fonte": {
+   "interventi": 33,
+   "importo_eur": 387566195.24,
+   "quota_importo_programma": 0.089
+  },
+  "cup_usati_da_piu_interventi": {
+   "D79J21017830001": [
+    "01-05_013",
+    "01-05_014",
+    "01-05_015"
+   ],
+   "D79D25000570006": [
+    "05-11_326",
+    "05-11_357"
+   ]
+  },
+  "anac_cig_con_cup": false,
+  "nota": "Il collegamento esatto Programma→gara (CIG) non è possibile: i CSV ANAC non hanno una colonna CUP. Il «pagato» esiste solo per i progetti di coesione (OpenCoesione); per Programma e ANAC non c'è."
+ },
+ "non_eseguito": [
+  "Bulk ANAC completo (stato, varianti, importo liquidato): non scaricato.",
+  "SIOPE (pagamenti per codice gestionale): non scaricato.",
+  "BDAP-MOP (monitoraggio opere): non scaricato.",
+  "Atto originale DCC 553/2026 con il Programma: non trovato sul sito del Comune, confronto fatto solo con la cronaca.",
+  "Campione di 30 opere verificato da un ufficio del Comune: preparato, non ancora verificato da terzi.",
+  "Replica indipendente da fonti grezze: gli script non sono nel repository pubblico."
+ ]
+}
