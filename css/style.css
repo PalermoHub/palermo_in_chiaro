@@ -1221,6 +1221,12 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 .barra-basso, .foglio { display: none; }
 
 @media (max-width: 900px) {
+  /* la testata non se ne va più scorrendo: era l'unica cosa che si perdeva
+     passando dal desktop al telefono */
+  .testata { position: sticky; top: 0; }
+  /* e le ancore non finiscono sotto la testata fissa */
+  section[id], h2[id] { scroll-margin-top: calc(var(--testata) + 12px); }
+
   .testata nav.menu-principale { display: none; }
   .cerca-apri { margin-left: auto; }
 
