@@ -1229,10 +1229,11 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 
   .testata nav.menu-principale { display: none; }
   .cerca-apri { margin-left: auto; }
-  /* il marchio rientra di 80 px, ma non a spese di ricerca e tema: 309 px è la
-     larghezza che serve a marchio e pulsanti con 16 px d'aria fra loro, quindi
-     sotto i ~389 px il rientro si stringe e la testata resta su una riga */
-  .marchio { margin-left: clamp(0px, calc(100vw - 309px), 80px); }
+  /* il marchio sta al centro della testata, non a una distanza fissa dal bordo:
+     161 px è la sua larghezza a 1,2rem, quindi il primo termine lo porta sulla
+     mezzeria. Il secondo è il massimo che lascia 16 px a ricerca e tema: sotto i
+     ~415 px vince quello e il marchio si ferma prima, invece di andare a capo. */
+  .marchio { margin-left: clamp(0px, calc((100vw - 161px) / 2 - var(--gutter)), calc(100vw - 309px)); }
 
   /* il posto della barra non si perde in fondo alla pagina */
   body { padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom, 0px)); }
