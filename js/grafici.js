@@ -102,15 +102,24 @@
     const box = H('div', { class: 'strisce' });
     box.append(H('div', { class: 'str-leg' }, [
       scelta ? H('span', {}, [H('i', { class: 'p-scelto' }), 'questa circoscrizione']) : null,
-      H('span', {}, [H('i', { class: scelta ? 'p-altro' : 'p-tutte' }), scelta ? 'le altre' : 'una circoscrizione']),
+      H('span', {}, scelta ? [H('i', { class: 'p-altro' }), 'le altre'] : [H('i', { class: 'p-tutte', text: 'VII' }), 'il numero romano è la circoscrizione']),
       H('span', {}, [H('i', { class: 'p-media' }), mediaNome]),
     ]));
     righe.forEach((r) => {
       const mx = Math.max(...r.punti.map((p) => p.val), r.media || 0) || 1;
       const pos = (v) => Math.min(100, Math.max(0, 100 * v / mx));
-      const pista = H('div', { class: 'str-pista' });
+      const pista = H('div', { class: 'str-pista' + (scelta ? '' : ' alta') });
+      /* senza unità scelta i punti portano il numero: quelli vicini si dispongono su tre file */
+      const fila = new Map(), ultimo = [-99, -99, -99];
+      if (!scelta) r.punti.slice().sort((a, b) => a.val - b.val).forEach((p) => {
+        let k = ultimo.findIndex((u) => pos(p.val) - u >= 3.6);
+        if (k < 0) k = ultimo.indexOf(Math.min(...ultimo));
+        ultimo[k] = pos(p.val); fila.set(p.id, k);
+      });
+      const DY = [0, -15, 15];
       r.punti.forEach((p) => {
-        const d = H('i', { class: p.id === scelta ? 'p-scelto' : (scelta ? 'p-altro' : 'p-tutte') + (apri ? ' clic' : ''), style: `left:${pos(p.val)}%` });
+        const d = H('i', { class: p.id === scelta ? 'p-scelto' : (scelta ? 'p-altro' : 'p-tutte') + (apri ? ' clic' : ''),
+          style: `left:${pos(p.val)}%` + (scelta ? '' : `;margin-top:${DY[fila.get(p.id)]}px`), text: scelta ? null : p.id });
         if (!conTip) d.setAttribute('title', `${p.nome}: ${r.formatta(p.val)}`);
         if (conTip) conTip(d, p.nome, [['Valore', r.formatta(p.val)], ['Misura', r.nome], apri ? ['Clic', 'apri la scheda'] : null]);
         if (apri) d.addEventListener('click', () => apri(p.id));

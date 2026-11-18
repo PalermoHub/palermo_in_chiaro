@@ -1539,3 +1539,11 @@ body > main { flex: 1 0 auto; }
 .strisce-home { margin-top: clamp(26px, 4vw, 44px); border-top: 1px solid var(--linea); padding-top: 14px; }
 .strisce-home h3 { font-size: 1.1rem; margin: 0 0 4px; }
 .strisce-home > .nota { margin: 0 0 10px; color: var(--muto); font-size: 0.86rem; max-width: 56rem; }
+/* punti con il numero romano (strisce senza circoscrizione scelta) */
+.str-pista.alta { height: 50px; }
+.p-tutte { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; font-style: normal; font-size: 10px; font-weight: 700; line-height: 1; color: var(--carta); opacity: 1; box-sizing: border-box; letter-spacing: -0.02em; }
+.str-leg .p-tutte { width: 28px; height: 20px; border-radius: 10px; }
+.str-pista .p-tutte:hover { z-index: 5; outline: 2px solid var(--inchiostro); }
+.str-pista i.p-tutte, .str-leg i.p-tutte { display: inline-flex; align-items: center; justify-content: center; text-align: center; }
+.str-pista i.p-tutte { position: absolute; }
+.str-leg i.p-tutte { position: static; }
