@@ -347,12 +347,12 @@
       const maxAnno = Math.max(...anni.map((a) => a[1]));
       const quotaCittaAnno = (a) => 100 * TO[`importo_${a}_eur`] / TO.importo_triennio_eur;
       const quotaQuiAnno = (a) => 100 * importoAnno[a] / O.importo_triennio_eur;
-      barre(figura(G, {
+      window.GraficiPIC.colonne(figura(G, {
         titolo: 'In che anno cadono gli importi',
         nota: `Il ${pct(quotaQuiAnno(2028))} dell'importo di questa circoscrizione è programmato nel 2028, contro il ${pct(quotaCittaAnno(2028))} del totale comunale. È la parte più lontana nel tempo, e la più esposta ai cambiamenti del Programma.`,
       }), {
         voci: anni.map(([a, v]) => ({ nome: a, sub: `${pct(quotaQuiAnno(a))} del triennio`, val: v })),
-        formatta: (n) => mln(n, 1), ordina: false,
+        formatta: (n) => mln(n, 1), conTip, nome: 'Importi per anno',
       });
 
       /* 4. per settore: come è fatto l'importo */
@@ -364,10 +364,10 @@
       const sommaSett = somma(sett.map((s) => s.val));
       const resto = O.importo_triennio_eur - sommaSett;
       if (resto > 0.5) sett.push({ nome: 'Altri settori', sub: `${it(O.interventi - somma((O.principali_settori || []).map((s) => s.interventi)))} interventi`, val: resto });
-      barre(figura(G, {
+      window.GraficiPIC.ciambella(figura(G, {
         titolo: 'Per cosa sono le opere',
         nota: `I cinque settori con l'importo più alto, più il resto. Il settore è quello del CUP (classificazione delle opere), non la missione del bilancio: sono due modi diversi di classificare la spesa e non si incrociano. I primi cinque valgono il ${pct(100 * sommaSett / O.importo_triennio_eur)} dell'importo.`,
-      }), { voci: sett, formatta: (n) => mln(n, 1) });
+      }), { voci: sett, formatta: (n) => mln(n, 1), conTip, nome: 'Importo per settore', centro: { valore: mln(O.importo_triennio_eur, 0), etichetta: 'triennio' } });
 
       /* 5. la composizione per settore delle otto: non quanto spendono, ma per cosa */
       const nomeSett = {}, perSett = {}, totSett = {};
@@ -624,7 +624,8 @@
       r.valori.forEach((v, k) => {
         if (!v) return;
         const q = 100 * v / tot;
-        const seg = el('span', { class: 'seg', style: `width:${q}%;background:var(${o.segmenti[k].colore})` });
+        const seg = el('span', { class: 'seg seg-' + (Number(o.segmenti[k].colore.replace('--s', '')) - 1), style: `width:${q}%;background:var(${o.segmenti[k].colore})` });
+        if (q >= 10) seg.append(el('span', { class: 'seg-lab', text: pct(q, q < 20 ? 1 : 0) }));
         conTip(seg, o.segmenti[k].nome, [[r.nome, o.formatta(v)], ['Quota', pct(q)]]);
         pista.append(seg);
       });

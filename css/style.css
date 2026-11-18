@@ -1484,3 +1484,32 @@ body > main { flex: 1 0 auto; }
 @media (max-width: 420px) {
   .apertura h1 { font-size: 1.6rem; }
 }
+
+/* ciambella e colonne (js/grafici.js) */
+.cia-box { display: grid; grid-template-columns: minmax(150px, 220px) minmax(0, 1fr); gap: 14px 22px; align-items: center; }
+.ciambella { width: 100%; height: auto; max-width: 220px; }
+.ciambella .fetta { stroke: var(--carta); stroke-width: 1; cursor: default; }
+.ciambella .fetta:hover, .ciambella .fetta:focus-visible { filter: brightness(1.08); outline: none; stroke: var(--inchiostro); }
+.cia-lab { font-size: 11px; font-weight: 600; fill: var(--inchiostro); font-variant-numeric: tabular-nums; pointer-events: none; }
+.cia-lab.d5 { fill: var(--carta); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme]) .cia-lab.d4 { fill: var(--carta); } }
+:root[data-theme="dark"] .cia-lab.d4 { fill: var(--carta); }
+.cia-centro { font-size: 15px; font-weight: 700; fill: var(--inchiostro); font-variant-numeric: tabular-nums; }
+.cia-sotto { font-size: 9px; fill: var(--muto); }
+.cia-legenda { list-style: none; margin: 0; padding: 0; display: grid; }
+.cia-legenda li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--linea); font-size: 0.9rem; }
+.cia-legenda .pastiglia { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+.cia-nome b { font-weight: 500; }
+.cia-nome small, .cia-val small { display: block; color: var(--muto); font-size: 0.76rem; }
+.cia-val { text-align: right; font-variant-numeric: tabular-nums; }
+.cia-val b { font-weight: 600; }
+.col-scroll { overflow-x: auto; }
+.colonne { display: block; width: 100%; height: auto; }
+.col-asse { stroke: var(--linea); stroke-width: 1.5; }
+.col-barra { fill: var(--s4); }
+.col:hover .col-barra, .col:focus-visible .col-barra { filter: brightness(0.92); }
+.col.scelta .col-barra { fill: var(--cupola); }
+.col:focus { outline: none; }
+.col-val { font-size: 12px; font-weight: 600; fill: var(--inchiostro); font-variant-numeric: tabular-nums; }
+.col-nome { font-size: 11.5px; fill: var(--muto); }
+@media (max-width: 560px) { .cia-box { grid-template-columns: 1fr; justify-items: center; } .cia-legenda { width: 100%; } }

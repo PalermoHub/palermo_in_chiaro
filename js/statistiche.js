@@ -290,9 +290,10 @@
           righe: D.pnrr.per_stato.map((x) => [x.voce, it(x.progetti), mln(x.importo_finanziato_eur), mln(x.spesa_rendicontata_eur)]),
         },
       });
-      barre(corpo, {
+      window.GraficiPIC.ciambella(corpo, {
         voci: D.pnrr.per_stato.map((x) => ({ nome: x.voce, sub: it(x.progetti) + ' progetti', val: x.importo_finanziato_eur })),
-        formatta: (n) => mln(n),
+        formatta: (n) => mln(n), conTip, nome: 'PNRR per stato',
+        centro: { valore: mln(D.pnrr.totale.importo_finanziato_eur, 0), etichetta: 'finanziati' },
       });
     }
 
@@ -305,9 +306,10 @@
           righe: D.coe.per_ciclo.map((x) => [x.voce, it(x.progetti), mln(x.finanziamento_pubblico_netto_eur), mln(x.pagamenti_eur)]),
         },
       });
-      barre(corpo, {
+      window.GraficiPIC.ciambella(corpo, {
         voci: D.coe.per_ciclo.map((x) => ({ nome: x.voce, sub: it(x.progetti) + ' progetti', val: x.finanziamento_pubblico_netto_eur })),
-        formatta: (n) => mln(n),
+        formatta: (n) => mln(n), conTip, nome: 'Coesione per ciclo',
+        centro: { valore: mln(D.coe.totale.finanziamento_pubblico_netto_eur, 0), etichetta: 'finanziati' },
       });
     }
 
@@ -321,9 +323,9 @@
           righe: anni.map(([a, x]) => [a, it(x.cig), it(x.importo_base_gara_eur_come_in_fonte, 0) + ' €', it(x.importo_base_gara_eur_senza_anomali, 0) + ' €']),
         },
       });
-      barre(corpo, {
-        voci: anni.map(([a, x]) => ({ nome: 'Anno ' + a, sub: it(x.cig_senza_anomali) + ' CIG senza anomali', val: x.importo_base_gara_eur_senza_anomali })),
-        formatta: (n) => mln(n),
+      window.GraficiPIC.colonne(corpo, {
+        voci: anni.map(([a, x]) => ({ nome: a, sub: it(x.cig_senza_anomali) + ' CIG senza anomali', val: x.importo_base_gara_eur_senza_anomali })),
+        formatta: (n) => mln(n, 0), conTip, nome: 'Appalti avviati per anno',
       });
     }
 
