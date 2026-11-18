@@ -72,7 +72,10 @@ a { color: var(--maiolica-scura); text-underline-offset: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muto); }
 .skip { position: absolute; left: -999px; top: 8px; background: var(--inchiostro); color: var(--carta); padding: 8px 12px; z-index: 10; }
 .skip:focus { left: 8px; }
-code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-radius: 3px; }
+/* un percorso o un identificativo lungo non ha spazi dove spezzarsi: senza questo
+   allarga la riga e la pagina scorre di lato di pochi pixel, che sul telefono si
+   sente come un sobbalzo */
+code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-radius: 3px; overflow-wrap: anywhere; }
 
 /* testata */
 .testata { border-bottom: 1px solid var(--linea); background: var(--carta); position: static; z-index: 5; }
@@ -181,7 +184,8 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 .cerca-chiudi { display: inline-flex; align-items: center; gap: 6px; flex: none; font: inherit; font-size: 0.78rem; color: var(--muto); background: none; border: 1px solid var(--linea); border-radius: 99px; padding: 5px 9px; cursor: pointer; }
 .cerca-chiudi:hover { color: var(--inchiostro); border-color: var(--inchiostro); }
 .cerca-chiudi kbd, .cerca-aiuto kbd { font: inherit; font-size: 0.72rem; border: 1px solid var(--linea); border-radius: 3px; padding: 0 4px; }
-@media (max-width: 600px) { .cerca-chiudi-parola { display: none; } }
+/* su un telefono non c'è una tastiera da cui premere Esc: il pulsante dice quello che fa */
+@media (max-width: 600px) { .cerca-chiudi kbd { display: none; } }
 .cerca-stato { margin: 0; padding: 8px 16px 0; font-size: 0.8rem; color: var(--muto); }
 .cerca-risultati { list-style: none; margin: 0; padding: 6px 0 8px; overflow-y: auto; flex: 1 1 auto; min-height: 0; }
 .cerca-voce { margin: 0; }
@@ -526,7 +530,12 @@ a.quartiere-scendi { text-decoration: none; }
   .cifre-elenco { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mappa-blocco { position: static; height: auto; }
   .mappa-fig { flex: none; min-height: 0; }
-  #mappa-svg { flex: none; width: 100%; height: auto; aspect-ratio: var(--ar, 1000 / 1046); max-height: min(calc(100vh - var(--testata) - 190px), 118vw); max-height: min(calc(100dvh - var(--testata) - 190px), 118vw); min-height: 120px; }
+  /* lo spazio riservato sotto la mappa era 190 px, misurato quando il titolo
+     stava su due righe: su un tablet in verticale i comandi ne occupano 230 e
+     il fondo del disegno finiva dietro la barra. Ora il numero arriva da
+     js/app.js (--mappa-max), che misura quel che resta davvero; il minimo di
+     180 px tiene la mappa leggibile anche su un telefono coricato. */
+  #mappa-svg { flex: none; width: 100%; height: auto; aspect-ratio: var(--ar, 1000 / 1046); max-height: var(--mappa-max, max(180px, min(calc(100dvh - var(--testata) - 290px), 118vw))); min-height: 120px; }
   .testata nav.menu-principale { flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; padding-bottom: 2px; }
   .testata nav.menu-principale::-webkit-scrollbar { display: none; }
   /* con una tendina aperta il pannello esce dalla riga e si apre a tutta larghezza
@@ -988,7 +997,10 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 /* mappa della circoscrizione e scheda di sintesi: il blocco che prima stava nella home */
 .circ-dashboard { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.95fr); gap: 0 clamp(20px, 3vw, 44px); align-items: start; margin: 6px 0 28px; }
 .circ-mappa { margin: 0; min-width: 0; position: sticky; top: calc(var(--testata) + 8px); scroll-margin-top: calc(var(--testata) + 12px); }
-.circ-mappa #mappa-svg { width: 100%; height: clamp(300px, 55vh, 640px); min-height: 0; max-height: none; aspect-ratio: auto; display: block; }
+/* la mappa prende l'altezza del disegno, non un'altezza fissa: ingrandita su una
+   circoscrizione il poligono è largo e basso, e dentro una scatola alta 640 px
+   lasciava due vuoti, uno sopra e uno sotto, con la didascalia lontanissima */
+.circ-mappa #mappa-svg { width: 100%; height: auto; min-height: 0; max-height: min(72vh, 620px); aspect-ratio: auto; display: block; }
 .circ-mappa #mappa-svg .circ { fill: var(--carta-2); stroke: var(--linea); cursor: default; }
 .circ-mappa #quartieri-g .quartiere { stroke: var(--linea); pointer-events: none; cursor: default; }
 .circ-mappa figcaption { margin-top: 6px; font-size: 0.84rem; color: var(--muto); max-width: 52rem; }
@@ -997,7 +1009,7 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 @media (max-width: 900px) {
   .circ-dashboard { grid-template-columns: 1fr; }
   .circ-mappa { position: static; }
-  .circ-mappa #mappa-svg { height: clamp(260px, 48vh, 460px); }
+  .circ-mappa #mappa-svg { max-height: min(58vh, 460px); }
   .circ-dashboard .scheda { margin-top: 18px; }
 }
 .circoscrizione .riga-barra.link { color: var(--inchiostro); text-decoration: none; }
@@ -1231,17 +1243,27 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
   .cerca-apri { margin-left: auto; }
   /* il marchio sta al centro della testata, non a una distanza fissa dal bordo:
      161 px è la sua larghezza a 1,2rem, quindi il primo termine lo porta sulla
-     mezzeria. Il secondo è il massimo che lascia 16 px a ricerca e tema: sotto i
-     ~415 px vince quello e il marchio si ferma prima, invece di andare a capo. */
-  .marchio { margin-left: clamp(0px, calc((100vw - 161px) / 2 - var(--gutter)), calc(100vw - 309px)); }
+     mezzeria. Il secondo è il massimo che lascia 16 px a ricerca e tema (40 px
+     l'uno, misura del dito): sotto i ~430 px vince quello e il marchio si ferma
+     prima, invece di andare a capo. */
+  .marchio { margin-left: clamp(0px, calc((100vw - 161px) / 2 - var(--gutter)), calc(100vw - 327px)); }
 
   /* il posto della barra non si perde in fondo alla pagina */
   body { padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom, 0px)); }
   /* il banner del consenso si appoggia sopra la barra invece di coprirla */
   .consenso { bottom: calc(var(--barra) + env(safe-area-inset-bottom, 0px)); }
   body.con-consenso { padding-bottom: calc(var(--altezza-consenso, 0px) + var(--barra) + env(safe-area-inset-bottom, 0px)); }
-  /* «Torna in cima» lo fa la voce Mappa, che è sempre lì */
-  .su { display: none; }
+  /* «Torna in cima» resta anche qui: la voce Mappa della barra riporta in cima
+     solo quando sei già in home, altrove cambia pagina. Il pulsante si alza
+     sopra la barra (e sopra il banner, quando c'è) per non coprire né l'una né
+     l'altro, e prende la misura del dito. */
+  .su {
+    right: 12px; padding: 10px 15px; min-height: 44px;
+    bottom: calc(var(--barra) + 12px + env(safe-area-inset-bottom, 0px));
+  }
+  body.con-consenso .su {
+    bottom: calc(var(--barra) + var(--altezza-consenso, 0px) + 12px + env(safe-area-inset-bottom, 0px));
+  }
 
   /* dentro un iframe la barra prende tutta la larghezza: niente ritiro di 56 px
      come prima, le cinque voci sono 1/5 dello schermo e l'ultima arriva al bordo.
@@ -1341,4 +1363,124 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
     .foglio[open] { animation: foglio-su 0.22s cubic-bezier(0.16, 1, 0.3, 1) both; }
     @keyframes foglio-su { from { opacity: 0; transform: translateY(14px); } }
   }
+}
+
+/* ================= uso: il telefono e il dito ================= */
+/* Rifiniture che non cambiano il disegno ma l'ordine in cui lo si incontra e la
+   misura di ciò che si tocca. Su un telefono la lettura è una cosa sola, che
+   scorre: chi arriva deve trovare il dato prima della spiegazione e non deve
+   mirare a un bersaglio di 30 px. */
+
+/* --- la mappa prima della spiegazione -------------------------------------
+   Titolo, poi la mappa, poi il testo che la spiega. Con il sottotitolo in mezzo
+   la mappa cominciava a metà schermo e finiva sotto il bordo: la prima schermata
+   era tutta promessa e nessun dato. La frase resta a un dito di distanza, e le
+   quattro cifre salgono sopra la scheda d'istruzioni perché sono la risposta. */
+@media (max-width: 900px) {
+  .apertura { display: flex; flex-direction: column; align-items: stretch; }
+  .apertura-testo { display: contents; }
+  .apertura h1 { order: 1; margin: 8px 0 0; }
+  .mappa-blocco { order: 2; margin-top: 10px; }
+  .sottotitolo { order: 3; margin: 16px 0 0; }
+  .avviso { order: 4; margin: 12px 0 0; }
+  .cifre-apertura { order: 5; margin-top: 18px; }
+  .apertura > .scheda { order: 6; }
+
+  /* la briciola senza nemmeno un collegamento è la pagina stessa: in home
+     ripeteva «Home» sotto il marchio, una riga di 26 px per niente (la barra in
+     basso dice già dove sei). Altrove la briciola è il percorso e resta. */
+  .briciole-testata:not(:has(li:not([hidden]) a)) { display: none; }
+}
+
+/* --- prima i dati, poi i limiti --------------------------------------------
+   «Cosa non misura» sono sei o sette voci: fra le barre e le tre letture
+   laterali spezzava il confronto, e sul telefono arrivava prima del confronto
+   stesso. Le barre restano attaccate alle loro letture, i limiti chiudono la
+   sezione: l'ultima cosa da leggere invece della prima da saltare. */
+@media (max-width: 1000px) {
+  .opere-corpo, .bilancio-corpo { display: flex; flex-direction: column; }
+  .opere-principale, .bilancio-principale { display: contents; }
+  .opere-principale > .barre, .bilancio-principale > .barre { order: 1; }
+  .opere-lato, .bilancio-lato { order: 2; }
+  .opere-principale > .limiti, .bilancio-principale > .limiti { order: 3; margin-top: 28px; }
+}
+
+/* --- la ricerca prima delle regole -----------------------------------------
+   Su un telefono «Cosa non fa questo elenco» sono cinque punti, cioè mezza
+   schermata, prima della casella di ricerca: la pagina si apriva su un
+   ammonimento invece che sullo strumento. Le regole scendono sotto i risultati
+   — intere, non nascoste — e restano prima dell'elenco degli appalti. */
+@media (max-width: 900px) {
+  .page:has(#regole) { display: flex; flex-direction: column; }
+  .page:has(#regole) > .pagina-testa { display: contents; }
+  .page:has(#regole) #regole { order: 50; margin-top: 28px; }
+  .page:has(#regole) #cig { order: 60; }
+  .page:has(#regole) > .piede { order: 70; }
+}
+
+/* --- 40 px: la misura sotto la quale un dito sbaglia bersaglio -------------
+   Su schermo stretto e su qualunque puntatore grossolano. La testata, i menù a
+   pillola e le righe che si aprono crescono fino alla misura del dito; il testo
+   non cambia, cambia solo l'area che risponde. */
+@media (max-width: 900px), (pointer: coarse) {
+  .cerca-apri, .tema { min-width: 40px; min-height: 40px; justify-content: center; }
+  .cerca-chiudi { min-height: 40px; padding-left: 13px; padding-right: 13px; }
+  .selettore button, .interruttore, .anni button, .circ-nav a, .sommario a, .linguette button { min-height: 40px; }
+  /* la pillola è il bersaglio, non il menu nativo largo 18 px che ci sta dentro */
+  .pillola-filtro { min-height: 40px; }
+  .pillola-filtro select { min-height: 32px; }
+  .chip button { min-width: 32px; min-height: 32px; }
+  .scheda-missione .chiudi { width: 40px; height: 40px; }
+  .dati summary { padding: 10px 0; }
+  .quartiere-scendi, .upl-scendi, .livello-su { min-height: 32px; padding: 4px 12px; }
+  .voce-prog, .barra.cliccabile, .riga-barra.link, .pc-riga, .badge-link { min-height: 40px; }
+}
+
+/* --- la finestra della ricerca, a tutto schermo ----------------------------
+   Con la tastiera aperta il campo restava a metà altezza e i risultati sotto
+   finivano coperti: qui il campo si ancora in cima, la lista scorre da sola
+   nello spazio che resta, e il fondo non si muove. */
+@media (max-width: 600px) {
+  .cerca-dialogo { display: flex; flex-direction: column; }
+  .cerca-campo { position: sticky; top: 0; z-index: 1; }
+  .cerca-risultati { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  /* la riga in fondo spiega le frecce e Invio: su un telefono non ci sono, e la
+     stessa cosa la dice già lo stato in cima («scrivi almeno tre lettere») */
+  .cerca-aiuto { display: none; }
+}
+
+/* --- il poco spazio che serve alla scala dei colori -----------------------
+   Con la mappa intera nella prima schermata la scala — gli estremi del colore,
+   cioè come si legge — restava venti pixel sotto il bordo. I margini dei
+   comandi si stringono di quel poco e la scala entra: si vede la città e si
+   vede la chiave per leggerla. */
+@media (max-width: 700px) {
+  .selettore { margin-bottom: 6px; }
+  .controlli-mappa { gap: 6px 10px; margin-bottom: 6px; }
+  .mappa-fig figcaption { font-size: 0.8rem; margin-top: 3px; }
+  .legenda { font-size: 0.8rem; margin-top: 4px; }
+}
+
+/* --- «Torna in cima» sul telefono: un cerchio, non una pillola -------------
+   La parola larga 130 px copriva una riga intera di dati mentre si scorre. Sul
+   telefono resta la freccia, nel cerchio da 44 px: il nome accessibile è quello
+   che su.js mette sull'elemento, quindi il pulsante continua a chiamarsi. */
+@media (max-width: 700px) {
+  .su { width: 44px; height: 44px; padding: 0; justify-content: center; border-radius: 50%; }
+  .su-parola { display: none; }
+}
+
+/* --- il piede in fondo anche con poche righe -------------------------------
+   In una scheda che non esiste, o in una pagina di tre frasi, il credito
+   risaliva subito sotto il testo e lasciava una fascia vuota fino alla barra.
+   La colonna prende l'altezza dello schermo e il contenuto si prende lo spazio
+   che avanza: il piede resta dove deve stare. */
+body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+body > main { flex: 1 0 auto; }
+
+/* --- il titolo su un telefono stretto --------------------------------------
+   A 360 px il titolo andava su quattro righe e mangiava la mappa. Un punto e
+   mezzo in meno di corpo lo porta a tre: resta il titolo, resta la mappa. */
+@media (max-width: 420px) {
+  .apertura h1 { font-size: 1.6rem; }
 }

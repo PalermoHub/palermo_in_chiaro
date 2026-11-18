@@ -19,7 +19,13 @@
     p.setAttribute('fill', 'none'); p.setAttribute('stroke', 'currentColor');
     p.setAttribute('stroke-width', '2'); p.setAttribute('stroke-linecap', 'round'); p.setAttribute('stroke-linejoin', 'round');
     svg.append(p);
-    b.append(svg, document.createTextNode('Torna in cima'));
+    /* su un telefono il pulsante resta il solo cerchio con la freccia: la parola
+       larga 130 px copriva una riga di dati. Il nome accessibile non cambia. */
+    const parola = document.createElement('span');
+    parola.className = 'su-parola';
+    parola.textContent = 'Torna in cima';
+    b.setAttribute('aria-label', 'Torna in cima');
+    b.append(svg, parola);
     return b;
   }
 

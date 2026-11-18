@@ -23,8 +23,42 @@
   const misura = () => document.documentElement.style.setProperty('--testata', testata.offsetHeight + 'px');
   misura(); new ResizeObserver(misura).observe(testata);
 
+  /* L'altezza che resta sotto i comandi, misurata davvero: sopra la mappa ci sono
+     il titolo (due o tre righe, secondo lo schermo), i sei indicatori e i due menù
+     del territorio, e una misura fissa ne sbagliava sempre una. Sul telefono la
+     mappa prende quello che avanza, meno la didascalia e la scala dei colori (48
+     px), così disegno e legenda arrivano interi nella prima schermata. Ma non si
+     scende sotto l'80% della larghezza: su un telefono molto corto è meglio che
+     la scala resti appena sotto il bordo, piuttosto che una mappa stretta con due
+     fasce vuote ai lati. Sopra i 900 px la variabile si toglie. */
+  const figura = document.querySelector('.mappa-fig');
+  const barra = document.querySelector('.barra-basso');
+  const adattaMappa = () => {
+    const svg = document.getElementById('mappa-svg');
+    if (!figura || !svg) return;
+    if (!matchMedia('(max-width: 900px)').matches) { document.documentElement.style.removeProperty('--mappa-max'); return; }
+    const alto = figura.getBoundingClientRect().top + scrollY;
+    const basso = (barra ? barra.offsetHeight : 0) + 10;
+    /* la didascalia cambia con l'indicatore (una riga per i residenti, tre per le
+       opere): si misura, non si presume */
+    const nota = document.getElementById('mappa-nota');
+    const legenda = document.getElementById('legenda');
+    const sotto = (nota ? nota.offsetHeight : 0) + (legenda ? legenda.offsetHeight : 0) + 12;
+    const resto = innerHeight - alto - basso - sotto;
+    const rapporto = (getComputedStyle(svg).aspectRatio || '').split('/').map(Number);
+    const naturale = figura.clientWidth * ((rapporto[1] / rapporto[0]) || 1.046);
+    const scelto = Math.min(naturale, Math.max(resto, naturale * 0.8));
+    document.documentElement.style.setProperty('--mappa-max', Math.max(140, Math.round(scelto)) + 'px');
+  };
+  adattaMappa();
+  addEventListener('resize', adattaMappa, { passive: true });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(adattaMappa);
+
   Promise.all(Object.entries(FILES).map(([k, u]) => fetch(u).then(r => { if (!r.ok) throw new Error(u); return r.json(); }).then(j => [k, j])))
-    .then(p => avvia(Object.fromEntries(p)))
+    /* la misura dell'altezza va rifatta quando i comandi sopra la mappa ci sono
+       davvero: al primo giro l'indicatore e i due menù non erano ancora disegnati
+       e il conto lasciava trenta pixel di troppo */
+    .then(p => { avvia(Object.fromEntries(p)); adattaMappa(); })
     .catch(() => {
       const a = $('avviso-locali'); a.hidden = false;
       a.textContent = 'I dati non si caricano. Se hai aperto il file direttamente, avvia un server locale: python3 -m http.server 8000, poi apri http://localhost:8000.';
@@ -305,6 +339,7 @@
       $('mappa-nota').textContent = ind.nota;
       $('legenda').replaceChildren(el('span', { text: ind.f(mn) }), el('span', { class: 'scala' }), el('span', { text: ind.f(mx) }));
       legendaProgetti();
+      adattaMappa();
     }
 
     /* scheda */
