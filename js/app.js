@@ -108,13 +108,16 @@
        così la cifra nel popup e il colore sulla mappa sono la stessa cosa */
     function contenutoTip(titolo, righe, colore) {
       if (colore) tip.style.setProperty('--chip', colore);
-      let dopoDivisa = false, divisaDetta = false;
+      let dopoDivisa = false, ultimaDivisa = false;
       tip.replaceChildren(el('b', { text: titolo }), ...righe.map(r => {
         const segni = (r[2] === true ? 'divisa' : (r[2] || '')).split(' ').filter(Boolean);
         const cls = ['tip-riga'];
-        if (segni.includes('divisa') && !divisaDetta) { cls.push('divisa'); divisaDetta = true; dopoDivisa = true; }
+        const eDivisa = segni.includes('divisa');
+        /* una riga di separazione per volta: due attaccate non si leggono */
+        if (eDivisa && !ultimaDivisa) { cls.push('divisa'); dopoDivisa = true; }
         else if (segni.includes('attivo')) cls.push('attivo');
         else if (dopoDivisa) cls.push('tenue');
+        ultimaDivisa = eDivisa;
         if (segni.includes('disteso')) cls.push('disteso');
         return el('div', { class: cls.join(' ') }, [el('span', { text: r[0] }), el('strong', { text: r[1] })]);
       }));
