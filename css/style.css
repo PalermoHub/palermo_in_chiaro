@@ -1243,12 +1243,18 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
   /* «Torna in cima» lo fa la voce Mappa, che è sempre lì */
   .su { display: none; }
 
-  /* dentro un iframe la barra prende tutta la larghezza: le cinque voci arrivano
-     al bordo dello schermo, senza il vuoto a destra che lasciava il posto ai
-     pulsanti fissi dell'ospite (lì li sposta la pagina ospite, non noi) */
+  /* dentro un iframe la barra prende tutta la larghezza: niente ritiro di 56 px
+     come prima, le cinque voci sono 1/5 dello schermo e l'ultima arriva al bordo.
+     Restano 40 px a destra perché «Altro» non finisca interamente sotto i due
+     pulsanti flottanti dell'ospite (45 px a right: 15px): con 40 px l'etichetta
+     resta scoperta, e la barra arriva comunque al bordo dello schermo */
+  html.in-iframe .barra-basso { padding-right: 40px; }
+  /* a 320 px, con 40 px in meno, «Territorio» non entra: scende di un punto */
+  @media (max-width: 360px) { html.in-iframe .barra-voce { font-size: 0.62rem; } }
+
   /* e la barra di scorrimento verticale non si vede: dentro un pannello il bordo
      destro è già occupato dai pulsanti dell'ospite, e la pagina ospite fa lo
-     stesso con le sue (::‑webkit-scrollbar { display: none } in ph-css.css) */
+     stesso con le sue (::-webkit-scrollbar { display: none } in ph-css.css) */
   html.in-iframe { scrollbar-width: none; }
   html.in-iframe::-webkit-scrollbar { display: none; width: 0; height: 0; }
   .barra-basso {
