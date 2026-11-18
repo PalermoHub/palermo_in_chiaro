@@ -29,7 +29,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Public+Sans:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=20261122c">
+<link rel="stylesheet" href="css/style.css?v=20261123a">
 <script src="js/tema.js?v=20261120a"></script>
 
 <style>
@@ -105,6 +105,63 @@
     </nav>
   </div>
 </header>
+<nav class="barra-basso" aria-label="Navigazione principale">
+  <a class="barra-voce" href="index.html#mappa" data-barra="mappa">
+    <svg class="barra-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6.1 8.6 3.9 15.4 6.4 21 4.2v13.7l-5.6 2.2-6.8-2.5L3 19.9V6.1Z"/><path d="M8.6 3.9v13.7M15.4 6.4v13.5"/></svg>
+    <span class="barra-parola">Mappa</span>
+  </a>
+  <button type="button" class="barra-voce" data-barra="territorio" aria-haspopup="dialog" aria-expanded="false" aria-controls="f-circoscrizioni">
+    <svg class="barra-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3.6" y="3.6" width="7.4" height="7.4" rx="1.2"/><rect x="13" y="3.6" width="7.4" height="7.4" rx="1.2"/><rect x="3.6" y="13" width="7.4" height="7.4" rx="1.2"/><rect x="13" y="13" width="7.4" height="7.4" rx="1.2"/></svg>
+    <span class="barra-parola">Territorio</span>
+  </button>
+  <a class="barra-voce" href="progetti.html" data-barra="progetti">
+    <svg class="barra-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 6.5h11M9 12h11M9 17.5h11"/><path d="M4.6 6.5h.01M4.6 12h.01M4.6 17.5h.01" stroke-width="2.4"/></svg>
+    <span class="barra-parola">Progetti</span>
+  </a>
+  <a class="barra-voce" href="statistiche.html" data-barra="statistiche">
+    <svg class="barra-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3.5 20.4h17"/><path d="M7 20.4v-6.6M12 20.4V6.8M17 20.4v-9.6"/></svg>
+    <span class="barra-parola">Statistiche</span>
+  </a>
+  <button type="button" class="barra-voce" data-barra="altro" aria-haspopup="dialog" aria-expanded="false" aria-controls="f-altro">
+    <svg class="barra-ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><g class="pieno"><circle cx="5.2" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="18.8" cy="12" r="1.75"/></g></svg>
+    <span class="barra-parola">Altro</span>
+  </button>
+</nav>
+
+<dialog class="foglio" id="f-circoscrizioni" aria-labelledby="f-circoscrizioni-t">
+  <div class="foglio-in">
+    <div class="foglio-testa">
+      <h2 id="f-circoscrizioni-t">Le 8 circoscrizioni</h2>
+      <button type="button" class="foglio-chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="solo-lettori">Chiudi</span></button>
+    </div>
+    <ul class="foglio-otto">
+        <li><a href="circoscrizione/1/" data-circ="1" aria-label="Circoscrizione I"><b>I</b></a></li>
+        <li><a href="circoscrizione/2/" data-circ="2" aria-label="Circoscrizione II"><b>II</b></a></li>
+        <li><a href="circoscrizione/3/" data-circ="3" aria-label="Circoscrizione III"><b>III</b></a></li>
+        <li><a href="circoscrizione/4/" data-circ="4" aria-label="Circoscrizione IV"><b>IV</b></a></li>
+        <li><a href="circoscrizione/5/" data-circ="5" aria-label="Circoscrizione V"><b>V</b></a></li>
+        <li><a href="circoscrizione/6/" data-circ="6" aria-label="Circoscrizione VI"><b>VI</b></a></li>
+        <li><a href="circoscrizione/7/" data-circ="7" aria-label="Circoscrizione VII"><b>VII</b></a></li>
+        <li><a href="circoscrizione/8/" data-circ="8" aria-label="Circoscrizione VIII"><b>VIII</b></a></li>
+    </ul>
+  </div>
+</dialog>
+
+<dialog class="foglio" id="f-altro" aria-labelledby="f-altro-t">
+  <div class="foglio-in">
+    <div class="foglio-testa">
+      <h2 id="f-altro-t">Il resto del sito</h2>
+      <button type="button" class="foglio-chiudi"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="solo-lettori">Chiudi</span></button>
+    </div>
+    <ul class="foglio-voci">
+      <li><a href="fonti.html"><span class="foglio-nome">Fonti</span><span class="foglio-dove">Da dove viene ogni numero: periodo e licenza</span></a></li>
+      <li><a href="metodo.html"><span class="foglio-nome">Metodo e licenze</span><span class="foglio-dove">Come nascono i numeri e cosa non misurano</span></a></li>
+      <li><a href="guida.html"><span class="foglio-nome">Guida al sito</span><span class="foglio-dove">Come si leggono la mappa e le schede</span></a></li>
+      <li><a href="privacy.html"><span class="foglio-nome">Privacy e cookie</span><span class="foglio-dove">Statistiche, consenso e diritti</span></a></li>
+    </ul>
+  </div>
+</dialog>
+
 
 <main id="contenuto" class="pagina">
   <h1>Metodo e licenze</h1>
@@ -167,6 +224,7 @@
 </footer>
 
 <script src="js/menu.js?v=20261120a"></script>
+<script src="js/barra.js?v=20261123a"></script>
 <script src="js/cerca.js?v=20261121a"></script>
 <script src="js/crediti.js?v=20261119a"></script>
 <script src="js/su.js?v=20261116y"></script>

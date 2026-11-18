@@ -747,9 +747,6 @@ table.appalti td.num { text-align: right; font-variant-numeric: tabular-nums; wh
 .credito .credito-legale { margin: 7px 0 0; font-size: 0.78rem; line-height: 1.5; color: var(--muto); }
 .credito-legale a { color: inherit; text-decoration: underline; text-underline-offset: 2px; white-space: nowrap; }
 .credito-legale a:hover { color: var(--inchiostro); }
-/* sotto i 900 px il pulsante «Torna in cima» (fisso in basso a destra) passerebbe
-   sopra la riga legale: il piede lascia lo spazio per il pulsante */
-@media (max-width: 900px) { .credito-in { padding-bottom: 74px; } }
 
 /* finestra «Credits» del piede (la costruisce js/crediti.js, in fondo al body).
    <dialog> modale: il browser la centra, la mette sopra tutto e riporta il fuoco
@@ -1033,7 +1030,7 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
   .avanz-riga .nome { grid-column: 1 / -1; }
   .avanz-riga .val small { display: inline; margin-left: 6px; }
   .minigriglia { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
-  .linguette { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .linguette { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; padding-right: 30px; mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent); -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent); }
   .linguette::-webkit-scrollbar { display: none; }
   .linguette button { white-space: nowrap; }
 }
@@ -1145,12 +1142,18 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
   .testata nav.menu-principale.aperta { mask-image: none; -webkit-mask-image: none; }
 }
 
-/* i livelli della mappa: una riga che scorre, non tre righe di pillole */
+/* i livelli della mappa: una riga che scorre, non tre righe di pillole.
+   La riga sta dentro il gutter come tutto il resto: prima usciva a filo dello
+   schermo con un margine negativo e l'ultima pillola restava tagliata sul bordo.
+   Ora scorre dentro il margine e sfuma prima del bordo, come il menù della
+   testata, lasciando 30 px perché l'ultima pillola arrivi intera. */
 @media (max-width: 700px) {
   .selettore {
     flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
-    margin: 0 calc(-1 * var(--gutter)) 10px; padding: 0 var(--gutter) 2px;
+    margin: 0 0 10px; padding: 0 30px 2px 0;
     scroll-snap-type: x proximity;
+    mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 30px), transparent);
   }
   .selettore::-webkit-scrollbar { display: none; }
   .selettore button { flex: none; scroll-snap-align: start; }
@@ -1206,4 +1209,111 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 /* tre scorciatoie su un telefono: larghe uguali, una per riga, con la freccia in fondo */
 @media (max-width: 600px) {
   .badge-riga .badge-link { flex: 1 1 100%; justify-content: space-between; }
+}
+
+/* ================= barra in basso: il menù dei telefoni ================= */
+/* Sotto i 901 px la testata non è fissa: il menù delle sezioni era una riga che
+   scorreva in orizzontale e, appena si scorreva la pagina, la navigazione spariva.
+   Qui il menù diventa la barra in fondo allo schermo; la testata resta con il
+   marchio, la ricerca e il tema. Sopra i 900 px la barra non esiste: comanda il
+   menù della testata, che lì è fissa. */
+:root { --barra: 56px; }
+.barra-basso, .foglio { display: none; }
+
+@media (max-width: 900px) {
+  .testata nav.menu-principale { display: none; }
+  .cerca-apri { margin-left: auto; }
+
+  /* il posto della barra non si perde in fondo alla pagina */
+  body { padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom, 0px)); }
+  /* il banner del consenso si appoggia sopra la barra invece di coprirla */
+  .consenso { bottom: calc(var(--barra) + env(safe-area-inset-bottom, 0px)); }
+  body.con-consenso { padding-bottom: calc(var(--altezza-consenso, 0px) + var(--barra) + env(safe-area-inset-bottom, 0px)); }
+  /* «Torna in cima» lo fa la voce Mappa, che è sempre lì */
+  .su { display: none; }
+
+  .barra-basso {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 7;
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); align-items: stretch;
+    margin: 0; padding: 0 0 env(safe-area-inset-bottom, 0px);
+    background: var(--carta); border-top: 1px solid var(--linea);
+  }
+  .barra-voce {
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+    min-height: var(--barra); padding: 7px 2px 8px; margin: 0;
+    font: inherit; font-size: 0.7rem; line-height: 1; letter-spacing: 0; text-align: center;
+    color: var(--muto); background: none; border: 0; border-radius: 0;
+    text-decoration: none; cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .barra-ico {
+    width: 22px; height: 22px; flex: none; display: block;
+    fill: none; stroke: currentColor; stroke-width: 1.7;
+    stroke-linecap: round; stroke-linejoin: round;
+  }
+  .barra-ico .pieno { fill: currentColor; stroke: none; }
+  .barra-parola { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* dove si è: lo stesso segno del menù della testata, sottolineato di 2 px */
+  .barra-voce[aria-current="page"], .barra-voce[data-corrente] { color: var(--inchiostro); font-weight: 600; }
+  .barra-voce[aria-current="page"] .barra-parola, .barra-voce[data-corrente] .barra-parola {
+    text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px;
+  }
+  .barra-voce[aria-current="page"] .barra-ico, .barra-voce[data-corrente] .barra-ico { stroke-width: 2.1; }
+  .barra-voce:focus-visible { outline: 3px solid var(--cupola); outline-offset: -3px; }
+  @media (hover: hover) { .barra-voce:hover { color: var(--inchiostro); } }
+
+  /* i due fogli che salgono da sotto: le 8 circoscrizioni e le voci secondarie */
+  .foglio {
+    position: fixed; inset: auto 0 calc(var(--barra) + 1px + env(safe-area-inset-bottom, 0px)) 0;
+    width: 100%; max-width: 100%;
+    max-height: calc(100dvh - var(--barra) - 56px);
+    margin: 0; padding: 0; border: 0; border-top: 1px solid var(--linea); border-radius: 0;
+    background: var(--carta); color: var(--inchiostro);
+    overflow: auto; overscroll-behavior: contain;
+  }
+  .foglio[open] { display: block; }
+  .foglio::backdrop { background: rgba(15, 34, 51, 0.42); }
+  .foglio-in { padding: 12px var(--gutter) 16px; }
+  .foglio-testa { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 10px; }
+  .foglio-testa h2 { font-size: 1.05rem; }
+  .foglio-chiudi {
+    display: inline-flex; align-items: center; justify-content: center; flex: none;
+    width: 40px; height: 40px; margin: -4px -8px -4px 0; padding: 0;
+    font: inherit; color: var(--muto); background: none;
+    border: 1px solid var(--linea); border-radius: 99px; cursor: pointer;
+  }
+  .foglio-chiudi:hover { color: var(--inchiostro); border-color: var(--inchiostro); }
+  .foglio-chiudi svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+
+  /* le 8 circoscrizioni: due colonne di caselle, come le pastiglie delle pagine */
+  .foglio-otto { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .foglio-otto a {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 10px 12px;
+    border: 1px solid var(--linea); border-radius: 4px;
+    color: var(--inchiostro); text-decoration: none;
+  }
+  .foglio-otto a b { font-family: var(--font-titoli); font-weight: 700; font-size: 1.3rem; line-height: 1; letter-spacing: -0.01em; }
+  .foglio-otto a:hover { border-color: var(--maiolica); background: var(--maiolica-chiara); }
+  .foglio-otto a[aria-current="page"] { background: var(--inchiostro); border-color: var(--inchiostro); color: var(--carta); }
+
+  /* il foglio è modale: la pagina dietro non deve scorrere sotto il dito */
+  html.con-foglio { overflow: hidden; }
+
+  /* le voci secondarie: righe separate da un filo, nome e una riga che dice cosa c'è dentro */
+  .foglio-voci { list-style: none; margin: 0; padding: 0; }
+  .foglio-voci li + li { border-top: 1px solid var(--linea); }
+  .foglio-voci a {
+    display: grid; gap: 1px; min-height: 52px; padding: 11px 2px;
+    color: var(--inchiostro); text-decoration: none;
+  }
+  .foglio-voci a:hover .foglio-nome { text-decoration: underline; text-underline-offset: 3px; }
+  .foglio-nome { font-size: 0.95rem; }
+  .foglio-dove { font-size: 0.8rem; color: var(--muto); }
+  .foglio a[aria-current="page"] .foglio-nome { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+  /* un solo movimento: il foglio sale. Con movimento ridotto non sale affatto */
+  @media (prefers-reduced-motion: no-preference) {
+    .foglio[open] { animation: foglio-su 0.22s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    @keyframes foglio-su { from { opacity: 0; transform: translateY(14px); } }
+  }
 }
