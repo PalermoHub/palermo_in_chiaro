@@ -34,6 +34,16 @@
    "dettaglio": ""
   },
   {
+   "invariante": "Allegato I: scheda D (533 interventi) somma esattamente alla scheda A (4.326.951.221,36 €)",
+   "esito": true,
+   "dettaglio": "533 interventi; scheda A 4326951221.36; 2 righe senza importi leggibili = 559364.88 contro 559364.88 nei nostri dati"
+  },
+  {
+   "invariante": "scarto nostri dati - Allegato I = interventi nuovi + importi cambiati (all'euro)",
+   "esito": true,
+   "dettaglio": "46459697.17 = 40555802.71 (15 nuovi) + 5903894.46 (5 cambiati)"
+  },
+  {
    "invariante": "PNRR: snapshot = somma del CSV",
    "esito": true,
    "dettaglio": ""
@@ -60,8 +70,8 @@
    "differenza_relativa": 0.0498,
    "tolleranza": 0,
    "esito": "scarto",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
    "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
   },
@@ -75,8 +85,8 @@
    "differenza_relativa": 0.0107,
    "tolleranza": 0.001,
    "esito": "scarto",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
    "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
   },
@@ -90,8 +100,8 @@
    "differenza_relativa": 0.017,
    "tolleranza": 0.001,
    "esito": "scarto",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
    "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
   },
@@ -105,8 +115,8 @@
    "differenza_relativa": 0.0237,
    "tolleranza": 0.001,
    "esito": "scarto",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
    "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
   },
@@ -120,8 +130,8 @@
    "differenza_relativa": 0.0034,
    "tolleranza": 0.001,
    "esito": "scarto",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "fonte_a": "Programma triennale 2026-2028 come in interventi_2026_2028.json (estratto da OpenDataSicilia dai PDF, DCC 553/2026)",
    "fonte_b": "La Sicilia, 3 ottobre 2026: «Via libera al Programma triennale delle opere pubbliche 2026-2028» (Consiglio comunale)"
   },
@@ -259,8 +269,8 @@
  "scarti": [
   {
    "id": "programma_n_interventi",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "cifra_a": "numero di interventi",
    "valore_a": 548,
    "cifra_b": "numero di interventi",
@@ -268,8 +278,8 @@
   },
   {
    "id": "programma_totale_triennio",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "cifra_a": "quadro finanziario 2026-2028 (€)",
    "valore_a": 4373410918.53,
    "cifra_b": "quadro finanziario 2026-2028 (€)",
@@ -277,8 +287,8 @@
   },
   {
    "id": "programma_2026",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "cifra_a": "annualità 2026 (€)",
    "valore_a": 363609993.89,
    "cifra_b": "annualità 2026 (€)",
@@ -286,8 +296,8 @@
   },
   {
    "id": "programma_2027",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "cifra_a": "annualità 2027 (€)",
    "valore_a": 1348936054.55,
    "cifra_b": "annualità 2027 (€)",
@@ -295,8 +305,8 @@
   },
   {
    "id": "programma_2028",
-   "classe": "versione_atto",
-   "nota": "Le due cifre misurano il quadro finanziario del Programma, ma non è dimostrato che siano la stessa versione dell'atto: la bozza di Giunta (4 maggio 2026) contava 533 interventi, il testo approvato 522, i nostri dati 548. Per decidere serve il testo di DCC 553/2026.",
+   "classe": "versione_atto_spiegata",
+   "nota": "SPIEGATO ALL'EURO. La cronaca cita la relazione del Programma adottato dalla Giunta (DG 128 del 24/04/2026): 4.326.951.221,36 €, che è la somma esatta della scheda D dell'Allegato I (533 interventi; la relazione scrive «522» nel testo e «533» nella tabella, e la scheda D ne ha 533). Il Consiglio (DCC 553 del 02/10/2026) ha approvato 24 emendamenti: i nostri dati, che dichiarano il totale post-emendamenti (4.373.410.918,53 €, secondo l'estrazione di OpenDataSicilia), valgono Allegato I + 15 interventi nuovi (40555802.71 €) + 5 importi cambiati (+5903894.46 €). Non ho potuto leggere il testo emendato: confermato solo che lo scarto è composto da queste voci.",
    "cifra_a": "annualità 2028 (€)",
    "valore_a": 2660864870.09,
    "cifra_b": "annualità 2028 (€)",
@@ -558,11 +568,45 @@
   "anac_cig_con_cup": false,
   "nota": "Il collegamento esatto Programma→gara (CIG) non è possibile: i CSV ANAC non hanno una colonna CUP. Il «pagato» esiste solo per i progetti di coesione (OpenCoesione); per Programma e ANAC non c'è."
  },
+ "scomposizione_scarto_programma": {
+  "allegato_I_interventi": 533,
+  "allegato_I_totale_eur": 4326951221.36,
+  "nuovi_interventi": 15,
+  "nuovi_importo_eur": 40555802.71,
+  "interventi_con_importi_cambiati": 5,
+  "variazione_importi_eur": 5903894.46,
+  "nostri_interventi": 548,
+  "nostro_totale_eur": 4373410918.53,
+  "nuovi_codici": [
+   "01-01_289",
+   "01-01_290",
+   "01-01_291",
+   "01-01_292",
+   "01-01_293",
+   "02-11_352",
+   "02-11_353",
+   "02-11_354",
+   "02-11_355",
+   "02-15_034",
+   "02-15_035",
+   "05-10_047",
+   "05-11_357",
+   "05-11_358",
+   "05-33_046"
+  ],
+  "cambiati_codici": [
+   "05-12_054",
+   "02-11_263",
+   "05-12_053",
+   "05-12_057",
+   "02-11_351"
+  ]
+ },
  "non_eseguito": [
   "Bulk ANAC completo (stato, varianti, importo liquidato): non scaricato.",
   "SIOPE (pagamenti per codice gestionale): non scaricato.",
   "BDAP-MOP (monitoraggio opere): non scaricato.",
-  "Atto originale DCC 553/2026 con il Programma: non trovato sul sito del Comune, confronto fatto solo con la cronaca.",
+  "Testo del Programma come emendato dal Consiglio (DCC 553/2026 dopo gli emendamenti): il registro delle delibere ha solo l'Allegato I adottato dalla Giunta; il totale emendato (548 interventi, 4.373.410.918,53 €) è quello dichiarato nell'estrazione di OpenDataSicilia, non verificato sul PDF.",
   "Campione di 30 opere verificato da un ufficio del Comune: preparato, non ancora verificato da terzi.",
   "Replica indipendente da fonti grezze: gli script non sono nel repository pubblico."
  ]
