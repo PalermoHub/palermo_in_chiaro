@@ -67,7 +67,7 @@
       p.setAttribute('aria-pressed', 'false'); p.setAttribute('aria-label', `Circoscrizione ${c}`);
       p.addEventListener('click', (ev) => { const id = progettoSotto(ev); if (id) apriProgetto(id); else location.href = paginaCirc(c); });
       p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.href = paginaCirc(c); } });
-      agganciaTip(p, () => [`Circoscrizione ${c}`, righeCirc(c)]);
+      agganciaTip(p, () => [`Circoscrizione ${c}`, righeCirc(c), gruppi[c] && gruppi[c].p.style.fill]);
       svg.append(p);
       gruppi[c] = { p };
     });
@@ -90,18 +90,38 @@
     function posizionaTip(x, y) {
       tip.hidden = false;
       const r = tip.getBoundingClientRect();
-      let left = x + 14, top = y + 14;
-      if (left + r.width > innerWidth - 8) left = x - r.width - 14;
-      if (top + r.height > innerHeight - 8) top = y - r.height - 14;
-      tip.style.left = Math.max(8, left) + 'px';
-      tip.style.top = Math.max(8, top) + 'px';
+      const m = 8, off = 14;
+      const aDestra = x + off + r.width <= innerWidth - m;
+      const left = aDestra ? x + off : x - off - r.width;
+      const top = y + off + r.height <= innerHeight - m ? y + off : y - off - r.height;
+      const l = Math.max(m, Math.min(left, innerWidth - m - r.width));
+      const t = Math.max(m, Math.min(top, innerHeight - m - r.height));
+      /* la punta guarda il punto che si sta toccando: sta sulla faccia più vicina,
+         all'altezza del puntatore, così la scheda sembra appesa al poligono */
+      tip.dataset.lato = aDestra ? 'sinistra' : 'destra';
+      tip.style.setProperty('--fy', Math.max(12, Math.min(y - t, r.height - 12)) + 'px');
+      tip.style.left = l + 'px';
+      tip.style.top = t + 'px';
     }
     addEventListener('scroll', () => { tip.hidden = true; }, { passive: true });
-    function contenutoTip(titolo, righe) {
-      tip.replaceChildren(el('b', { text: titolo }), ...righe.map(r => el('div', { class: 'tip-riga' + (r[2] ? ' divisa' : '') }, [
-        el('span', { text: r[0] }), el('strong', { text: r[1] })])));
+    /* il colore del poligono diventa il segno accanto all'indicatore che si sta leggendo:
+       così la cifra nel popup e il colore sulla mappa sono la stessa cosa */
+    function contenutoTip(titolo, righe, colore) {
+      if (colore) tip.style.setProperty('--chip', colore);
+      let dopoDivisa = false, divisaDetta = false;
+      tip.replaceChildren(el('b', { text: titolo }), ...righe.map(r => {
+        const segni = (r[2] === true ? 'divisa' : (r[2] || '')).split(' ').filter(Boolean);
+        const cls = ['tip-riga'];
+        if (segni.includes('divisa') && !divisaDetta) { cls.push('divisa'); divisaDetta = true; dopoDivisa = true; }
+        else if (segni.includes('attivo')) cls.push('attivo');
+        else if (dopoDivisa) cls.push('tenue');
+        if (segni.includes('disteso')) cls.push('disteso');
+        return el('div', { class: cls.join(' ') }, [el('span', { text: r[0] }), el('strong', { text: r[1] })]);
+      }));
     }
     const conteggiDi = (livello, nome) => (D.cnt && D.cnt[livello] && D.cnt[livello][nome]) || null;
+    /* il colore con cui è disegnata una circoscrizione, per il segno nel popup */
+    const coloreDi = (c) => (c && gruppi[c] && gruppi[c].p.style.fill) || '';
     /* quante voci, quante con PNRR o coesione, quante linee di finanziamento, quanti CIG: le stesse
        voci che si aprono scegliendo il territorio (data/snapshot/conteggi_territorio.json) */
     const righeConteggi = (livello, nome) => {
@@ -115,10 +135,12 @@
     };
     const righeCirc = (c) => {
       const g = D.geo.circoscrizioni[c];
-      const upl = Object.values(g.upl).reduce((s, l) => s + l.length, 0);
+      const upl = Object.values(g.upl).flat();
       return [
-        ...IND.map(i => [i.nome, i.f(i.val(c))]),
-        ['Quartieri e UPL', `${it(g.quartieri.length)} · ${it(upl)}`, true],
+        ...IND.map(i => [i.nome, i.f(i.val(c)), i === ind ? 'attivo' : null]),
+        /* quartieri e UPL separati e per nome: «4 · 8» non diceva né cosa fossero né quali */
+        ['Quartieri', g.quartieri.join(' · '), 'divisa disteso'],
+        ...(upl.length ? [['UPL', upl.join(' · '), 'disteso']] : []),
         ...righeConteggi('circoscrizioni', c),
       ];
     };
@@ -128,9 +150,8 @@
       const circQ = (g.circ && g.circ[0]) || '';
       return [
         ['Circoscrizione', (g.circ || []).join(', ') || 'non indicata'],
-        ['UPL', it(upl.size)],
-        /* la cifra è quella della circoscrizione: il quartiere non ha un indicatore proprio */
-        ...(circQ ? [[`${ind.nome} (circ. ${circQ})`, ind.f(ind.val(circQ))]] : []),
+        ['UPL', upl.size ? [...upl].join(' · ') : 'non indicata', upl.size ? 'disteso' : null],
+        ...(circQ ? [[`${ind.nome} (circ. ${circQ})`, ind.f(ind.val(circQ)), 'attivo']] : []),
         ...righeConteggi('quartieri', n),
       ];
     };
@@ -224,7 +245,7 @@
           if (n === selQ && !selU) scegli(sel, false); else scegliQuartiere(n);
         });
         p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegliQuartiere(n); } });
-        agganciaTip(p, () => [`Quartiere ${n}`, righeQuartiere(n, g)]);
+        agganciaTip(p, () => [`Quartiere ${n}`, righeQuartiere(n, g), coloreDi((g.circ && g.circ[0]) || '')]);
         gQ.append(p); GQ[n] = p;
       });
     }
@@ -239,7 +260,7 @@
           if (n === selU) scegliQuartiere(selQ); else scegliUpl(n);
         });
         p.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scegliUpl(n); } });
-        agganciaTip(p, () => [`UPL ${n}`, righeUpl(n, g)]);
+        agganciaTip(p, () => [`UPL ${n}`, righeUpl(n, g), coloreDi(g.circ)]);
         gU.append(p); GU[n] = p;
       });
     }
@@ -762,6 +783,10 @@
        Le due barre stanno sulla stessa scala 0-100%, cosi` il confronto è immediato. */
     const confronto = (o) => {
       const box = el('div', { class: 'confronto' });
+      /* le due misure si nominano una volta sopra il blocco: ripeterle su ogni riga
+         faceva rumore senza aggiungere niente */
+      box.append(el('p', { class: 'confronto-legenda', 'aria-hidden': 'true' },
+        o.misure.map((m, k) => el('span', {}, [el('i', { class: k ? 'numero' : '' }), m.nome]))));
       o.righe.forEach(r => {
         const g = el('div', { class: 'confronto-gruppo', role: 'group' });
         g.setAttribute('aria-label', `${r.nome}: ${o.misure.map((m, k) => `${m.nome} ${pct(r.valori[k])}`).join(', ')}`);
@@ -769,7 +794,6 @@
         o.misure.forEach((m, k) => {
           const q = Math.max(0, r.valori[k] || 0);
           g.append(el('div', { class: 'confronto-barra' + (k ? ' numero' : ''), title: `${m.nome}: ${pct(q)}` }, [
-            el('span', { class: 'et', text: m.nome }),
             el('div', { class: 'pista' }, [el('span', { class: 'riempi', style: `width:${Math.max(0.6, q)}%` })]),
             el('span', { class: 'val', text: pct(q) }),
           ]));
@@ -1050,6 +1074,24 @@
 
     colora(); allinea(); scheda();
     document.addEventListener('tema-cambia', colora);
+    /* le barre crescono quando il blocco entra nello schermo, una dopo l'altra:
+       un solo gesto per dire che il grafico è una scala */
+    (() => {
+      const blocchi = document.querySelectorAll('.barre, .confronto');
+      if (!blocchi.length) return;
+      blocchi.forEach((b) => {
+        [...b.querySelectorAll('.barra, .confronto-gruppo')].forEach((r, i) => r.style.setProperty('--i', i));
+      });
+      if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const io = new IntersectionObserver((voci) => {
+        voci.forEach((v) => {
+          if (!v.isIntersecting) return;
+          v.target.classList.add('comparso');
+          io.unobserve(v.target);
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.12 });
+      blocchi.forEach((b) => io.observe(b));
+    })();
     /* chi arriva da un'altra pagina su #appalti (o #opere, #bilancio, #progetti) apre
        l'indirizzo prima che i grafici siano disegnati: la sezione è ancora in alto,
        l'ancora cade dove non c'è nulla. Ora che la pagina è completa si torna lì. */

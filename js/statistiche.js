@@ -46,11 +46,17 @@
     const p = ev.touches ? ev.touches[0] : ev;
     const x = p.clientX ?? 0, y = p.clientY ?? 0;
     const r = tip.getBoundingClientRect();
-    let left = x + 14, top = y + 14;
-    if (left + r.width > window.innerWidth - 8) left = x - r.width - 14;
-    if (top + r.height > window.innerHeight - 8) top = y - r.height - 14;
-    tip.style.left = Math.max(8, left) + 'px';
-    tip.style.top = Math.max(8, top) + 'px';
+    const m = 8, off = 14;
+    const aDestra = x + off + r.width <= window.innerWidth - m;
+    const left = aDestra ? x + off : x - off - r.width;
+    const top = y + off + r.height <= window.innerHeight - m ? y + off : y - off - r.height;
+    const l = Math.max(m, Math.min(left, window.innerWidth - m - r.width));
+    const t = Math.max(m, Math.min(top, window.innerHeight - m - r.height));
+    /* stessa punta della mappa: guarda il punto che si sta leggendo */
+    tip.dataset.lato = aDestra ? 'sinistra' : 'destra';
+    tip.style.setProperty('--fy', Math.max(12, Math.min(y - t, r.height - 12)) + 'px');
+    tip.style.left = l + 'px';
+    tip.style.top = t + 'px';
   };
   const mostraTip = (ev, titoloTesto, righe) => {
     tip.replaceChildren(el('b', { text: titoloTesto }), ...righe.map(([k, v]) => el('span', { class: 'tip-riga' }, [

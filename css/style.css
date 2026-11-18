@@ -57,9 +57,19 @@ body {
   margin: 0; background: var(--carta); color: var(--inchiostro);
   font-family: var(--font-testo); font-size: 1rem; line-height: 1.55;
 }
-h1, h2, h3 { font-family: var(--font-titoli); line-height: 1.08; margin: 0; letter-spacing: -0.01em; }
+h1, h2, h3 { font-family: var(--font-titoli); line-height: 1.08; margin: 0; letter-spacing: -0.02em; text-wrap: balance; }
+h1 { letter-spacing: -0.03em; }
+/* il testo che si legge davvero non lascia una parola sola sull'ultima riga */
+p, li, dd, figcaption { text-wrap: pretty; }
 a { color: var(--maiolica-scura); text-underline-offset: 3px; }
 :focus-visible { outline: 3px solid var(--cupola); outline-offset: 2px; }
+/* le superfici del browser fanno parte del progetto: selezione, cursore, barra di scorrimento */
+::selection { background: var(--maiolica-chiara); color: var(--inchiostro); }
+:root { caret-color: var(--maiolica); scrollbar-color: color-mix(in srgb, var(--muto) 55%, transparent) transparent; scrollbar-width: thin; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--muto) 42%, transparent); border: 3px solid var(--carta); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muto); }
 .skip { position: absolute; left: -999px; top: 8px; background: var(--inchiostro); color: var(--carta); padding: 8px 12px; z-index: 10; }
 .skip:focus { left: 8px; }
 code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-radius: 3px; }
@@ -201,8 +211,9 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
   grid-template-areas: "mappa testo" "mappa scheda" "mappa cifre"; align-items: start;
 }
 .apertura-testo { grid-area: testo; max-width: 40rem; margin: 8px 0 22px; }
-.apertura h1 { font-size: clamp(1.7rem, 2.5vw, 2.5rem); font-weight: 700; }
-.sottotitolo { font-size: 1.05rem; color: var(--muto); max-width: 36rem; margin: 12px 0 0; }
+.apertura h1 { font-size: clamp(1.8rem, 1.15vw + 1.3rem, 2.65rem); font-weight: 700; text-wrap: balance; }
+/* il sottotitolo è la frase che dice cosa si sta guardando: più scuro di una nota, più chiaro del titolo */
+.sottotitolo { font-size: 1.07rem; line-height: 1.5; color: color-mix(in srgb, var(--inchiostro) 80%, var(--carta)); max-width: 34rem; margin: 14px 0 0; text-wrap: pretty; }
 .avviso { background: var(--ocra-chiara); padding: 12px 16px; margin: 16px 0 0; max-width: 40rem; border-radius: 3px; }
 .mappa-blocco {
   grid-area: mappa; min-width: 0; position: sticky; top: calc(var(--testata) + 8px);
@@ -252,24 +263,25 @@ code { font-size: 0.9em; background: var(--carta-2); padding: 1px 5px; border-ra
 /* quattro cifre di sintesi: riempiono lo spazio sotto la scheda quando non c'è una selezione */
 .cifre-apertura { grid-area: cifre; align-self: start; margin-top: 18px; }
 .cifre-apertura[hidden] { display: none; }
-.cifre-elenco { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+/* le quattro cifre sono un unico prospetto: una cornice, righe sottili, nessuna scheda dentro l'altra */
+.cifre-elenco { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--linea); border: 1px solid var(--linea); border-radius: 4px; overflow: hidden; }
 .cifra-card {
-  display: block; border: 1px solid var(--linea); border-top: 3px solid var(--maiolica);
-  border-radius: 4px; padding: 9px 12px 11px; background: var(--sfondo-scheda);
-  text-decoration: none; color: var(--inchiostro); min-width: 0;
+  display: block; border: 0; border-top: 3px solid var(--maiolica); border-radius: 0;
+  padding: 10px 13px 12px; background: var(--sfondo-scheda);
+  text-decoration: none; color: var(--inchiostro); min-width: 0; transition: background 0.15s;
 }
-.cifra-card:hover { border-color: var(--maiolica); border-top-color: var(--cupola); background: color-mix(in srgb, var(--maiolica-chiara) 40%, var(--sfondo-scheda)); }
-.cifra-card:focus-visible { outline: 2px solid var(--cupola); outline-offset: 2px; }
+.cifra-card:hover { background: color-mix(in srgb, var(--maiolica-chiara) 55%, var(--sfondo-scheda)); }
+.cifra-card:focus-visible { outline: 2px solid var(--cupola); outline-offset: -3px; }
 .cifra-card.opere { border-top-color: var(--maiolica); }
 .cifra-card.bilancio { border-top-color: var(--ocra); }
 .cifra-card.appalti { border-top-color: var(--inchiostro); }
 .cifra-card.fondi { border-top-color: var(--cupola); }
-.cifra-card-nome { margin: 0; font-size: 0.78rem; line-height: 1.25; color: var(--muto); }
-.cifra-card-val { margin: 3px 0 0; font-family: var(--font-titoli); font-weight: 700; font-size: clamp(1.15rem, 1.5vw, 1.45rem); line-height: 1.05; font-variant-numeric: tabular-nums; }
+.cifra-card-nome { margin: 0; font-size: 0.8rem; line-height: 1.25; color: var(--muto); }
+.cifra-card-val { margin: 4px 0 0; font-family: var(--font-titoli); font-weight: 700; font-size: clamp(1.15rem, 1.5vw, 1.45rem); line-height: 1.05; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
 .cifra-card-val + .cifra-card-val { margin-top: 2px; }
-.cifra-card-val .unita { font-family: var(--font-testo); font-weight: 400; font-size: 0.72rem; color: var(--muto); }
-.cifra-card-nota { margin: 4px 0 0; font-size: 0.76rem; line-height: 1.3; color: var(--muto); }
-.cifre-nota { margin: 8px 0 0; font-size: 0.76rem; line-height: 1.4; color: var(--muto); }
+.cifra-card-val .unita { font-family: var(--font-testo); font-weight: 400; font-size: 0.74rem; color: var(--muto); }
+.cifra-card-nota { margin: 5px 0 0; font-size: 0.78rem; line-height: 1.35; color: var(--muto); }
+.cifre-nota { margin: 9px 0 0; font-size: 0.78rem; line-height: 1.45; color: var(--muto); }
 .cifre-nota a { color: var(--maiolica-scura); }
 @media (max-width: 1250px) { .cifre-elenco { grid-template-columns: 1fr; } }
 /* circoscrizione scelta: il suo poligono resta leggibile, gli altri si attenuano */
@@ -374,10 +386,10 @@ a.quartiere-scendi { text-decoration: none; }
 .su[hidden] { display: none; }
 
 /* sezioni */
-.sezione { max-width: 1560px; margin: 0 auto; padding: clamp(32px, 5vw, 64px) var(--gutter); border-top: 1px solid var(--linea); }
-.sezione-testa { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 8px clamp(20px, 4vw, 56px); align-items: start; margin-bottom: 26px; }
-.sezione-testa h2 { font-size: clamp(1.6rem, 3.2vw, 2.3rem); }
-.lede { margin: 0; max-width: 40rem; font-size: 1.04rem; }
+.sezione { max-width: 1560px; margin: 0 auto; padding: clamp(40px, 5.4vw, 80px) var(--gutter) clamp(36px, 4.6vw, 64px); border-top: 1px solid var(--linea); }
+.sezione-testa { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 10px clamp(20px, 4vw, 56px); align-items: baseline; margin-bottom: clamp(24px, 3vw, 34px); }
+.sezione-testa h2 { font-size: clamp(1.6rem, 3.2vw, 2.35rem); }
+.lede { margin: 0; max-width: 40rem; font-size: 1.04rem; line-height: 1.6; }
 /* un intervallo di anni non si spezza sul trattino: «2026-» a fine riga e «2028» sotto */
 .no-spezza { white-space: nowrap; }
 .lede strong { font-weight: 600; background: linear-gradient(transparent 62%, var(--ocra-chiara) 62%); }
@@ -387,17 +399,30 @@ a.quartiere-scendi { text-decoration: none; }
 
 /* barre */
 .barre { display: grid; gap: 0; max-width: 62rem; }
-.barra { display: grid; grid-template-columns: minmax(7.5rem, 15rem) 1fr minmax(5.5rem, auto); align-items: center; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--linea); }
+.barra { display: grid; grid-template-columns: minmax(7.5rem, 13rem) minmax(0, 1fr) minmax(5.5rem, auto); align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--linea); }
 .barra .nome { font-size: 0.96rem; }
 .barra .nome small { display: block; color: var(--muto); font-size: 0.8rem; }
-.barra .pista { height: 16px; background: transparent; position: relative; }
+/* la pista resta invisibile ma la riga di base dà la scala: la barra si legge come una lunghezza, non come un colore */
+.barra .pista {
+  height: 16px; position: relative;
+  background:
+    linear-gradient(to top, color-mix(in srgb, var(--muto) 40%, transparent) 0 1px, transparent 1px),
+    repeating-linear-gradient(to right, color-mix(in srgb, var(--muto) 30%, transparent) 0 1px, transparent 1px 25%) bottom / 100% 4px no-repeat;
+}
 .barra .riempi { display: block; height: 100%; background: var(--maiolica); min-width: 2px; }
-.barra.piu .riempi { background: var(--maiolica-chiara); box-shadow: inset 0 0 0 1px var(--maiolica); }
+.barra.piu .riempi { background: repeating-linear-gradient(135deg, var(--maiolica) 0 4px, var(--maiolica-chiara) 4px 8px); min-width: 8px; }
 .barra.senza .riempi { background: repeating-linear-gradient(135deg, var(--ocra) 0 6px, var(--ocra-chiara) 6px 12px); }
 .barra.conto-terzi .riempi { background: repeating-linear-gradient(135deg, var(--linea) 0 6px, var(--carta-2) 6px 12px); }
-.barra .val { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.barra .val { text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.barra .val .freccia { color: var(--muto); font-weight: 400; margin-left: 1px; }
 .barra.senza .nome { font-weight: 600; }
 .barra[aria-current="true"] { background: var(--maiolica-chiara); }
+.barra.cliccabile:hover .val .freccia { color: var(--cupola); }
+/* le barre si disegnano quando la sezione entra nello schermo: un solo gesto, non uno per blocco */
+@media (prefers-reduced-motion: no-preference) {
+  .barre.comparso .riempi, .confronto.comparso .riempi { animation: cresce-barra 0.62s cubic-bezier(0.22, 0.61, 0.36, 1) both; animation-delay: calc(min(var(--i, 0), 12) * 34ms); transform-origin: left center; }
+  @keyframes cresce-barra { from { transform: scaleX(0); } to { transform: none; } }
+}
 
 .limiti { max-width: none; margin-top: 22px; background: var(--carta-2); padding: 14px 18px 12px; border-radius: 3px; }
 .limiti h3 { font-size: 1.02rem; margin-bottom: 6px; color: var(--cupola); }
@@ -568,18 +593,23 @@ a.quartiere-scendi { text-decoration: none; }
 .page h3 { font-size: 1.05rem; margin: 20px 0 6px; }
 
 /* filtri */
-.filtri { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin: 20px 0 8px; }
-.filtri label { display: grid; gap: 4px; font-size: 0.84rem; color: var(--muto); }
+.filtri { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: flex-end; margin: 22px 0 8px; }
+.filtri label { display: grid; gap: 5px; font-size: 0.84rem; color: var(--muto); min-width: 0; }
+/* la ricerca prende una riga sua, i menù si dividono la successiva in parti uguali */
+.filtri .cerca { flex: 1 1 100%; }
+.filtri label:not(.cerca) { flex: 1 1 9.5rem; }
 .filtri input, .filtri select {
   font: inherit; font-size: 0.95rem; color: var(--inchiostro); background: var(--carta);
-  border: 1px solid var(--linea); border-radius: 3px; padding: 7px 10px; min-height: 38px;
+  border: 1px solid var(--linea); border-radius: 3px; padding: 8px 10px; min-height: 40px; width: 100%;
 }
+.filtri input:hover, .filtri select:hover { border-color: var(--muto); }
 .filtri input[type="search"] { min-width: min(100%, 22rem); }
-.filtri .cerca { flex: 1 1 22rem; }
 .filtri .cerca input { width: 100%; }
-.filtri .spunta { display: flex; flex-direction: row; align-items: center; gap: 8px; padding-bottom: 9px; white-space: nowrap; }
-.filtri .spunta input { min-height: 0; }
-.conteggio { font-size: 0.9rem; color: var(--muto); margin: 8px 0 0; font-variant-numeric: tabular-nums; }
+.filtri .spunta { flex: 0 1 auto; display: flex; flex-direction: row; align-items: center; gap: 8px; min-height: 40px; white-space: nowrap; }
+/* l'ordinamento porta un'opzione lunga: la sua colonna è più larga, così non si tronca */
+.filtri label:has(select#ordine) { flex: 2 1 14rem; }
+.filtri .spunta input { min-height: 0; width: auto; accent-color: var(--maiolica); }
+.conteggio { font-size: 0.9rem; color: var(--muto); margin: 12px 0 0; font-variant-numeric: tabular-nums; }
 
 /* elenco */
 .elenco { display: grid; margin-top: 6px; }
@@ -612,8 +642,11 @@ a.quartiere-scendi { text-decoration: none; }
   font-size: 0.84rem; font-weight: 600; line-height: 1.35; color: var(--cupola); text-decoration: none; }
 .badge-link::after { content: '→'; }
 .badge-link:hover, .badge-link:focus-visible { background: var(--cupola); color: var(--carta); text-decoration: none; }
-/* più badge-link di fila, quando la frase si chiude e le scorciatoie stanno su una riga loro */
+/* più badge-link di fila, quando la frase si chiude e le scorciatoie stanno su una riga loro:
+   la prima è l'azione, le altre restano discrete */
 .badge-riga { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-top: 10px; }
+.badge-riga .badge-link + .badge-link { border-color: var(--linea); background: transparent; color: var(--inchiostro); font-weight: 500; }
+.badge-riga .badge-link + .badge-link:hover, .badge-riga .badge-link + .badge-link:focus-visible { background: var(--inchiostro); border-color: var(--inchiostro); color: var(--carta); }
 .altro { margin-top: 16px; font: inherit; font-size: 0.95rem; font-weight: 600; color: var(--carta); background: var(--inchiostro); border: 0; border-radius: 99px; padding: 9px 20px; cursor: pointer; }
 .altro:hover { background: var(--maiolica-scura); }
 .altro[hidden] { display: none; }
@@ -847,12 +880,16 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 
 /* la stessa voce letta in due modi (importo e numero): due barre sulla stessa scala 0-100% */
 .confronto { display: grid; }
-.confronto-gruppo { display: grid; grid-template-columns: minmax(7rem, 13rem) minmax(0, 1fr); gap: 4px 14px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--linea); }
+/* una legenda sola per blocco: le due misure non si ripetono su ogni riga */
+.confronto-legenda { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0 0 2px; font-size: 0.74rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--muto); }
+.confronto-legenda span { display: inline-flex; align-items: center; gap: 6px; }
+.confronto-legenda i { width: 10px; height: 10px; background: var(--s4); }
+.confronto-legenda i.numero { background: var(--ocra); }
+.confronto-gruppo { display: grid; grid-template-columns: minmax(7rem, 13rem) minmax(0, 1fr); gap: 4px 14px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--linea); }
 .confronto-gruppo .nome { grid-row: 1 / span 2; font-size: 0.9rem; line-height: 1.25; }
 .confronto-gruppo .nome b { font-weight: 500; }
 .confronto-gruppo .nome small { display: block; color: var(--muto); font-size: 0.76rem; margin-top: 2px; }
-.confronto-barra { display: grid; grid-template-columns: 4.4rem minmax(0, 1fr) 3.8rem; gap: 8px; align-items: center; }
-.confronto-barra .et { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muto); }
+.confronto-barra { display: grid; grid-template-columns: minmax(0, 1fr) 3.6rem; gap: 8px; align-items: center; }
 .confronto-barra .pista { height: 10px; background: var(--carta-2); box-shadow: inset 0 0 0 1px var(--linea); }
 .confronto-barra .riempi { display: block; height: 100%; background: var(--s4); min-width: 2px; }
 .confronto-barra.numero .riempi { background: var(--ocra); }
@@ -1027,18 +1064,34 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 .stato-ok { color: var(--maiolica-scura); font-weight: 600; }
 .stato-no { color: var(--cupola); font-weight: 600; }
 
-/* statistiche: tooltip, etichette dentro le barre, elementi cliccabili */
+/* popup della mappa e dei grafici: una scheda appesa al punto che si sta guardando */
 .tip {
-  position: fixed; z-index: 60; max-width: 18rem;
+  position: fixed; z-index: 60; min-width: 13.5rem; max-width: 22rem;
   background: var(--inchiostro); color: var(--carta);
-  padding: 8px 11px; border-radius: 4px; font-size: 0.82rem; line-height: 1.35;
-  pointer-events: none; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  padding: 9px 12px 10px; border-radius: 6px;
+  font-size: 0.82rem; line-height: 1.4;
+  pointer-events: none; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  --fy: 50%; --chip: var(--maiolica);
 }
-.tip b { display: block; font-weight: 600; margin-bottom: 3px; }
-.tip-riga { display: flex; justify-content: space-between; gap: 16px; }
-.tip-riga strong { font-variant-numeric: tabular-nums; white-space: nowrap; }
-/* riga di separazione fra gli indicatori della mappa e i conteggi del territorio */
-.tip-riga.divisa { margin-top: 5px; padding-top: 5px; border-top: 1px solid color-mix(in srgb, currentColor 28%, transparent); }
+/* la punta guarda il puntatore: un quadrato ruotato dello stesso colore della scheda */
+.tip::after { content: ""; position: absolute; width: 9px; height: 9px; background: inherit; transform: rotate(45deg); }
+.tip[data-lato="sinistra"]::after { left: -4px; top: var(--fy); margin-top: -4px; }
+.tip[data-lato="destra"]::after { right: -4px; top: var(--fy); margin-top: -4px; }
+.tip b { display: block; font-family: var(--font-titoli); font-weight: 700; font-size: 0.98rem; line-height: 1.2; letter-spacing: -0.01em; margin: 0 0 5px; }
+.tip-riga { display: flex; justify-content: space-between; align-items: baseline; gap: 18px; padding: 1px 0; }
+.tip-riga span { color: color-mix(in srgb, currentColor 72%, transparent); }
+.tip-riga strong { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+/* l'indicatore che si sta leggendo si accende e prende il colore del poligono */
+.tip-riga.attivo span { display: inline-flex; align-items: center; gap: 6px; color: currentColor; font-weight: 600; }
+.tip-riga.attivo span::before { content: ""; width: 8px; height: 8px; border-radius: 2px; background: var(--chip); }
+.tip-riga.attivo strong { font-size: 0.9rem; }
+/* riga di separazione fra l'indicatore e i conteggi del territorio */
+.tip-riga.divisa { margin-top: 7px; padding-top: 7px; border-top: 1px solid color-mix(in srgb, currentColor 24%, transparent); }
+.tip-riga.tenue { font-size: 0.78rem; }
+/* quartieri e UPL: l'etichetta sopra, i nomi sotto a tutta larghezza */
+.tip-riga.disteso { display: block; }
+.tip-riga.disteso span { font-size: 0.76rem; }
+.tip-riga.disteso strong { display: block; margin-top: 1px; font-weight: 400; font-size: 0.78rem; line-height: 1.4; white-space: normal; color: color-mix(in srgb, currentColor 88%, transparent); }
 
 .riga-barra.cliccabile { cursor: pointer; }
 .riga-barra.cliccabile:hover { background: color-mix(in srgb, var(--maiolica-chiara) 55%, transparent); }
@@ -1075,4 +1128,82 @@ body.con-consenso { padding-bottom: var(--altezza-consenso, 0px); }
 @media (max-width: 600px) {
   .scheda-circ-nota .sep { display: none; }
   .scheda-circ-nota a { display: block; }
+}
+
+/* ================= rifinitura: comandi, testata e banner sui telefoni ================= */
+/* il menù che scorre in orizzontale deve dire che scorre: sfumatura sul bordo destro
+   e spazio perché l'ultima voce possa arrivare tutta dentro */
+@media (max-width: 1020px) {
+  .testata nav.menu-principale {
+    padding-right: 34px;
+    scroll-snap-type: x proximity;
+    mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent);
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 34px), transparent);
+  }
+  .testata nav.menu-principale > * { scroll-snap-align: start; }
+  /* con una tendina aperta il pannello è un figlio del menù: la sfumatura lo taglierebbe */
+  .testata nav.menu-principale.aperta { mask-image: none; -webkit-mask-image: none; }
+}
+
+/* i livelli della mappa: una riga che scorre, non tre righe di pillole */
+@media (max-width: 700px) {
+  .selettore {
+    flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
+    margin: 0 calc(-1 * var(--gutter)) 10px; padding: 0 var(--gutter) 2px;
+    scroll-snap-type: x proximity;
+  }
+  .selettore::-webkit-scrollbar { display: none; }
+  .selettore button { flex: none; scroll-snap-align: start; }
+}
+
+/* su un dito i comandi crescono: 40 px è il minimo per non sbagliare bersaglio */
+@media (pointer: coarse) {
+  .selettore button, .interruttore, .anni button, .circ-nav a, .sommario a { min-height: 40px; }
+  .anni button { padding: 0 16px; }
+  .circ-nav a { padding: 0 14px; }
+  .linguette button { padding: 12px 14px; }
+  .tendina > ul a { padding: 12px 16px; }
+}
+
+/* il banner del consenso: informazione intera, ingombro minore */
+@media (max-width: 600px) {
+  .consenso-in { padding: 11px var(--gutter) 13px; gap: 7px; }
+  .consenso-titolo { font-size: 0.92rem; }
+  .consenso-testo { font-size: 0.82rem; line-height: 1.42; }
+  .consenso button { padding: 7px 14px; }
+  .credito-in { padding-top: 18px; }
+}
+
+/* due tabelle affiancate partono dalla stessa riga: titolo, nota e grafico occupano
+   le stesse righe di griglia, così una nota più lunga non sposta una delle due */
+@supports (grid-template-rows: subgrid) {
+  #appalti-grafici { grid-template-rows: auto auto 1fr; }
+  #appalti-grafici > div { display: grid; grid-template-rows: subgrid; grid-row: span 3; align-content: start; }
+}
+
+/* il selettore dell'anno riguarda il grafico che sta sotto, non il testo: sta nella
+   colonna di sinistra, sotto il titolo, e riempie lo spazio che il lede lasciava vuoto */
+@media (min-width: 901px) {
+  .sezione-testa .anni { grid-column: 1; grid-row: 2; justify-self: start; margin-top: 4px; }
+}
+
+/* PNRR e coesione: le due colonne finiscono alla stessa altezza, così le schede
+   «Cosa non misura» stanno in fondo e non appese dove è finita la tabella */
+#progetti .due-colonne > div { display: flex; flex-direction: column; }
+#progetti .due-colonne > div > div { display: flex; flex-direction: column; flex: 1 1 auto; }
+#progetti .due-colonne .barre, #progetti .due-colonne .avanz-blocco { margin-bottom: 22px; }
+#progetti .due-colonne .limiti { margin-top: auto; }
+
+/* su un telefono la barra prende tutta la riga: nome e valore sopra, pista sotto.
+   Con tre colonne la pista restava larga 90 px e le differenze sparivano */
+@media (max-width: 600px) {
+  .barra { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "nome val" "pista pista"; gap: 3px 10px; padding: 9px 0; }
+  .barra .nome { grid-area: nome; }
+  .barra .val { grid-area: val; align-self: start; }
+  .barra .pista { grid-area: pista; height: 12px; }
+}
+
+/* tre scorciatoie su un telefono: larghe uguali, una per riga, con la freccia in fondo */
+@media (max-width: 600px) {
+  .badge-riga .badge-link { flex: 1 1 100%; justify-content: space-between; }
 }
