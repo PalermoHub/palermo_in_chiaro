@@ -237,8 +237,25 @@
     /* il CUI non ha una scheda pubblica: il riscontro sono i CIG di ANAC */
     const notaCui = p.cui ? el('p', { class: 'nota', text: 'Il CUI (Codice Unico dell\'Intervento) non ha una scheda pubblica con un indirizzo proprio: il riscontro sono gli appalti ANAC collegati, quando ci sono. Il CUP invece porta alla scheda OpenCUP.' }) : null;
 
+    /* CUP o CUI che il Programma riporta per piu' interventi: lo si dice, senza dedurre la causa */
+    const sh = p.condivisi || {};
+    const altri = (lista) => el('ul', { class: 'link' }, lista.map(q => el('li', {}, [
+      el('a', { href: 'progetto.html?id=' + encodeURIComponent(q.id), text: q.titolo }),
+      el('span', { class: 'est', text: ' ' + mln(q.importo_triennio_eur) + ' nel triennio' })])));
+    const avvisi = [];
+    if (sh.cup) avvisi.push(el('div', {}, [
+      el('p', {}, [el('b', { text: 'Questo CUP è indicato anche per ' + (sh.cup.length === 1 ? 'un altro intervento' : sh.cup.length + ' altri interventi') + ' del Programma. ' }),
+        'Può trattarsi di lotti o stralci della stessa opera: il Programma non lo dice.' + (p.coesione ? ' Il finanziamento di coesione è quello del CUP e compare identico su ogni scheda: non va sommato.' : '')]),
+      altri(sh.cup)]));
+    if (sh.cui) avvisi.push(el('div', {}, [
+      el('p', {}, [el('b', { text: 'Questo CUI è indicato anche per ' + (sh.cui.length === 1 ? 'un altro intervento' : sh.cui.length + ' altri interventi') + ' del Programma. ' }),
+        'Il CUI dovrebbe identificare un solo intervento: va segnalato al Comune. Per questo gli appalti ANAC (collegati per CUI) non vengono attribuiti in automatico a una sola scheda.']),
+      altri(sh.cui)]));
+    const avvisoCodici = avvisi.length ? el('div', { class: 'avviso', role: 'note' }, [el('span', { class: 'badge verifica', text: 'Da verificare' }), ...avvisi]) : null;
+
     $('scheda-progetto').replaceChildren(
       testa,
+      ...(avvisoCodici ? [avvisoCodici] : []),
       el('div', { class: 'dettaglio' }, [
         el('div', { class: 'colonna' }, [
           riquadro('Importi e finanziamenti', [importi, el('p', { class: 'nota', text: 'Le cifre sono quelle della fonte indicata per ciascuna voce. Nessuna è stata stimata o ripartita.' })]),
